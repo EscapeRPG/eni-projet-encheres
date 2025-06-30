@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head th:insert="~{fragments/fragment-head :: head}">
+<title>ENI Enchères</title>
+</head>
+<body>
+	<header th:replace="~{fragments/fragment-header :: header}"></header>
+	<main>
+		<h2>Liste des enchères</h2>
+		
+		<!--
+		<form th:action="@{/encheres/rechercher}" method="post">
+			<label for="filtres">Filtres :</label>
+			<input type="text" th:field="*{}" id="filtres" placeholder="Le nom de l'article contient">
+			
+			<label for="categories">Catégorie :</label>
+			<select th:field="*{categories}" id="categories">
+				<option th:each="c : ${categoriesEnSession}" th:text="c.libelle" th:value="c.id"></option>
+			</select>
+			<button type="submit">Rechercher</button>
+		</form>
+		
+		<ul class="articles-grid">
+			<li th:each="{e : ${encheres}">
+				<div class="item-container">
+					<img th:src="${e.src}" alt="${e.nomArticle}">
+					<p th:text="${e.nomArticle}"></p>
+					<p th:text="${e.description}"></p>
+					<p th:text="Vendeur : ${e.utilisateur}"></p>
+				</div>
+			</li>
+		</ul>
+		-->
+		
+		<form th:action="@{/encheres/rechercher}" method="post">
+			<label for="filtres">Filtres :</label>
+			<input type="text" name="filtrer" id="filtres" placeholder="Le nom de l'article contient">
+			
+			<label for="categories">Catégorie :</label>
+			<select name="categories" id="categories">
+				<option value="1">Toutes</option>
+				<option value="2">Informatique</option>
+				<option value="3">Ameublement</option>
+				<option value="4">Vêtement</option>
+				<option value="5">Sports & Loisirs</option>
+			</select>
+			<button type="submit">Rechercher</button>
+		</form>
+		
+		<!--
+		<ul class="articles-grid">
+			<li th:each="{e : ${encheres}">
+				<div class="item-container">
+					<img th:src="${e.src}" alt="${e.nomArticle}">
+					<p th:text="${e.nomArticle}"></p>
+					<p th:text="${e.description}"></p>
+					<p th:text="Vendeur : ${e.utilisateur}"></p>
+				</div>
+			</li>
+		</ul>
+		-->
+	</main>
+</body>
+</html>
