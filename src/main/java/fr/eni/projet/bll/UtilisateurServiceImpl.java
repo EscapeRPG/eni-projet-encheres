@@ -6,64 +6,85 @@ import fr.eni.projet.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UtilisateurServiceImpl implements UtilisateurService{
+public class UtilisateurServiceImpl implements UtilisateurService {
 
 	private UtilisateurDAO utilisateurDAO;
 
-    @Override
-    public void creerUtilisateur(Utilisateur utilisateur) {
+	@Override
+	public void creerUtilisateur(Utilisateur utilisateur) {
+		this.utilisateurDAO.creerCompte(utilisateur);
+	}
 
-        Utilisateur newUtilisateur = this.utilisateurDAO.creerComtpe(utilisateur);
-    }
+	@Override
+	public Utilisateur afficherUtilisateur(long idUtilisateur) {
 
-    @Override
-    public Utilisateur afficherUtilisateur(long idUtilisateur) {
+		return this.utilisateurDAO.consulterCompte(idUtilisateur);
+	}
 
-        return this.utilisateurDAO.consulterCompte(idUtilisateur);
-    }
+	@Override
+	public Utilisateur connecterUtilisateur(String pseudo, String motDePasse) throws BusinessException {
 
-    @Override
-    public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException{
+		BusinessException be = new BusinessException();
+		boolean existUser = isExistUtilisateur(pseudo, be);
 
-        BusinessException be = new BusinessException();
-        boolean existUser = isExistUtilisateur(utilisateur.getIdUtilisateur(), be);
+		if (existUser) {
+			if (this.utilisateurDAO.connecterCompte(pseudo, motDePasse) != null) {
+				return this.utilisateurDAO.connecterCompte(pseudo, motDePasse);
+			} else {
+				be.add("Le mot de passe ne correspond pas");
+				throw be;
+			}
+		} else {
+			throw be;
+		}
 
-            if (existUser) {
-                utilisateur.motDePasseOublie();
-            }
-            else {
-                System.out.println("Utilisateur inconnu");
-                throw be;
-            }
+	}
 
-    }
+	@Override
+	public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException {
 
-    @Override
-    public void supprimerUtilisateur(long idUtlisateur) throws BusinessException{
+		BusinessException be = new BusinessException();
+		
+		utilisateurDAO.updateCompte(utilisateur);	
 
-        BusinessException be = new BusinessException();
-        boolean existUser = isExistUtilisateur(utilisateur.getIdUtilisateur(), be);
+	}
 
-        if (existUser){
-            utilisateurDAO.supprimerCompte(idUtlisateur);
+	@Override
+	public void supprimerUtilisateur(long idUtilisateur) throws BusinessException {
 
-        }else {
-            System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
-            throw be;
-        }
+		BusinessException be = new BusinessException();
+		boolean existUser = isExistUtilisateur(idUtilisateur, be);
 
-    }
+		if (existUser) {
+			utilisateurDAO.supprimerCompte(idUtilisateur);
 
-    private boolean isExistUtilisateur (long idUtilisateur, BusinessException be){
+		} else {
+			System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
+			throw be;
+		}
 
-        if (idUtilisateur != null) {
-            return true;
-        }
-        else {
-            be.add("L'utilisateur n'existe pas");
-            return false;
-        }
-    }
+	}
+
+	private boolean isExistUtilisateur(long idUtilisateur, BusinessException be) {
+		boolean i = utilisateurDAO.isUtilisateurInBDD(idUtilisateur);
+		if (i) {
+			return true;
+		} else {
+			be.add("L'utilisateur n'existe pas");
+			return false;
+		}
+
+	}
+
+	private boolean isExistUtilisateur(String pseudo, BusinessException be) {
+		boolean i = utilisateurDAO.isUtilisateurInBDD(pseudo);
+		if (i) {
+			return true;
+		} else {
+			be.add("L'utilisateur n'existe pas");
+			return false;
+		}
+
+	}
 
 }
-

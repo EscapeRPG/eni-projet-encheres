@@ -2,17 +2,16 @@ package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.security.Key;
 import java.util.List;
 
 public class UtilisateurDAOImpl implements UtilisateurDAO{
-
-    private static final Class<Utilisateur> entityClass = Utilisateur.class;
 
     private final NamedParameterJdbcTemplate jdb;
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
@@ -33,15 +32,27 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
         mapSqlParameterSource.addValue("ville", u.getVille());
         mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdb.update(sql,mapSqlParameterSource,keyHolder);
+
+        if(keyHolder.getKey()!=null) {
+            u.setIdUtilisateur(keyHolder.getKey().longValue());
+        }
     }
 
     @Override
     public Utilisateur connecterCompte(String pseudo, String motDePasse) {
-        String sql = "select * from utilisateur where pseudo = :pseudo and motDePasse = :motDePasse";
+        String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
-        mapSqlParameterSource.addValue("motDePasse", motDePasse);
-        return  jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+        Utilisateur utilisateurBDD = jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+        
+        if(utilisateurBDD.getMotDePasse().equals(motDePasse)) {
+        	return utilisateurBDD;
+        }
+        
+        return null;
     }
 
     @Override
@@ -53,7 +64,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public void supprimerCompte(String idUtilisateur) {
+    public void supprimerCompte(long idUtilisateur) {
         String sql = "delete from utilisateur where email = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
@@ -62,7 +73,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public int consulterNbreCredit(String idUtilisateur) {
+    public int consulterNbreCredit(long idUtilisateur) {
         String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
@@ -70,10 +81,18 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public Utilisateur consulterCompte(String idUtilisateur) {
+    public Utilisateur consulterCompte(long idUtilisateur) {
         String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+    }
+
+    @Override
+    public Utilisateur consulterCompte(String pseudo) {
+        String sql = "select * from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
         return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
     }
 
@@ -83,10 +102,49 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
+
+
     @Override
-    public void desactiverCompte(String idUtilisateur) {
+    public void desactiverCompte(long idUtilisateur) {
 
     }
+
+    @Override
+    public boolean isUtilisateurInBDD(long idUtilisateur) {
+        String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        
+        return i != 0;
+    }
+    
+    @Override
+    public boolean isUtilisateurInBDD(String pseudo) {
+        String sql = "select count(*) from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        
+        return i != 0;
+    }
+
+	@Override
+	public void updateCompte(Utilisateur u) {
+		String sql = "update utilisateur set pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email,"
+				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville :ville";
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("pseudo", u.getPseudo());
+		map.addValue("nom", u.getNom());
+		map.addValue("prenom", u.getPrenom());
+		map.addValue("email", u.getEmail());
+		map.addValue("telephone", u.getTelephone());
+		map.addValue("rue", u.getRue());
+		map.addValue("prenom", u.getPrenom());
+		map.addValue("codePostal", u.getCodePostal());
+		map.addValue("ville", u.getVille());
+		
+	}
 
 
 }
