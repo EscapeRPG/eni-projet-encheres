@@ -1,0 +1,133 @@
+@charset "UTF-8";
+
+/*Page d'index*/
+
+:root {
+	--theme-principal: rgb(70, 180, 230);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--theme-principal);		
+	padding: 20px 50px;			
+}
+
+header a {
+	color: white;
+	text-decoration: none;
+	margin: 10px;
+	
+}
+
+#nav-title {
+	margin-right: auto;
+	font-size: 1.1em;	
+}
+
+h2 {	
+	text-align: center;
+}
+
+.barre-filtre-f {
+	
+	  /* display: flex;
+	  flex-direction: row;
+	  flex-wrap: wrap;
+	  justify-content: space-around;
+	  padding: 20px;*/
+	  
+	width: 80%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5em;
+    padding: 0 2em;
+    justify-items: center;
+}
+
+
+/* ------ page de connexion -------*/
+
+.formulaire {
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	label {
+		text-align: left;
+	
+	}
+}
+
+.middlebutton {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	height: 75px;	
+	}
+	
+.souvenir{
+	display: flex;
+	justify-content: center;
+}	
+
+.lien-mdp {
+	float: right;	
+}
+
+.downbutton {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	border-bottom-width: 100px;
+	padding:20px;
+	margin: 20px;
+}
+
+.button{
+	padding: 30px;
+	height: 70px;
+	background-color: var(--theme-principal);
+}
+
+.form-inscription{
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	width: 200px;
+}
+
+.form-buttons{
+	display: flex;
+	justify-content:space-around;
+	padding: 20px;
+	margin: 50px;
+	height:70;
+}
+
+
+
+
+
+	
