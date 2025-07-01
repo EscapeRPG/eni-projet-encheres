@@ -10,6 +10,9 @@ public class Enchere {
     private LocalDateTime dateEnchere;
     private int montantEnchere;
 
+    public Enchere() {
+		// TODO Auto-generated constructor stub
+	}
 
     public Enchere(Utilisateur utilisateur, Article enchereArticle, LocalDateTime dateEnchere, int montantEnchere) {
         this.utilisateur = utilisateur;

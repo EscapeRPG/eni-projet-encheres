@@ -7,6 +7,10 @@ public class Retrait {
     private String rue;
     private String codePostal;
     private String ville;
+    
+    public Retrait() {
+		// TODO Auto-generated constructor stub
+	}
 
     public Retrait(Article article, String rue, String codePostal, String ville) {
         this.article = article;

@@ -9,6 +9,10 @@ public class Categorie {
 
     private long idCategorie;
     private String libelle;
+    
+    public Categorie() {
+		// TODO Auto-generated constructor stub
+	}
 
     public Categorie(String libelle, long idCategorie) {
         this.articles = new ArrayList<>();
