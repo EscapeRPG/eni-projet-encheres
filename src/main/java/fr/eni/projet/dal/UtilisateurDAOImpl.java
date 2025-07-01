@@ -4,13 +4,14 @@ import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 
+import java.security.Key;
 import java.util.List;
 
 public class UtilisateurDAOImpl implements UtilisateurDAO{
-
-    private static final Class<Utilisateur> entityClass = Utilisateur.class;
 
     private final NamedParameterJdbcTemplate jdb;
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
@@ -31,14 +32,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
         mapSqlParameterSource.addValue("ville", u.getVille());
         mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdb.update(sql,mapSqlParameterSource,keyHolder);
+
+        if(keyHolder.getKey()!=null) {
+            u.setIdUtilisateur(keyHolder.getKey().longValue());
+        }
     }
 
     @Override
-    public Utilisateur connecterCompte(String pseudo, String motDePasse) {
-        String sql = "select * from utilisateur where pseudo = :pseudo and motDePasse = :motDePasse";
+    public Utilisateur connecterCompte(String pseudo) {
+        String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
-        mapSqlParameterSource.addValue("motDePasse", motDePasse);
         return  jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
