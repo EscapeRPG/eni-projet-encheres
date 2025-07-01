@@ -1,6 +1,5 @@
 package fr.eni.projet.dal;
 
-import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 
 import java.util.List;
@@ -10,11 +9,12 @@ public interface UtilisateurDAO {
     void creerCompte(Utilisateur u);
     Utilisateur connecterCompte(String pseudo,String motDePasse);
     String motDePasseOublie(String email);
-    void supprimerCompte(String idUtilisateur);
-    int consulterNbreCredit(String idUtilisateur);
-    Utilisateur consulterCompte(String idUtilisateur);
+    void supprimerCompte(long idUtilisateur);
+    int consulterNbreCredit(long idUtilisateur);
+    Utilisateur consulterCompte(long idUtilisateur);
     List<Utilisateur> afficherComptes();
-    void desactiverCompte(String idUtilisateur);
+    void desactiverCompte(long idUtilisateur);
+    boolean isUtilisateurInBDD(long idUtilisateur);
 
 
 }
