@@ -12,8 +12,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public void creerUtilisateur(Utilisateur utilisateur) {
-
-        Utilisateur newUtilisateur = this.utilisateurDAO.creerComtpe(utilisateur);
+        this.utilisateurDAO.creerCompte(utilisateur);
     }
 
     @Override
@@ -29,7 +28,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
         boolean existUser = isExistUtilisateur(utilisateur.getIdUtilisateur(), be);
 
             if (existUser) {
-                utilisateur.motDePasseOublie();
+                utilisateurDAO.motDePasseOublie(utilisateur.getEmail());
+
             }
             else {
                 System.out.println("Utilisateur inconnu");
@@ -39,13 +39,13 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
-    public void supprimerUtilisateur(long idUtlisateur) throws BusinessException{
+    public void supprimerUtilisateur(long idUtilisateur) throws BusinessException{
 
         BusinessException be = new BusinessException();
-        boolean existUser = isExistUtilisateur(utilisateur.getIdUtilisateur(), be);
+        boolean existUser = isExistUtilisateur(idUtilisateur, be);
 
         if (existUser){
-            utilisateurDAO.supprimerCompte(idUtlisateur);
+            utilisateurDAO.supprimerCompte(idUtilisateur);
 
         }else {
             System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
@@ -55,8 +55,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     private boolean isExistUtilisateur (long idUtilisateur, BusinessException be){
-
-        if (idUtilisateur != null) {
+        boolean i = utilisateurDAO.isUtilisateurInBDD(idUtilisateur);
+        if (i) {
             return true;
         }
         else {

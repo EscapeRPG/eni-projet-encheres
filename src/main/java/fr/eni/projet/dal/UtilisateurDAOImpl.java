@@ -2,12 +2,10 @@ package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.List;
 
 public class UtilisateurDAOImpl implements UtilisateurDAO{
@@ -53,7 +51,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public void supprimerCompte(String idUtilisateur) {
+    public void supprimerCompte(long idUtilisateur) {
         String sql = "delete from utilisateur where email = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
@@ -62,7 +60,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public int consulterNbreCredit(String idUtilisateur) {
+    public int consulterNbreCredit(long idUtilisateur) {
         String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
@@ -70,7 +68,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public Utilisateur consulterCompte(String idUtilisateur) {
+    public Utilisateur consulterCompte(long idUtilisateur) {
         String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
@@ -81,11 +79,30 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     public List<Utilisateur> afficherComptes() {
         String sql = "select * from utilisateur";
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
+    }//a faire avec pseudo aussi
+
+    @Override
+    public void desactiverCompte(long idUtilisateur) {
+
     }
 
     @Override
-    public void desactiverCompte(String idUtilisateur) {
-
+    public boolean isUtilisateurInBDD(long idUtilisateur) {
+        String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        if (i == 0) {
+            return false;
+        }
+        else if (i == 1) {
+            return true;
+        }
+        else
+        {
+            System.out.println("Erreur plus de 1 utilisateur présent");
+            return true;
+        }
     }
 
 
