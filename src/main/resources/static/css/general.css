@@ -126,7 +126,34 @@ h2 {
 	height:70;
 }
 
+.form-modifier-profil {
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	width: 200px;
+}
 
+.credit {
+	text-align: center;
+	margin-right: 150px;
+}
+
+.form-profil{
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	width: 200px;
+}
 
 
 
