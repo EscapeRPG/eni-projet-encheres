@@ -76,10 +76,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
+    public Utilisateur consulterCompte(String pseudo) {
+        String sql = "select * from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+    }
+
+    @Override
     public List<Utilisateur> afficherComptes() {
         String sql = "select * from utilisateur";
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
-    }//a faire avec pseudo aussi
+    }
+
+
 
     @Override
     public void desactiverCompte(long idUtilisateur) {

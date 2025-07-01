@@ -12,6 +12,7 @@ public interface UtilisateurDAO {
     void supprimerCompte(long idUtilisateur);
     int consulterNbreCredit(long idUtilisateur);
     Utilisateur consulterCompte(long idUtilisateur);
+    Utilisateur consulterCompte(String pseudo);
     List<Utilisateur> afficherComptes();
     void desactiverCompte(long idUtilisateur);
     boolean isUtilisateurInBDD(long idUtilisateur);
