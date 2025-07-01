@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
+
 @Controller
 public class EncheresController {
 	
@@ -14,9 +15,16 @@ public class EncheresController {
 //	}
 	
 	@GetMapping("/")
-	public String gotoIndex() {
+	public String goToIndex() {
 		return "index";
 	}
+
+
+	@GetMapping("/inscription")
+	public String inscription() {
+		return "inscription";
+	}
+	
 
 
 	@GetMapping("/connexion")
