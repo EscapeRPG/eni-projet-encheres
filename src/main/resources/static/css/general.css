@@ -2,12 +2,16 @@
 
 /*Page d'index*/
 
-
+:root {
+	--theme-principal: rgb(70, 180, 230);
+}
+ 
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   background-color: #f8f9fa;
+  text-align: center;
 }
 
 
@@ -15,7 +19,7 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: rgb(70, 180, 230);		
+	background-color: var(--theme-principal);		
 	padding: 20px 50px;			
 }
 
@@ -56,22 +60,40 @@ h2 {
 /* ------ page de connexion -------*/
 
 .formulaire {
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	label {
+		text-align: left;
+	
+	}
+}
+
+.middlebutton {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-	padding: 30px;
-}
+		
+	
+	height: 75px;
+	
+	}
+	
+.souvenir{
+	display: flex;
+	justify-content: center;
+}	
 
-.middlebutton a {
-	width: 80%;
-    margin: auto;
-    display: grid;
-    grid-template-columns: 250px auto auto 250px;
-    grid-gap: 10px;
-    gap: 1.5em;
-    padding: 0 2em;
-    
+.lien-mdp {
+	float: right;
+	
+	
 }
 
 .downbutton {
@@ -79,9 +101,17 @@ h2 {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-	padding: 30px;	
+	border-bottom-width: 100px;
+	padding:20px;
+	margin: 20px;
 }
 
+.button{
+	padding: 30px;
+	height: 70px;
+	background-color: var(--theme-principal);
+	
+}
 
 
 

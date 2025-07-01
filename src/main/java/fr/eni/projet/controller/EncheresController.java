@@ -25,7 +25,7 @@ public class EncheresController {
 		return "inscription";
 	}
 	
-
+ 
 
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
