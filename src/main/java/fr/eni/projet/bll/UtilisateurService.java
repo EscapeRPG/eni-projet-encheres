@@ -23,7 +23,7 @@ public interface UtilisateurService {
      * Met à jour les informations d'un utilisateur existant.
      * @param idUtilisateur l'identifiant unique de l'utilisateur à modifier.
      */
-    void modifierUtilisatuer(long idUtilisateur);
+    void modifierUtilisateur(long idUtilisateur);
 
     /**
      * Supprime un utilisateur du système.
