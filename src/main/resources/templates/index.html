@@ -2,6 +2,7 @@
 <html>
 <head th:insert="~{fragments/fragment-head :: head}">
 <title>ENI Enchères</title>
+<link rel="stylesheet" data-th-href="@{/css/general.css}">
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
@@ -9,6 +10,7 @@
 		<h2>Liste des enchères</h2>
 		
 		<!--
+		<div class="barre-filtre">
 		<form th:action="@{/encheres/rechercher}" method="post">
 			<label for="filtres">Filtres :</label>
 			<input type="text" th:field="*{}" id="filtres" placeholder="Le nom de l'article contient">
@@ -19,7 +21,7 @@
 			</select>
 			<button type="submit">Rechercher</button>
 		</form>
-		
+		</div>
 		<ul class="articles-grid">
 			<li th:each="{e : ${encheres}">
 				<div class="item-container">
@@ -31,11 +33,11 @@
 			</li>
 		</ul>
 		-->
-		
+		<div class="barre-filtre-f">
 		<form th:action="@{/encheres/rechercher}" method="post">
 			<label for="filtres">Filtres :</label>
 			<input type="text" name="filtrer" id="filtres" placeholder="Le nom de l'article contient">
-			
+		
 			<label for="categories">Catégorie :</label>
 			<select name="categories" id="categories">
 				<option value="1">Toutes</option>
@@ -46,7 +48,7 @@
 			</select>
 			<button type="submit">Rechercher</button>
 		</form>
-		
+		</div>
 		<!--
 		<ul class="articles-grid">
 			<li th:each="{e : ${encheres}">

@@ -18,6 +18,9 @@ public class EncheresController {
 		return "index";
 	}
 
-	
 
+	@GetMapping("/connexion")
+	public String gotoConnexion() {
+		return "/connexion";
+	}
 }
