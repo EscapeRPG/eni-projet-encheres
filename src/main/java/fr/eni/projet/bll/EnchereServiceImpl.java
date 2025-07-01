@@ -1,6 +1,9 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
+import fr.eni.projet.dal.ArticleDAO;
+import fr.eni.projet.dal.EnchereDAO;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,20 +11,34 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService{
 
+	private ArticleDAO articleDAO;
+	private EnchereDAO enchereDAO;
 
     @Override
     public List<Article> consulterAllVentes() {
-        return List.of();
+    	
+    	List<Article> articles = this.articleDAO.afficherArticles();
+    	
+        return articles;
     }
 
     @Override
-    public Article encherir(long idArticle, long idUtilisateur, int value) {
-        return null;
+    public void encherir(long idArticle, long idUtilisateur, int value) {
+    	
+    	if(value > enchereDAO.afficherEnchere(idArticle).getMontantEnchere) {
+    		this.enchereDAO.creerEnchere();
+    	}
+    	else {
+    		System.out.println("Saisir une enchère plus élévée");
+    	
+    	}
+     
     }
 
     @Override
     public Article detailVente(long idArticle) {
-        return null;
+    	
+        return this.articleDAO.afficherArticle(idArticle);
     }
 
     @Override
