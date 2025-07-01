@@ -19,10 +19,16 @@ public class EncheresController {
 		return "index";
 	}
 
+
 	@GetMapping("/inscription")
 	public String inscription() {
 		return "inscription";
 	}
 	
 
+
+	@GetMapping("/connexion")
+	public String gotoConnexion() {
+		return "/connexion";
+	}
 }

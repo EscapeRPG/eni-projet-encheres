@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head th:insert="~{fragments/fragment-head :: head}">
+<title>ENI Connexion</title>
+<link rel="stylesheet" data-th-href="@{/css/general.css}">
+</head>
+<body>
+	<header th:replace="~{fragments/fragment-header :: header}"></header>
+
+	<h2>Connexion</h2>
+	<div class="formulaire">
+        <form>
+          <label for="name">Identifiant :</label><br />
+          	<input type="text" id="name" name="name" placeholder="votre identifiant" minlength="3"/><br />
+            
+          <label for="password">Mot de passe :</label><br />
+          	<input type="password" id="password" name="password" value="votre mot de passe"/><br />
+    </div>
+	<div class="middlebutton">
+            <input type="submit" value="Connexion"/> 
+            <input type="checkbox" id="coding" name="interest" value="coding" />
+    			<label for="coding">Se souvenir de moi</label>
+                 
+    </div>
+    	<a th:href="@{/inscription}">Mot de passe oublié</a>  
+    <div class="downbutton">
+            <input type="submit" value="Création du compte" />            
+    </div>
+
+</body>
+</html>
