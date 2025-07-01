@@ -42,7 +42,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     }
 
     @Override
-    public Utilisateur connecterCompte(String pseudo) {
+    public Utilisateur connecterCompte(String pseudo, String motDePasse) {
         String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);

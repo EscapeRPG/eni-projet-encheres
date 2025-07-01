@@ -22,6 +22,12 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
+	public Utilisateur connecterUtilisateur(String pseudo, String motDePasse) throws BusinessException {
+		
+    	return this.utilisateurDAO.connecterCompte(pseudo, motDePasse);
+		
+	}
+    @Override
     public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException{
 
         BusinessException be = new BusinessException();
@@ -64,6 +70,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             return false;
         }
     }
+
+	
 
 }
 

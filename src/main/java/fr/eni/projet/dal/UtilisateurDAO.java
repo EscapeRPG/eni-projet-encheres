@@ -7,7 +7,7 @@ import java.util.List;
 public interface UtilisateurDAO {
 
     void creerCompte(Utilisateur u);
-    Utilisateur connecterCompte(String pseudo);
+    Utilisateur connecterCompte(String pseudo, String motDePasse);
     String motDePasseOublie(String email);
     void supprimerCompte(long idUtilisateur);
     int consulterNbreCredit(long idUtilisateur);
