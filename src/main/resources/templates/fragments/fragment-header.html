@@ -7,24 +7,24 @@
 		<ul>
 			<!-- Les liens ne sont visibles que si un membre n'est pas connecté présent -->
 			<!--
-			<li data-th-if="${membreEnSession eq null}">
+			<li th:if="${membreEnSession eq null}">
 				<a th:href="@{/inscription}">S'inscrire</a>
 			</li>
-			<li data-th-if="${membreEnSession eq null}">
+			<li th:if="${membreEnSession eq null}">
 				<a th:href="@{/connexion}">Se connecter</a>
 			</li>
 			<!-- Les liens ne sont visibles que si un membre est connecté -->
 			<!--
-			<li data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
 				<a th:href="@{/encheres}">Enchères</a>
 			</li>
-			<li data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
 				<a th:href="@{/vente}">Vendre un objet</a>
 			</li>
-			<li data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
 				<a th:href="@{/profil(id=${membre.idUtilisateur})}"></a>
 			</li>
-			<li data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
+			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
 				<a th:href="@{/deconnexion}">Déconnexion</a>
 			</li>
 			-->

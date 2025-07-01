@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
 
-	//private UtilisateurDAO utilisateurDAO;
+	private UtilisateurDAO utilisateurDAO;
 
     @Override
     public void creerUtilisateur(Utilisateur utilisateur) {
@@ -27,3 +27,4 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     public void supprimerUtilisateur(long idUtlisateur) {
     }
 }
+
