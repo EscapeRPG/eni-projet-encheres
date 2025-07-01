@@ -35,8 +35,7 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/inscription")
-	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
-			Model model) {
+	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult) {
 		try {
 			this.utilisateurService.creerUtilisateur(utilisateur);
 		} catch (BusinessException e) {

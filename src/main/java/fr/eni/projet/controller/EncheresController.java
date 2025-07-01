@@ -21,17 +21,6 @@ public class EncheresController {
 	public String goToIndex() {
 		return "index";
 	}
-
-	@GetMapping("/inscription")
-	public String inscription(Model model) {
-		
-		return "inscription";
-	}
-	
-	@GetMapping("/connexion")
-	public String gotoConnexion() {
-		return "/connexion";
-	}
 	
 	@GetMapping("/modifierProfil")
 	public String goTomodifierProfil() {
