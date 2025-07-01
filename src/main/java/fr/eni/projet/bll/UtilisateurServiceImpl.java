@@ -1,7 +1,9 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Utilisateur;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UtilisateurServiceImpl implements UtilisateurService{
 
 
@@ -21,7 +23,6 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
-    public Utilisateur supprimerUtilisateur(long idUtlisateur) {
-        return null;
+    public void supprimerUtilisateur(long idUtlisateur) {
     }
 }
