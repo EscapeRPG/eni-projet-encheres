@@ -31,5 +31,7 @@ public interface UtilisateurService {
      * @param idUtilisateur l'identifiant unique de l'utilisateur à supprimer.
      */
     void supprimerUtilisateur (long idUtilisateur) throws BusinessException;
+    
+    Utilisateur connecterUtilisateur (String pseudo, String motDePasse) throws BusinessException;
 
 }
