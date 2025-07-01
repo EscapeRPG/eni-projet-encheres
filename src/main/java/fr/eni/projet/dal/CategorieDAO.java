@@ -1,5 +1,14 @@
 package fr.eni.projet.dal;
 
+import fr.eni.projet.bo.Categorie;
+
+import java.util.List;
+
 public interface CategorieDAO {
+
+    List<Categorie> listerCategorie();
+    Categorie afficherCategorieArticle(long idArticle);
+    void ajouterCategorie(Categorie categorie);
+    void SupprimerCategorie(long idCategorie);
 
 }
