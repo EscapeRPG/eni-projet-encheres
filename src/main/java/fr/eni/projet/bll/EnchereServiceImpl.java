@@ -8,10 +8,13 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService{
 
+	private ArticleDAO articleDAO;
 
     @Override
     public List<Article> consulterAllVentes() {
-        return List.of();
+    	
+    	List<Article> articles = this.articleDAO.findAll();
+        return articles;
     }
 
     @Override
