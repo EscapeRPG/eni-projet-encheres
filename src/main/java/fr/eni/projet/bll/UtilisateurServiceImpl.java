@@ -1,6 +1,8 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.dal.UtilisateurDAO;
+
 import org.springframework.stereotype.Service;
 
 @Service
