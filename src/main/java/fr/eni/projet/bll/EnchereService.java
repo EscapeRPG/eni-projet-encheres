@@ -17,9 +17,8 @@ public interface EnchereService {
      * @param idArticle     l'identifiant de l'article concerné par l'enchère.
      * @param idUtilisateur l'identifiant de l'utilisateur plaçant l'enchère.
      * @param value         le montant proposé pour l'enchère.
-     * @return l'objet {@link Article} mis à jour avec la nouvelle enchère.
      */
-    Article encherir(long idArticle, long idUtilisateur, int value);
+    void encherir(long idArticle, long idUtilisateur, int value);
 
     /**
      * Récupère les détails complets d'un article en vente.
