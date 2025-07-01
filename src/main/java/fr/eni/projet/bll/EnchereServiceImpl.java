@@ -44,5 +44,6 @@ public class EnchereServiceImpl implements EnchereService{
     @Override
     public void remporterVente(long idArticle) {
 
+
     }
 }
