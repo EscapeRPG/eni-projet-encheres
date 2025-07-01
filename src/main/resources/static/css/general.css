@@ -2,7 +2,9 @@
 
 /*Page d'index*/
 
-
+:root {
+	--theme-principal: rgb(70, 180, 230);
+}
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,7 +17,7 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: rgb(70, 180, 230);		
+	background-color: var(--theme-principal);		
 	padding: 20px 50px;			
 }
 
