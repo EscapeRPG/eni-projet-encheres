@@ -19,6 +19,10 @@ public class Article {
     private int miseAPrix;
     private int prixVente;
     private String etatVente;
+    
+    public Article() {
+		// TODO Auto-generated constructor stub
+	}
 
     public Article(Utilisateur utilisateur, Categorie categorie, Retrait retrait,
                    long idArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
