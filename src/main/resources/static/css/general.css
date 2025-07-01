@@ -78,10 +78,7 @@ h2 {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-		
-	
-	height: 75px;
-	
+	height: 75px;	
 	}
 	
 .souvenir{
@@ -90,9 +87,7 @@ h2 {
 }	
 
 .lien-mdp {
-	float: right;
-	
-	
+	float: right;	
 }
 
 .downbutton {
@@ -109,11 +104,27 @@ h2 {
 	padding: 30px;
 	height: 70px;
 	background-color: var(--theme-principal);
-	
 }
 
+.form-inscription{
+	display: flex ;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	width: 60%;
+	margin: auto;
+	width: 200px;
+}
 
-
+.form-buttons{
+	display: flex;
+	justify-content:space-around;
+	padding: 20px;
+	margin: 50px;
+	height:70;
+}
 
 
 
