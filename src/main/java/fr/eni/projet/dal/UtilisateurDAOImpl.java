@@ -46,7 +46,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
-        return  jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+        Utilisateur utilisateurBDD = jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+        
+        if(utilisateurBDD.getMotDePasse().equals(motDePasse)) {
+        	return utilisateurBDD;
+        }
+        
+        return null;
     }
 
     @Override
@@ -109,18 +115,36 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
         int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
-        if (i == 0) {
-            return false;
-        }
-        else if (i == 1) {
-            return true;
-        }
-        else
-        {
-            System.out.println("Erreur plus de 1 utilisateur présent");
-            return true;
-        }
+        
+        return i != 0;
     }
+    
+    @Override
+    public boolean isUtilisateurInBDD(String pseudo) {
+        String sql = "select count(*) from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        
+        return i != 0;
+    }
+
+	@Override
+	public void updateCompte(Utilisateur u) {
+		String sql = "update utilisateur set pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email,"
+				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville :ville";
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("pseudo", u.getPseudo());
+		map.addValue("nom", u.getNom());
+		map.addValue("prenom", u.getPrenom());
+		map.addValue("email", u.getEmail());
+		map.addValue("telephone", u.getTelephone());
+		map.addValue("rue", u.getRue());
+		map.addValue("prenom", u.getPrenom());
+		map.addValue("codePostal", u.getCodePostal());
+		map.addValue("ville", u.getVille());
+		
+	}
 
 
 }

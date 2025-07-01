@@ -7,15 +7,22 @@ import java.util.List;
 public interface UtilisateurDAO {
 
     void creerCompte(Utilisateur u);
-    Utilisateur connecterCompte(String pseudo, String motDePasse);
-    String motDePasseOublie(String email);
     void supprimerCompte(long idUtilisateur);
-    int consulterNbreCredit(long idUtilisateur);
+    void desactiverCompte(long idUtilisateur);
+    void updateCompte(Utilisateur u);
+    
+    Utilisateur connecterCompte(String pseudo, String motDePasse);
     Utilisateur consulterCompte(long idUtilisateur);
     Utilisateur consulterCompte(String pseudo);
+    
     List<Utilisateur> afficherComptes();
-    void desactiverCompte(long idUtilisateur);
+    
+    String motDePasseOublie(String email);
+    
+    int consulterNbreCredit(long idUtilisateur);
+    
     boolean isUtilisateurInBDD(long idUtilisateur);
+    boolean isUtilisateurInBDD(String pseudo);
 
 
 }
