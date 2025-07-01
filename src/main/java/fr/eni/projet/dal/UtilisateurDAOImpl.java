@@ -55,22 +55,32 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     @Override
     public void supprimerCompte(String idUtilisateur) {
         String sql = "delete from utilisateur where email = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        jdb.update(sql,mapSqlParameterSource);
 
     }
 
     @Override
     public int consulterNbreCredit(String idUtilisateur) {
-        return 0;
+        String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        return jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
     }
 
     @Override
     public Utilisateur consulterCompte(String idUtilisateur) {
-        return null;
+        String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
     }
 
     @Override
     public List<Utilisateur> afficherComptes() {
-        return List.of();
+        String sql = "select * from utilisateur";
+        return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
