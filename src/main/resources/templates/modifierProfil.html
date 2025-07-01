@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ENI Enchères - Modifier Profil</title>
+	<link rel="stylesheet" data-th-href="@{/css/general.css}">
+</head>
+<body>
+	<header>
+		<h1 id="nav-title">
+			<a th:href="@{/}">ENI-Enchères</a>
+		</h1>
+	</header>
+	<main>
+		<h2>Mon profil</h2>
+		
+		<form th:action="@{/modifierProfil}" method="post">
+			<div class="form-modifier-profil">
+				<label for="pseudo">Pseudo :</label>
+				<input type="text" name="pseudo" id="pseudo">
+				
+				<label for="nom">Nom :</label>
+				<input type="text" name="nom" id="nom">
+				
+				<label for="prenom">Prénom :</label>
+				<input type="text" name="prenom" id="prenom">
+				
+				<label for="email">Email :</label>
+				<input type="email" name="email" id="email">
+				
+				<label for="telephone">Téléphone :</label>
+				<input type="text" name="telephone" id="telephone">
+				
+				<label for="rue">Rue :</label>
+				<input type="text" name="rue" id="rue">
+				
+				<label for="codePostal">Code postal :</label>
+				<input type="text" name="codePostal" id="codePostal">
+				
+				<label for="ville">Ville :</label>
+				<input type="text" name="ville" id="ville">
+				
+				<label for="password1">Mot de passe :</label>
+				<input type="password" name="password1" id="password1">
+				
+				<label for="password2">Confirmation :</label>
+				<input type="password" name="password2" id="password2">
+			</div>
+			
+			<div class="credit">
+				<label for="text">Crédit : </label>
+			</div>
+			
+			<div class="form-buttons">
+				<button @href="@{/profil}">Enregistrer</button>
+				<button @href="@{/suppression}">Supprimer mon compte</button>
+				<button @href="@{/inscription}">Retour</button>
+				
+			</div>
+		</form>
+	</main>
+</body>
+</html>

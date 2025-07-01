@@ -32,4 +32,16 @@ public class EncheresController {
 	public String gotoConnexion() {
 		return "/connexion";
 	}
+	
+	@GetMapping("/modifierProfil")
+	public String goTomodifierProfil() {
+		return "modifierProfil";
+	}
+	
+	@GetMapping("/profil")
+	public String goToProfil() {
+		return "profil";
+	}
+	
 }
+
