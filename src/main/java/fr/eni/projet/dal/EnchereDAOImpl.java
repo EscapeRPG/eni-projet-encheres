@@ -23,6 +23,7 @@ public class EnchereDAOImpl implements EnchereDAO{
         mapSqlParameterSource.addValue("montantEnchere", enchere.getMontantEnchere());
         mapSqlParameterSource.addValue("idArticle", enchere.getEnchereArticle().getIdArticle());
         mapSqlParameterSource.addValue("idUtilisateur", enchere.getUtilisateur().getIdUtilisateur());
+
         jdb.update(sql, mapSqlParameterSource);
     }
 
@@ -34,6 +35,9 @@ public class EnchereDAOImpl implements EnchereDAO{
 
     @Override
     public Enchere afficherEnchere(long idArticle) {
-        return null;
+        String sql = "select * from enchere where idArticle = :idArticle";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idArticle", idArticle);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
     }
 }
