@@ -19,7 +19,7 @@ public class StringToUtilisateurConverter implements Converter<String, Utilisate
 	@Override
 	public Utilisateur convert(String idUtilisateur) {
 		try {
-			return this.utilisateurService.afficherUtilisateur(Long.parseLong(idUtilisateur));
+			return this.utilisateurService.afficherProfil(Long.parseLong(idUtilisateur));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (BusinessException e) {

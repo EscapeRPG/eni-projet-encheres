@@ -75,7 +75,11 @@ class ArticleMapper implements RowMapper<Article>
 
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setIdUtilisateur(rs.getLong("idUtilisateur"));
-
+        
+        Retrait retrait = new Retrait();
+        retrait.setCodePostal(rs.getString("codePostal"));
+        retrait.setRue(rs.getString("rue"));
+        retrait.setVille(rs.getString("ville"));
 
         Article article = new Article();
         article.setIdArticle(rs.getLong("idArticle"));
@@ -87,6 +91,7 @@ class ArticleMapper implements RowMapper<Article>
         article.setPrixVente(rs.getInt("prixVente"));
         article.setCategorie(categorie);
         article.setUtilisateur(utilisateur);
+        article.setRetrait(retrait);
         return article;
     }
 }

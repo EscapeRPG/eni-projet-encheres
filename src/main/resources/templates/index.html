@@ -102,10 +102,12 @@
 					<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
 					<p th:text="${a.nomArticle}"></p>
 					<p th:text="${a.descriptions}"></p>
-					<p>Vendeur : <span th:text="${a.utilisateur.pseudo}"></span></p>
+					<p th:text="'Vendeur : ' + ${a.utilisateur.pseudo}"></p>
 				</div>
 			</li>
 		</ul>
+		
+		<a th:href="@{/acquisition(idArticle=1)}">test</a>
 	
 	</main>
 	<script src="/scripts/filtres-connecte.js"></script>
