@@ -33,11 +33,9 @@ public class EnchereServiceImpl implements EnchereService{
 	@Override
     public List<Article> consulterAllVentes() {
     	List<Article> articles = this.articleDAO.afficherArticles();
+    	
     	for (Article article : articles) {
-    		Utilisateur utilisateur = utilisateurDAO.consulterCompte(1);
-//			article.setCategorie(this.categorieDAO.afficherCategorieArticle(article.getIdArticle()).getCategorie());
-//			article.setRetrait(this.retraitDAO.afficherRetrait(article.getIdArticle()));
-			article.setUtilisateur(utilisateur);
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
 		}
     	
         return articles;

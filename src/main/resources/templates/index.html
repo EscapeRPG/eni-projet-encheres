@@ -97,12 +97,12 @@
 		
 		
 		<ul class="articles">
-			<li th:each="{a : ${articles}">
+			<li th:each="a : ${articles}">
 				<div class="item-container">
-					<!-- <img th:src="${a.src}" alt="${e.nomArticle}"> -->
+					<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
 					<p th:text="${a.nomArticle}"></p>
 					<p th:text="${a.descriptions}"></p>
-					<!-- <p th:text="Vendeur : ${a.utilisateur}"></p> -->
+					<p th:text="Vendeur : ${a.utilisateur}"></p>
 				</div>
 			</li>
 		</ul>

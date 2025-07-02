@@ -50,7 +50,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     @Override
     public List<Article> afficherArticles() {
         String sql = "select * from article";
-        return jdb.query(sql,new BeanPropertyRowMapper<>(Article.class));
+        return jdb.query(sql,new ArticleMapper());
     }
 
     @Override
