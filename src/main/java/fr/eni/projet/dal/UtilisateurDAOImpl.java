@@ -6,11 +6,12 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
+import org.springframework.stereotype.Repository;
 
 import java.security.Key;
 import java.util.List;
 
+@Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     private final NamedParameterJdbcTemplate jdb;

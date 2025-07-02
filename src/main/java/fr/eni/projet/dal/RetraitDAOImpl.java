@@ -3,7 +3,9 @@ package fr.eni.projet.dal;
 import fr.eni.projet.bo.Retrait;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class RetraitDAOImpl implements RetraitDAO{
 
 

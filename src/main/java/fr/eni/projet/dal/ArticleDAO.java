@@ -8,7 +8,7 @@ public interface ArticleDAO {
 
     void ajouterArticle(Article article);
     void supprimerArticle(long idArticle);
-    List<Article> afficherArticle();
+    List<Article> afficherArticles();
     Article afficherArticle(long idArticle);
 
 }

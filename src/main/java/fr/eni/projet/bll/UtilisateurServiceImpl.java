@@ -10,6 +10,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	private UtilisateurDAO utilisateurDAO;
 
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
+		this.utilisateurDAO = utilisateurDAO;
+	}
+
 	@Override
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		this.utilisateurDAO.creerCompte(utilisateur);

@@ -95,18 +95,18 @@
 				<button type="submit">Rechercher</button>
 			</form>
 		
-		<!--
+		
 		<ul class="articles">
-			<li th:each="{e : ${encheres}">
+			<li th:each="{a : ${articles}">
 				<div class="item-container">
-					<img th:src="${e.src}" alt="${e.nomArticle}">
-					<p th:text="${e.nomArticle}"></p>
-					<p th:text="${e.description}"></p>
-					<p th:text="Vendeur : ${e.utilisateur}"></p>
+					<!-- <img th:src="${a.src}" alt="${e.nomArticle}"> -->
+					<p th:text="${a.nomArticle}"></p>
+					<p th:text="${a.description}"></p>
+					<!-- <p th:text="Vendeur : ${a.utilisateur}"></p> -->
 				</div>
 			</li>
 		</ul>
-		-->
+	
 	</main>
 	<script src="/scripts/filtres-connecte.js"></script>
 </body>
