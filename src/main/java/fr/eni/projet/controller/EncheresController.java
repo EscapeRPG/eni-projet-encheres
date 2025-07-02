@@ -47,11 +47,13 @@ public class EncheresController {
 	@GetMapping("/profil")
 	public String goToProfil() {
 		return "profil";
-	}
+	} 
 	
-	@GetMapping("/Encherir")
-	public String goToEncherir() {
-		return goToEncherir(); 
+	@GetMapping("/encherir")
+	public String goToEncherir(@RequestParam (name="idArticle")long idArticle, Model model) {
+		Article articleEncheri = enchereService.encherir(idArticle, idUtilisateur, montantEnchere);
+		model.addAttribute("article",articleEncheri);	
+		return "encherir"; 
 	}
 }
 
