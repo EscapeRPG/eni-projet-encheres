@@ -1,13 +1,18 @@
 package fr.eni.projet.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
+import fr.eni.projet.bo.Article;
 
 
 
+@SessionAttributes({ "utilisateurEnSession" })
 @Controller
 public class EncheresController {
 	
@@ -18,19 +23,10 @@ public class EncheresController {
 	}
 	
 	@GetMapping("/")
-	public String goToIndex() {
+	public String goToIndex(Model model) {
+		List<Article> listeArticles = enchereService.consulterAllVentes();
+		model.addAttribute("articles", listeArticles);
 		return "index";
-	}
-
-	@GetMapping("/inscription")
-	public String inscription(Model model) {
-		
-		return "inscription";
-	}
-	
-	@GetMapping("/connexion")
-	public String gotoConnexion() {
-		return "/connexion";
 	}
 	
 	@GetMapping("/modifierProfil")

@@ -14,7 +14,12 @@ public class EnchereServiceImpl implements EnchereService{
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 
-    @Override
+    public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO) {
+		this.articleDAO = articleDAO;
+		this.enchereDAO = enchereDAO;
+	}
+
+	@Override
     public List<Article> consulterAllVentes() {
     	
     	List<Article> articles = this.articleDAO.afficherArticles();

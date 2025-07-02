@@ -13,7 +13,6 @@ import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -35,8 +34,7 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/inscription")
-	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
-			Model model) {
+	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult) {
 		try {
 			this.utilisateurService.creerUtilisateur(utilisateur);
 		} catch (BusinessException e) {
