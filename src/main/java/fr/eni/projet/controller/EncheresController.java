@@ -39,5 +39,9 @@ public class EncheresController {
 		return "profil";
 	}
 	
+	@GetMapping("/Encherir")
+	public String goToEncherir() {
+		return goToEncherir(); 
+	}
 }
 
