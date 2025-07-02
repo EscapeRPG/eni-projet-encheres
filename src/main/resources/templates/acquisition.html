@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<head th:insert="~{fragments/fragment-head :: head}">
+<title>Acquisition</title>
+</head>
+<body>
+	<header>
+		<h1 id="nav-title">
+			<a th:href="@{/}">ENI-Enchères</a>
+		</h1>
+	</header>
+		<main>
+		
+		<h2>Vous avez remporté l'enchère</h2>
+		
+		<div class="item-container">
+			<!-- <img th:src="${a.src}" alt="${e.nomArticle}"> -->
+			<p th:text="${article.nomArticle}"></p>
+			<p th:text="${article.descriptions}"></p>
+		</div>
+		<p>Meilleure offre :</p>
+		<p th:text ="${article.miseAPrix}">Mise à prix :</p><br>
+		
+		
+		<div class="item-container">
+			<p>Retrait<p>
+			<p th:text="${article.retrait.rue}"></p>
+			<p th:text="${article.retrait.codePostal}"></p>
+			<p th:text="${article.retrait.ville}"></p><br>
+			<p th:text="'Vendeur : ' +${article.utilisateur.pseudo}"></p>
+			<p th:text="'Téléphone : ' +${article.utilisateur.telephone}"></p>
+		</div>
+		
+		
+		</main>
+		
+		
+</body>
+</html>

@@ -20,7 +20,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public Utilisateur afficherUtilisateur(long idUtilisateur) {
+	public Utilisateur afficherProfil(long idUtilisateur) {
 
 		return this.utilisateurDAO.consulterCompte(idUtilisateur);
 	}
@@ -43,9 +43,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-
+	
 	@Override
-	public void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException {
+	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
 
 		BusinessException be = new BusinessException();
 		
@@ -90,5 +90,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
+
+	
 
 }

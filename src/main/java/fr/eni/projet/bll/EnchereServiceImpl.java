@@ -1,8 +1,12 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
+import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.ArticleDAO;
+import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
+import fr.eni.projet.dal.RetraitDAO;
+import fr.eni.projet.dal.UtilisateurDAO;
 
 import org.springframework.stereotype.Service;
 
@@ -11,25 +15,28 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService{
 
-	
+	private ArticleDAO articleDAO;
+	private EnchereDAO enchereDAO;
+	private CategorieDAO categorieDAO;
+	private RetraitDAO retraitDAO;
+	private UtilisateurDAO utilisateurDAO;
 
-
-
-	@Override
-	public Article detailVente(long idArticle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-    public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO) {
+	public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO,
+			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO) {
 		this.articleDAO = articleDAO;
 		this.enchereDAO = enchereDAO;
+		this.categorieDAO = categorieDAO;
+		this.retraitDAO = retraitDAO;
+		this.utilisateurDAO = utilisateurDAO;
 	}
 
 	@Override
     public List<Article> consulterAllVentes() {
-    	
     	List<Article> articles = this.articleDAO.afficherArticles();
+    	
+    	for (Article article : articles) {
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+		}
     	
         return articles;
     }
@@ -46,7 +53,12 @@ public class EnchereServiceImpl implements EnchereService{
     	}
      
     }
-
+  
+    @Override
+    public Article detailVente(long idArticle) {
+    	
+        return this.articleDAO.afficherArticle(idArticle);
+    }
 
 	@Override
 	public void remporterVente(long idArticle) {

@@ -18,13 +18,13 @@ public interface UtilisateurService {
      * @param idUtilisateur l'identifiant unique de l'utilisateur à afficher.
      * @return l'objet {@link Utilisateur} correspondant à l'identifiant fourni.
      */
-    Utilisateur afficherUtilisateur(long idUtilisateur) throws BusinessException;
+    Utilisateur afficherProfil(long idUtilisateur) throws BusinessException;
 
     /**
      * Met à jour les informations d'un utilisateur existant.
      * @param utilisateur l'identifiant unique de l'utilisateur à modifier.
      */
-    void modifierUtilisateur(Utilisateur utilisateur) throws BusinessException;
+    void modifierProfil(Utilisateur utilisateur) throws BusinessException;
 
     /**
      * Supprime un utilisateur du système.
@@ -33,5 +33,6 @@ public interface UtilisateurService {
     void supprimerUtilisateur (long idUtilisateur) throws BusinessException;
     
     Utilisateur connecterUtilisateur (String pseudo, String motDePasse) throws BusinessException;
+    
 
 }

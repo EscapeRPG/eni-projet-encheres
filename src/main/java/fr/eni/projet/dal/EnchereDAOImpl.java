@@ -42,4 +42,12 @@ public class EnchereDAOImpl implements EnchereDAO{
         mapSqlParameterSource.addValue("idArticle", idArticle);
         return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
     }
+    
+    @Override
+    public Enchere afficherMaxEnchere(long idArticle) {
+        String sql = "select MAX(montantEnchere) from enchere where idArticle = :idArticle";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idArticle", idArticle);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
+    }
 }

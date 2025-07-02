@@ -1,5 +1,6 @@
 package fr.eni.projet.dal;
 
+import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 
 import java.util.List;
