@@ -4,9 +4,11 @@ import fr.eni.projet.bo.Article;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
     private final NamedParameterJdbcTemplate jdb;
@@ -40,7 +42,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     }
 
     @Override
-    public List<Article> afficherArticle() {
+    public List<Article> afficherArticles() {
         String sql = "select * from article";
         return jdb.query(sql,new BeanPropertyRowMapper<>(Article.class));
     }
