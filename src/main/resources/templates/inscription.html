@@ -46,11 +46,18 @@
 				<label for="password2">Confirmation :</label>
 				<input type="password2" id="inputPassword2" th:field="*{password2}">
 			</div>
+
 			<div class="form-buttons">
 				<button type="submit">Créer</button>
 				<a class="button" th:href="@{/connexion}">Annuler</a>
 			</div>
 			</ul>
+
+			<button type="submit">Créer</button>
+		</form>
+		<form th:action="@{/}" method="get">
+			<button type="submit" th:href="@{/}">Annuler</button>
+
 		</form>
 	</main>
 </body>

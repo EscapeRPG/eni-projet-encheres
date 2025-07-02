@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
-import fr.eni.projet.bo.Enchere;
-import fr.eni.projet.bo.Retrait;
 
 
 

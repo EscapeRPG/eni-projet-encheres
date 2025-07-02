@@ -16,10 +16,22 @@ public class EnchereDAOImpl implements EnchereDAO{
         this.jdb = jdb;
     }
 
+
     @Override
     public void creerEnchere(Enchere enchere) {
-        String sql ="insert into enchere(dateEnchere,montantEnchere,idArticle,idUtilisateur) "
-                + "values (:dateEnchere, :montantEnchere, :idArticle, :idUtilisateur)";
+        String sql = "merge into enchere as vente " +
+                "using (select :dateEnchere as dateEnchere, :montantEnchere as montantEnchere, " +
+                ":idArticle as idArticle, :idUtilisateur as idUtilisateur) as source " +
+                "on vente.idArticle = source.idArticle " +
+                "when matched then " +
+                "update set dateEnchere = source.dateEnchere, " +
+                "montantEnchere = source.montantEnchere, " +
+                "idArticle = source.idArticle, " +
+                "idUtilisateur = source.idUtilisateur " +
+                "when not matched then  " +
+                "insert (dateEnchere,montantEnchere,idArticle,idUtilisateur) " +
+                "values (:dateEnchere, :montantEnchere, :idArticle, :idUtilisateur);";
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("dateEnchere", enchere.getDateEnchere());
         mapSqlParameterSource.addValue("montantEnchere", enchere.getMontantEnchere());
@@ -28,6 +40,9 @@ public class EnchereDAOImpl implements EnchereDAO{
 
         jdb.update(sql, mapSqlParameterSource);
     }
+
+
+
 
     @Override
     public List<Enchere> consulterEnchere() {
@@ -43,11 +58,5 @@ public class EnchereDAOImpl implements EnchereDAO{
         return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
     }
     
-    @Override
-    public Enchere afficherMaxEnchere(long idArticle) {
-        String sql = "select MAX(montantEnchere) from enchere where idArticle = :idArticle";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
-    }
+
 }

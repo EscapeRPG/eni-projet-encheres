@@ -1,12 +1,9 @@
 package fr.eni.projet.dal;
 
-import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class CategorieDAOImpl implements CategorieDAO{
         String sql = "select * from article where idArticle = :idArticle";
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql, paramSource, Categorie.class);
+        return jdb.queryForObject(sql, paramSource, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
     @Override
