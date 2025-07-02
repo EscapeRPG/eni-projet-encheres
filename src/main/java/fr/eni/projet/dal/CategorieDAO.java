@@ -8,7 +8,7 @@ import java.util.List;
 public interface CategorieDAO {
 
     List<Categorie> listerCategorie();
-    Article afficherCategorieArticle(long idArticle);
+    Categorie afficherCategorieArticle(long idArticle);
     void ajouterCategorie(Categorie categorie);
     void SupprimerCategorie(long idCategorie);
 
