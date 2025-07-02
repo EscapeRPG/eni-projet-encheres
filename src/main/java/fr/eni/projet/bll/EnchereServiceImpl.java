@@ -25,8 +25,8 @@ public class EnchereServiceImpl implements EnchereService{
     @Override
     public void encherir(long idArticle, long idUtilisateur, int value) {
     	
-    	if(value > enchereDAO.afficherEnchere(idArticle).getMontantEnchere) {
-    		this.enchereDAO.creerEnchere();
+    	if(value > enchereDAO.afficherEnchere(idArticle).getMontantEnchere()) {
+    		this.enchereDAO.creerEnchere(enchereDAO.afficherEnchere(idArticle));
     	}
     	else {
     		System.out.println("Saisir une enchère plus élévée");
