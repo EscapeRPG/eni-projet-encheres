@@ -27,7 +27,7 @@ public class CategorieDAOImpl implements CategorieDAO{
         String sql = "select * from article where idArticle = :idArticle";
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql, paramSource, Categorie.class);
+        return jdb.queryForObject(sql, paramSource, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
     @Override

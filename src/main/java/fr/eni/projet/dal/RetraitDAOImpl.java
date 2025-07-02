@@ -56,7 +56,7 @@ class RetraitMapper implements RowMapper<Retrait>
         retrait.setRue(rs.getString("rue"));
         retrait.setCodePostal(rs.getString("codePostal"));
         retrait.setVille(rs.getString("ville"));
-        retrait.getArticle().setIdArticle(rs.getLong("idArticle"));
+        retrait.setArticle(article);
 
         return retrait;
     }
