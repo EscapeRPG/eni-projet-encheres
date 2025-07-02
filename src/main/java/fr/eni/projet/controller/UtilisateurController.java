@@ -50,6 +50,15 @@ public class UtilisateurController {
 	public String gotoConnexion() {
 		return "/connexion";
 	}
+	
+	@PostMapping("/annulerVente")
+	public String annulerVente() {
+		
+		// Methode : annulerVente
+	   
+	    return "redirect:/profil";
+	}
+	
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@Valid @RequestParam(name = "pseudo") String pseudo,
