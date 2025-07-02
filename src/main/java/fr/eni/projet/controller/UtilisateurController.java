@@ -62,8 +62,8 @@ public class UtilisateurController {
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
-			@RequestParam(name = "motDePasse") String motDePasse, BindingResult bindingResult,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+			@RequestParam(name = "motDePasse") String motDePasse,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, BindingResult bindingResult) {
 		try {
 			Utilisateur utilisateurInBDD = this.utilisateurService.connecterUtilisateur(pseudo, motDePasse);
 
@@ -101,7 +101,7 @@ public class UtilisateurController {
 			});
 		}
 
-		return "redirect:/index";
+		return "redirect:/";
 	}
 
 	@ModelAttribute("utilisateurEnSession")
