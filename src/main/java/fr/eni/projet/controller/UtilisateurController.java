@@ -34,7 +34,7 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/inscription")
-	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult) {
+	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, Model model) {
 		try {
 			this.utilisateurService.creerUtilisateur(utilisateur);
 		} catch (BusinessException e) {
@@ -43,17 +43,12 @@ public class UtilisateurController {
 				bindingResult.addError(error);
 			});
 		}
-		return "redirect:/index";
+		if (bindingResult.hasErrors()) {
+			return "inscription";
+		}
+		return "redirect:/index"; 
 	}
-<<<<<<< HEAD
- 
-	@GetMapping("/connexion")
-	public String gotoConnexion() {
-		return "connexion"; 
-	}
-=======
->>>>>>> 975f03237e223b2ba18f00271e191cec8947e154
-	
+
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
 		

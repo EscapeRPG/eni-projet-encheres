@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/*Page d'index*/
+
+:root {
+	--theme-principal: rgb(70, 180, 230);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--theme-principal);		
+	padding: 20px 50px;				
+}
+
+header a {
+	color: white;
+	text-decoration: none;
+	margin: 10px;	
+}
+
+#nav-title {
+	margin-right: auto;
+	font-size: 1.1em;	
+}
+
+h2 {	
+	text-align: center;
+}
+
+.form-inscription {
+	display: flex;
+    align-items: center; /* aligne verticalement au milieu */
+    gap: 10px; /* espace entre le label et le champ */
+    margin: 10px 0;
+    align-items: center;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
+	margin: auto;
+	label {
+		text-align: left;
+	}
+		
+}
+
+.form-buttons {
+	margin-block-end: 30px;
+	font-size: xxx-large;
+}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+	
