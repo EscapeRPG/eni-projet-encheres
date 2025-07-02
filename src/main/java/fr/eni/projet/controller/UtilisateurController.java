@@ -45,7 +45,7 @@ public class UtilisateurController {
 		}
 		return "index";
 	}
-
+ 
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
 		return "/connexion";
