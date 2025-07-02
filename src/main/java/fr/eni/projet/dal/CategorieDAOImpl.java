@@ -26,11 +26,11 @@ public class CategorieDAOImpl implements CategorieDAO{
     }
 
     @Override
-    public Article afficherCategorieArticle(long idArticle) {
+    public Categorie afficherCategorieArticle(long idArticle) {
         String sql = "select * from article where idArticle = :idArticle";
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql, paramSource, Article.class);
+        return jdb.queryForObject(sql, paramSource, Categorie.class);
     }
 
     @Override
