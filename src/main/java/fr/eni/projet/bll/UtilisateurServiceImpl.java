@@ -21,8 +21,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur afficherProfil(long idUtilisateur) {
-
 		return this.utilisateurDAO.consulterCompte(idUtilisateur);
+	}
+
+	@Override
+	public Utilisateur afficherProfil(String pseudo) {
+		return this.utilisateurDAO.consulterCompte(pseudo);
 	}
 
 	@Override

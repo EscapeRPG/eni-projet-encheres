@@ -45,11 +45,14 @@ public class UtilisateurController {
 		}
 		return "redirect:/index";
 	}
+<<<<<<< HEAD
  
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
 		return "connexion"; 
 	}
+=======
+>>>>>>> 975f03237e223b2ba18f00271e191cec8947e154
 	
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
@@ -58,7 +61,26 @@ public class UtilisateurController {
 	   
 	    return "redirect:/profil";
 	}
-	
+
+	@GetMapping("/modifierProfil")
+	public String goTomodifierProfil() {
+		return "modifierProfil";
+	}
+
+	@GetMapping("/profil")
+	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
+		try {
+			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		return "profil";
+	}
+	 
+	@GetMapping("/connexion")
+	public String gotoConnexion() {
+		return "connexion";
+	}
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
