@@ -66,10 +66,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void supprimerCompte(long idUtilisateur) {
-        String sql = "delete from utilisateur where email = :idUtilisateur";
+        String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
+        String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        jdb.update(sql,mapSqlParameterSource);
+        jdb.update(sql1,mapSqlParameterSource);
+        jdb.update(sql2,mapSqlParameterSource);
 
     }
 
