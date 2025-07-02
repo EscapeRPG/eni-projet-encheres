@@ -53,18 +53,16 @@ public class EnchereServiceImpl implements EnchereService{
     	}
      
     }
-
+  
     @Override
     public Article detailVente(long idArticle) {
     	
         return this.articleDAO.afficherArticle(idArticle);
     }
 
-    @Override
-    public void remporterVente(long idArticle) {
-    	
-    	
-
-
-    }
+	@Override
+	public void remporterVente(long idArticle) {
+		// TODO Auto-generated method stub
+		
+	}
 }
