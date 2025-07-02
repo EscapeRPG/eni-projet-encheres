@@ -14,43 +14,39 @@
 		<h2>Créer un compte</h2>
 		
 		<form th:action="@{/inscription}" method="post" th:object="${utilisateur}">
-			<ul>
-				<div class="form-inscription">
-					<label for="pseudo">Pseudo :</label>
-					<input type="text" id="pseudo" th:field="*{pseudo}">
-					
-					<label for="nom">Nom :</label>
-					<input type="text" id="nom" th:field="*{nom}"/>
-					
-					<label for="prenom">Prénom :</label>
-					<input type="text" id="prenom" th:field="*{prenom}">
-					
-					<label for="email">Email :</label>
-					<input type="email" id="email" th:field="*{email}">
-					
-					<label for="telephone">Téléphone :</label>
-					<input type="number" id="telephone" th:field="*{telephone}">
-					
-					<label for="rue">Rue :</label>
-					<input type="text" id="rue" th:field="*{rue}">
-					
-					<label for="codePostal">Code postal :</label>
-					<input type="number" id="codePostal" th:field="*{codePostal}">
-					
-					<label for="ville">Ville :</label>
-					<input type="text" id="ville" th:field="*{ville}">
-					
-					<label for="password1">Mot de passe :</label>
-					<input type="password" id="password1" th:field="*{motDePasse}">
-					
-					<label for="password2">Confirmation :</label>
-					<input type="password" id="password2" th:field="*{motDePasse}">
-				</div>
-	
-				<div class="form-buttons">
-					<button type="submit">Créer</button>
-				</div>
-			</ul>
+			<div class="form-inscription">
+				<label for="pseudo">Pseudo :</label>
+				<input type="text" id="pseudo" th:field="*{pseudo}">
+				
+				<label for="nom">Nom :</label>
+				<input type="text" id="nom" th:field="*{nom}"/>
+				
+				<label for="prenom">Prénom :</label>
+				<input type="text" id="prenom" th:field="*{prenom}">
+				
+				<label for="email">Email :</label>
+				<input type="email" id="email" th:field="*{email}">
+				
+				<label for="telephone">Téléphone :</label>
+				<input type="number" id="telephone" th:field="*{telephone}">
+				
+				<label for="rue">Rue :</label>
+				<input type="text" id="rue" th:field="*{rue}">
+				
+				<label for="codePostal">Code postal :</label>
+				<input type="number" id="codePostal" th:field="*{codePostal}">
+				
+				<label for="ville">Ville :</label>
+				<input type="text" id="ville" th:field="*{ville}">
+				
+				<label for="password1">Mot de passe :</label>
+				<input type="password" id="password1" th:field="*{motDePasse}">
+				
+				<label for="password2">Confirmation :</label>
+				<input type="password" id="password2" th:field="*{motDePasse}">
+			</div>
+			
+			<button type="submit" class="form-buttons">Créer</button>
 		</form>
 		<form th:action="@{/}" method="get">
 			<button type="submit">Annuler</button>
