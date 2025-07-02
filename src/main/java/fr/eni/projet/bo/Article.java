@@ -13,7 +13,7 @@ public class Article {
 
     private long idArticle;
     private String nomArticle;
-    private String description;
+    private String descriptions;
     private LocalDateTime dateDebutEncheres;
     private LocalDateTime dateFinEncheres;
     private int miseAPrix;
@@ -25,7 +25,7 @@ public class Article {
 	}
 
     public Article(Utilisateur utilisateur, Categorie categorie, Retrait retrait,
-                   long idArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
+                   long idArticle, String nomArticle, String descriptions, LocalDateTime dateDebutEncheres,
                    LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
         this.encheres = new ArrayList<>();
         this.utilisateur = utilisateur;
@@ -33,7 +33,7 @@ public class Article {
         this.retrait = retrait;
         this.idArticle = idArticle;
         this.nomArticle = nomArticle;
-        this.description = description;
+        this.descriptions = descriptions;
         this.dateDebutEncheres = dateDebutEncheres;
         this.dateFinEncheres = dateFinEncheres;
         this.miseAPrix = miseAPrix;
@@ -89,12 +89,12 @@ public class Article {
         this.nomArticle = nomArticle;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptions() {
+        return descriptions;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
     }
 
     public LocalDateTime getDateDebutEncheres() {
@@ -146,7 +146,7 @@ public class Article {
                 ", retrait=" + retrait +
                 ", idArticle=" + idArticle +
                 ", nomArticle='" + nomArticle + '\'' +
-                ", description='" + description + '\'' +
+                ", description='" + descriptions + '\'' +
                 ", dateDebutEncheres=" + dateDebutEncheres +
                 ", dateFinEncheres=" + dateFinEncheres +
                 ", miseAPrix=" + miseAPrix +

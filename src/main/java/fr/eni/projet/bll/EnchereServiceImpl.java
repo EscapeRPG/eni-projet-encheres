@@ -2,7 +2,10 @@ package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.dal.ArticleDAO;
+import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
+import fr.eni.projet.dal.RetraitDAO;
+import fr.eni.projet.dal.UtilisateurDAO;
 
 import org.springframework.stereotype.Service;
 
@@ -13,16 +16,26 @@ public class EnchereServiceImpl implements EnchereService{
 
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
+	private CategorieDAO categorieDAO;
+	private RetraitDAO retraitDAO;
+	private UtilisateurDAO utilisateurDAO;
 
-    public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO) {
+	public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO,
+			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO) {
 		this.articleDAO = articleDAO;
 		this.enchereDAO = enchereDAO;
+		this.categorieDAO = categorieDAO;
+		this.retraitDAO = retraitDAO;
+		this.utilisateurDAO = utilisateurDAO;
 	}
 
 	@Override
     public List<Article> consulterAllVentes() {
-    	
     	List<Article> articles = this.articleDAO.afficherArticles();
+    	
+    	for (Article article : articles) {
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+		}
     	
         return articles;
     }
@@ -34,23 +47,26 @@ public class EnchereServiceImpl implements EnchereService{
     		this.enchereDAO.creerEnchere(enchereDAO.afficherEnchere(idArticle));
     	}
     	else {
-    		System.out.println("Saisir une enchère plus élévée");
+    		System.out.println("Saisir une enchère plus élevée");
     	
     	}
      
     }
-
+  
     @Override
     public Article detailVente(long idArticle) {
+    	Article article = this.articleDAO.afficherArticle(idArticle);
     	
-        return this.articleDAO.afficherArticle(idArticle);
+    	article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
+    	article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+    	article.setRetrait(retraitDAO.afficherRetrait(idArticle));
+    	
+    	return article;
     }
 
-    @Override
-    public void remporterVente(long idArticle) {
-    	
-    	
-
-
-    }
+	@Override
+	public void remporterVente(long idArticle) {
+		// TODO Auto-generated method stub
+		
+	}
 }

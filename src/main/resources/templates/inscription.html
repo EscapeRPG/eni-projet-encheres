@@ -2,7 +2,7 @@
 <html>
 <head th:insert="~{fragments/fragment-head :: head}">
 	<title>ENI Enchères - Inscription</title>
-	<link rel="stylesheet" data-th-href="@{/css/general.css}">
+	
 </head>
 <body>
 	<header>
@@ -45,10 +45,10 @@
 				<label for="password2">Confirmation :</label>
 				<input type="password" name="password2" id="password2">
 			</div>
-			<div class="form-buttons">
-				<button type="submit">Créer</button>
-				<button @href="@{/}">Annuler</button>
-			</div>
+			<button type="submit">Créer</button>
+		</form>
+		<form th:action="@{/}" method="get">
+			<button type="submit" th:href="@{/}">Annuler</button>
 		</form>
 	</main>
 </body>

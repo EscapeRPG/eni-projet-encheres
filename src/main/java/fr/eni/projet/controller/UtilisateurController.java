@@ -43,12 +43,12 @@ public class UtilisateurController {
 				bindingResult.addError(error);
 			});
 		}
-		return "index";
+		return "redirect:/index";
 	}
-
+ 
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
-		return "/connexion";
+		return "connexion";
 	}
 	
 	@PostMapping("/annulerVente")
@@ -61,7 +61,7 @@ public class UtilisateurController {
 	
 
 	@PostMapping("/connexion")
-	public String connecterUtilisateur(@Valid @RequestParam(name = "pseudo") String pseudo,
+	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
 			@RequestParam(name = "motDePasse") String motDePasse, BindingResult bindingResult,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 		try {
@@ -101,7 +101,7 @@ public class UtilisateurController {
 			});
 		}
 
-		return "index";
+		return "redirect:/index";
 	}
 
 	@ModelAttribute("utilisateurEnSession")

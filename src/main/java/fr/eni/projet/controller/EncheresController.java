@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
-import fr.eni.projet.bo.Enchere;
-import fr.eni.projet.bo.Retrait;
 
 
 
@@ -56,7 +54,13 @@ public class EncheresController {
 	@GetMapping("/profil")
 	public String goToProfil() {
 		return "profil";
-	}
+	} 
 	
+	@GetMapping("/encherir")
+	public String goToEncherir(@RequestParam (name="idArticle")long idArticle, Model model) {
+		Article articleEncheri = enchereService.encherir(idArticle, idUtilisateur, montantEnchere);
+		model.addAttribute("article",articleEncheri);	
+		return "encherir"; 
+	}
 }
 

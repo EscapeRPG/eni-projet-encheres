@@ -2,6 +2,7 @@ package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -9,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.security.Key;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -66,10 +69,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void supprimerCompte(long idUtilisateur) {
-        String sql = "delete from utilisateur where email = :idUtilisateur";
+        String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
+        String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        jdb.update(sql,mapSqlParameterSource);
+        jdb.update(sql1,mapSqlParameterSource);
+        jdb.update(sql2,mapSqlParameterSource);
 
     }
 
@@ -86,7 +91,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
@@ -94,7 +99,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
-        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
@@ -149,5 +154,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
 
 }
+
+
 
 

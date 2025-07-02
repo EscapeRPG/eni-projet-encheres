@@ -24,8 +24,10 @@ public class CategorieDAOImpl implements CategorieDAO{
 
     @Override
     public Categorie afficherCategorieArticle(long idArticle) {
-        String sql = "select * from categorie where idArticle = idArticle";
-        return null;
+        String sql = "select * from article where idArticle = :idArticle";
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("idArticle", idArticle);
+        return jdb.queryForObject(sql, paramSource, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
     @Override

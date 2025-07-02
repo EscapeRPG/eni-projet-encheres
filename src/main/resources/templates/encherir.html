@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head th:insert="~{fragments/fragment-head :: head}">
+    <title>ENI-Enchères</title>
+</head>
+<body>
+
+    <header>
+        <h1 id="nav-title">
+            <a th:href="@{/ListesEncheres}">ENI-Enchères</a>
+        </h1>      
+    </header>
+
+    <h2>Détail vente</h2>
+    <div class="item-container">
+        <p th:text="${article.nomArticle}"></p>
+        <img th:src="${article.src}" th:alt="${article.nomArticle}">
+        <p th:text="${article.descriptions}"></p>
+        <p th:text="${article.idCategoriees}"></p>
+        <p th:text="${enchere.montantEnchere}"></p>
+        <p th:text="${article.miseAPrix}"></p>
+        <p th:text="${article.dateFinEncheres}"></p>
+        <p th:text="${retrait}"></p>
+        <p th:text="${utilisateur.idUtilisateur}"></p>
+
+        <form th:action="@{/encherir}" method="post">
+            <label for="montant">Montant :</label>
+            <input type="number" id="montant" name="montant" required>
+            <button type="submit">Enchérir</button>
+        </form>
+    </div>
+
+    <a class="button-retour" th:href="@{/}">Retour</a>
+
+</body>
+</html>
