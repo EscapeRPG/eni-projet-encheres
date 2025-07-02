@@ -41,7 +41,18 @@ public class EnchereDAOImpl implements EnchereDAO{
         jdb.update(sql, mapSqlParameterSource);
     }
 
+    @Override
+    public Enchere enchereMax(long idArticle) {
+        String sql = "SELECT *" +
+                " FROM enchere" +
+                " WHERE idArticle = :idArticle and montantEnchere = (SELECT MAX(montantEnchere) FROM enchere where idArticle = :idArticle )";
 
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idArticle", idArticle);
+
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
+
+    }
 
 
     @Override
