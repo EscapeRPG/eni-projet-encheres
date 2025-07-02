@@ -22,7 +22,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                 + "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("nomArticle", article.getNomArticle());
-        mapSqlParameterSource.addValue("descriptions",article.getDescription());
+        mapSqlParameterSource.addValue("descriptions",article.getDescriptions());
         mapSqlParameterSource.addValue("dateDebutEncheres", article.getDateDebutEncheres());
         mapSqlParameterSource.addValue("dateFinEncheres", article.getDateFinEncheres());
         mapSqlParameterSource.addValue("miseAPrix", article.getMiseAPrix());
