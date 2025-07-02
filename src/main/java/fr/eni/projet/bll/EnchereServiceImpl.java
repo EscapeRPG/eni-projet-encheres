@@ -11,39 +11,27 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService{
 
-	private ArticleDAO articleDAO;
-	private EnchereDAO enchereDAO;
+	@Override
+	public List<Article> consulterAllVentes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public List<Article> consulterAllVentes() {
-    	
-    	List<Article> articles = this.articleDAO.afficherArticles();
-    	
-        return articles;
-    }
+	@Override
+	public void encherir(long idArticle, long idUtilisateur, int value) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void encherir(long idArticle, long idUtilisateur, int value) {
-    	
-    	if(value > enchereDAO.afficherEnchere(idArticle).getMontantEnchere) {
-    		this.enchereDAO.creerEnchere();
-    	}
-    	else {
-    		System.out.println("Saisir une enchère plus élévée");
-    	
-    	}
-     
-    }
+	@Override
+	public Article detailVente(long idArticle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public Article detailVente(long idArticle) {
-    	
-        return this.articleDAO.afficherArticle(idArticle);
-    }
-
-    @Override
-    public void remporterVente(long idArticle) {
-
-
-    }
+	@Override
+	public void remporterVente(long idArticle) {
+		// TODO Auto-generated method stub
+		
+	}
 }
