@@ -52,15 +52,6 @@ public class EncheresController {
 		 
 	    return "redirect:/profil";
 	}
-	@GetMapping("/modifierProfil")
-	public String goTomodifierProfil() {
-		return "modifierProfil";
-	}
-
-	@GetMapping("/profil")
-	public String goToProfil() {
-		return "profil";
-	}
 
 	@GetMapping("/encherir")
 	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {

@@ -45,11 +45,6 @@ public class UtilisateurController {
 		}
 		return "redirect:/index";
 	}
- 
-	@GetMapping("/connexion")
-	public String gotoConnexion() {
-		return "connexion";
-	}
 	
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
@@ -58,12 +53,31 @@ public class UtilisateurController {
 	   
 	    return "redirect:/profil";
 	}
-	
+
+	@GetMapping("/modifierProfil")
+	public String goTomodifierProfil() {
+		return "modifierProfil";
+	}
+
+	@GetMapping("/profil")
+	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
+		try {
+			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		return "profil";
+	}
+	 
+	@GetMapping("/connexion")
+	public String gotoConnexion() {
+		return "connexion";
+	}
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
-			@RequestParam(name = "motDePasse") String motDePasse, BindingResult bindingResult,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+			@RequestParam(name = "motDePasse") String motDePasse,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, BindingResult bindingResult) {
 		try {
 			Utilisateur utilisateurInBDD = this.utilisateurService.connecterUtilisateur(pseudo, motDePasse);
 
@@ -101,7 +115,7 @@ public class UtilisateurController {
 			});
 		}
 
-		return "redirect:/index";
+		return "redirect:/";
 	}
 
 	@ModelAttribute("utilisateurEnSession")

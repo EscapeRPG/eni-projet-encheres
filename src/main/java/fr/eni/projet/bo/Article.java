@@ -1,6 +1,7 @@
 package fr.eni.projet.bo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,6 +140,7 @@ public class Article {
 
     @Override
     public String toString() {
+    	
         return "Article{" +
                 "encheres=" + encheres +
                 ", utilisateur=" + utilisateur +

@@ -19,6 +19,13 @@ public interface UtilisateurService {
      * @return l'objet {@link Utilisateur} correspondant à l'identifiant fourni.
      */
     Utilisateur afficherProfil(long idUtilisateur) throws BusinessException;
+    
+    /**
+     * Récupère les informations d'un utilisateur à partir de son identifiant.
+     * @param le pseudo de l'utilisateur à afficher.
+     * @return l'objet {@link Utilisateur} correspondant à l'identifiant fourni.
+     */
+    Utilisateur afficherProfil(String pseudo) throws BusinessException;
 
     /**
      * Met à jour les informations d'un utilisateur existant.
