@@ -1,6 +1,8 @@
 package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Retrait;
+import fr.eni.projet.bo.Utilisateur;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,7 +21,7 @@ public class RetraitDAOImpl implements RetraitDAO{
         String sql = "SELECT * FROM retrait WHERE idArticle = :idArticle";
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql, paramSource, Retrait.class);
+        return jdb.queryForObject(sql, paramSource, new BeanPropertyRowMapper<>(Retrait.class));
     }
 
     @Override
