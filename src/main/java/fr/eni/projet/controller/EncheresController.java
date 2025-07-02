@@ -14,6 +14,7 @@ import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.ArticleDAO;
+import fr.eni.projet.exception.BusinessException;
 
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
@@ -40,10 +41,15 @@ public class EncheresController {
 	}
 	
 	@PostMapping("/retraitEffectue")
-	public String retraitEffectue() {
+	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
 		
-		// Methode : gerer retrait effectue
-	   
+		try {
+			this.enchereService.clotureArticle(idArticle);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		 
 	    return "redirect:/profil";
 	}
 	@GetMapping("/modifierProfil")

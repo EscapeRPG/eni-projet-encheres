@@ -1,6 +1,7 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
+import fr.eni.projet.exception.BusinessException;
 
 import java.util.List;
 
@@ -34,5 +35,7 @@ public interface EnchereService {
      * @param idArticle l'identifiant de l'article concerné.
      */
     void remporterVente(long idArticle);
+    
+    void clotureArticle(long idArticle) throws BusinessException;
 
 }

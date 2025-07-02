@@ -46,6 +46,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idArticle", idArticle);
 		jdb.update(sql, mapSqlParameterSource);
 	}
+	
+	@Override
+	public void updateEtatArticle(long idArticle, String etat) {
+		String sql = "UPDATE article SET etatVente = :etatVente WHERE idArticle = :idArticle";
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("etatVente", etat);
+		mapSqlParameterSource.addValue("idArticle", idArticle);
+		jdb.update(sql, mapSqlParameterSource);
+	
+		
+	}
 
 	@Override
 	public List<Article> afficherArticles() {
@@ -61,6 +72,19 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 		return jdb.queryForObject(sql, mapSqlParameterSource, new ArticleMapper());
 	}
+	
+	@Override
+	public boolean hasArticle(long idArticle) {
+		String sql = "select count(*) FROM article WHERE idArticle = :idArticle";
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idArticle", idArticle);
+		
+		Integer nbArticle = jdb.queryForObject(sql, map, Integer.class);
+		
+		return nbArticle != 0;
+	}
+
+	
 }
 
 class ArticleMapper implements RowMapper<Article> {
