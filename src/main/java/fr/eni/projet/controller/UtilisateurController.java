@@ -43,12 +43,12 @@ public class UtilisateurController {
 				bindingResult.addError(error);
 			});
 		}
-		return "index";
+		return "redirect:/index";
 	}
  
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
-		return "/connexion";
+		return "connexion";
 	}
 
 	@PostMapping("/connexion")
@@ -92,7 +92,7 @@ public class UtilisateurController {
 			});
 		}
 
-		return "index";
+		return "redirect:/index";
 	}
 
 	@ModelAttribute("utilisateurEnSession")

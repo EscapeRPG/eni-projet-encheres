@@ -15,12 +15,12 @@
 		<h2>Vous avez remporté l'enchère</h2>
 		
 		<div class="item-container">
-			<!-- <img th:src="${a.src}" alt="${e.nomArticle}"> -->
+			<!-- <img th:src="${article.src}" alt="${aritcle.nomArticle}"> -->
 			<p th:text="${article.nomArticle}"></p>
 			<p th:text="${article.descriptions}"></p>
 		</div>
 		<p>Meilleure offre :</p>
-		<p th:text ="${article.miseAPrix}">Mise à prix :</p><br>
+		<p th:text ="'Mise à prix : ' + ${article.miseAPrix}"></p><br>
 		
 		
 		<div class="item-container">

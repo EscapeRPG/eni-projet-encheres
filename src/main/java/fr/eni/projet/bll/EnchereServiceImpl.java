@@ -1,7 +1,6 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
-import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
@@ -48,7 +47,7 @@ public class EnchereServiceImpl implements EnchereService{
     		this.enchereDAO.creerEnchere(enchereDAO.afficherEnchere(idArticle));
     	}
     	else {
-    		System.out.println("Saisir une enchère plus élévée");
+    		System.out.println("Saisir une enchère plus élevée");
     	
     	}
      
@@ -56,8 +55,13 @@ public class EnchereServiceImpl implements EnchereService{
   
     @Override
     public Article detailVente(long idArticle) {
+    	Article article = this.articleDAO.afficherArticle(idArticle);
     	
-        return this.articleDAO.afficherArticle(idArticle);
+    	article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
+    	article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+    	article.setRetrait(retraitDAO.afficherRetrait(idArticle));
+    	
+    	return article;
     }
 
 	@Override
