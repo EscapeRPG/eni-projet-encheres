@@ -12,41 +12,42 @@
 	<main>
 		<h2>Mon profil</h2>
 		
-		<form th:action="@{/modifierProfil}" method="post">
+		<form th:action="@{/modifierProfil}" method="post" th:object="${utilisateur}">
 			<div class="form-modifier-profil">
 				<label for="pseudo">Pseudo :</label>
-				<input type="text" name="pseudo" id="pseudo">
+				<input type="text" id="pseudo" th:field="*{pseudo}">
 				
 				<label for="nom">Nom :</label>
-				<input type="text" name="nom" id="nom">
+				<input type="text" id="nom" th:field="*{nom}"/>
 				
 				<label for="prenom">Prénom :</label>
-				<input type="text" name="prenom" id="prenom">
+				<input type="text" id="prenom" th:field="*{prenom}">
 				
 				<label for="email">Email :</label>
-				<input type="email" name="email" id="email">
+				<input type="email" id="email" th:field="*{email}">
 				
 				<label for="telephone">Téléphone :</label>
-				<input type="text" name="telephone" id="telephone">
+				<input type="text" id="telephone" th:field="*{telephone}">
 				
 				<label for="rue">Rue :</label>
-				<input type="text" name="rue" id="rue">
+				<input type="text" id="rue" th:field="*{rue}">
 				
 				<label for="codePostal">Code postal :</label>
-				<input type="text" name="codePostal" id="codePostal">
+				<input type="number" id="codePostal" th:field="*{codePostal}">
 				
 				<label for="ville">Ville :</label>
-				<input type="text" name="ville" id="ville">
+				<input type="text" id="ville" th:field="*{ville}">
 				
 				<label for="password1">Mot de passe :</label>
-				<input type="password" name="password1" id="password1">
+				<input type="password" id="password1" th:field="*{motDePasse}">
 				
 				<label for="password2">Confirmation :</label>
-				<input type="password" name="password2" id="password2">
+				<input type="password" id="password2" th:field="*{motDePasse}">
 			</div>
 			
 			<div class="credit">
-				<label for="text">Crédit : </label>
+				<label for="credit">Crédit : </label>
+				<input type="credit" id="credit" th:field="*{credit}">
 			</div>
 			
 			<div class="form-buttons">

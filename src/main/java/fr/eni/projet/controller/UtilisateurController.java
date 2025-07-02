@@ -48,7 +48,7 @@ public class UtilisateurController {
  
 	@GetMapping("/connexion")
 	public String gotoConnexion() {
-		return "connexion";
+		return "connexion"; 
 	}
 	
 	@PostMapping("/annulerVente")
