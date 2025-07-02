@@ -91,7 +91,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         String sql = "select * from utilisateur where pseudo = :pseudo";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
-        return jdb.queryForObject(sql,mapSqlParameterSource,Utilisateur.class);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
