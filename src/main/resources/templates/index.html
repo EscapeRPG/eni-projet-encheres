@@ -102,7 +102,7 @@
 					<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
 					<p th:text="${a.nomArticle}"></p>
 					<p th:text="${a.descriptions}"></p>
-					<p th:text="Vendeur : ${a.utilisateur}"></p>
+					<p>Vendeur : <span th:text="${a.utilisateur.pseudo}"></span></p>
 				</div>
 			</li>
 		</ul>
