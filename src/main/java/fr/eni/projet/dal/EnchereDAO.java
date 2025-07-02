@@ -9,4 +9,5 @@ public interface EnchereDAO {
     void creerEnchere(Enchere enchere);
     List<Enchere> consulterEnchere();
     Enchere afficherEnchere(long idArticle);
+    Enchere afficherMaxEnchere(long idArticle);
 }
