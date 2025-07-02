@@ -55,4 +55,14 @@ public class EncheresController {
 		model.addAttribute("article", articleEncheri);
 		return "encherir";
 	}
+	
+	
+	@GetMapping("/vendreArticle")
+	public String goToVendreArticle(@RequestParam(name="idArticle") long idArticle,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model ) {
+		Article nouvelleArticle = enchereService.detailVente(idArticle); 
+		//non foonctionnelle pour le moment 
+		model.addAttribute("article", nouvelleArticle);		
+		return "vendreArticle";
+	}
+	
 }

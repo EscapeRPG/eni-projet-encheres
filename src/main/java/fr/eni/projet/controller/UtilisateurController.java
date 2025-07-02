@@ -45,6 +45,14 @@ public class UtilisateurController {
 		}
 		return "redirect:/index";
 	}
+<<<<<<< HEAD
+ 
+	@GetMapping("/connexion")
+	public String gotoConnexion() {
+		return "connexion"; 
+	}
+=======
+>>>>>>> 975f03237e223b2ba18f00271e191cec8947e154
 	
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
