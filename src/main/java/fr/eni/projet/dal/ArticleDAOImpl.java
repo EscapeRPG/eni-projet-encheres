@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -75,10 +76,15 @@ class ArticleMapper implements RowMapper<Article>
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setIdUtilisateur(rs.getLong("idUtilisateur"));
 
+
         Article article = new Article();
         article.setIdArticle(rs.getLong("idArticle"));
         article.setNomArticle(rs.getString("nomArticle"));
         article.setDescriptions(rs.getString("descriptions"));
+        article.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());
+        article.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
+        article.setMiseAPrix(rs.getInt("miseAPrix"));
+        article.setPrixVente(rs.getInt("prixVente"));
         article.setCategorie(categorie);
         article.setUtilisateur(utilisateur);
         return article;
