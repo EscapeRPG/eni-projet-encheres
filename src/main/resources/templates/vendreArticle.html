@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vendre un Article</title>
+    <th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+</head>
+<body>
+    <header>
+        <h1 id="nav-title">
+            <a th:href="@{/}">ENI-Enchères</a>
+        </h1>
+    </header>
+
+    <main>
+        <h2>Nouvelle vente</h2>
+        <form th:action="@{/vendre}" th:object="${article}" method="post" enctype="multipart/form-data">
+            <ul>
+                <!-- Article + Catégorie -->
+                <li>
+                    <label for="inputTitle">Article : </label>
+                    <input type="text" id="inputTitle" th:field="*{nomArticle}" />
+                </li>
+                <li>
+                    <label for="idCategorie">Catégorie :</label>
+                    <select th:field="*{categorie}" id="idCategorie">
+                        <option th:each="c : ${categories}" th:value="${c.idcategorie}" th:text="${c.libelle}"></option>
+                    </select>
+                </li>
+                <li>
+                    <label for="description">Description : </label>
+                    <textarea id="description" rows="3" th:field="*{description}"></textarea>
+                </li>
+                <li>
+                    <label for="fileUpload">Photo de l'article :</label>
+                    <input type="file" id="fileUpload" name="file" />
+                </li>
+                <li>
+                    <img th:if="${article.src != null}" th:src="@{${article.src}}" th:alt="${article.nomArticle}" />
+                </li>
+                <li>
+                    <label for="inputPrix">Prix initial :</label>
+                    <input type="number" id="inputPrix" th:field="*{prixvente}" />
+                </li>
+                <li>
+                    <label>Début de l'enchère :</label>
+                    <p th:text="${#dates.format(article.dateDebutEncheres,'dd/MM/yyyy')}"></p>
+                </li>
+                <li>
+                    <label>Fin de l'enchère :</label>
+                    <p th:text="${#dates.format(article.dateFinEncheres,'dd/MM/yyyy')}"></p>
+                </li>
+
+                <!-- Retrait -->
+                <li>
+                    <h3>Retrait</h3>
+                    <p th:text="${article.retrait.rue}"></p>
+                    <p th:text="${article.retrait.codePostal}"></p>
+                    <p th:text="${article.retrait.ville}"></p>
+                </li>        
+                <li>
+                    <button type="submit">Enregistrer</button>
+                    <a class="button-retour" th:href="@{/ListeEncheres}">Retour</a>
+                </li>
+            </ul>
+        </form>
+    </main>
+</body>
+</html>
