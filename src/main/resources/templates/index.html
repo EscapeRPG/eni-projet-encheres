@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head th:insert="~{fragments/fragment-head :: head}">
+<head>
+<div th:insert="~{fragments/fragment-head :: head}"></div>
+<link rel="stylesheet" th:href="@{/css/index.css}" />
 <title>ENI Enchères</title>
 </head>
 <body>
@@ -40,23 +42,27 @@
 		-->
 		
 			<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">
-				<label for="filtres">Filtres :</label>
-				<input type="text" name="filtrer" id="filtres" placeholder="Le nom de l'article contient">
+				<div>
+					<label for="filtres">Filtres :</label>
+					<input type="text" name="filtrer" id="filtres" placeholder="Le nom de l'article contient">
+				</div>
 			
-				<label for="categories">Catégorie :</label>
-				<select name="categories" id="categories">
-					<option value="1">Toutes</option>
-					<option value="2">Informatique</option>
-					<option value="3">Ameublement</option>
-					<option value="4">Vêtement</option>
-					<option value="5">Sports & Loisirs</option>
-				</select>
+				<div>
+					<label for="categories">Catégorie :</label>
+					<select name="categories" id="categories">
+						<option value="1">Toutes</option>
+						<option value="2">Informatique</option>
+						<option value="3">Ameublement</option>
+						<option value="4">Vêtement</option>
+						<option value="5">Sports & Loisirs</option>
+					</select>
+				</div>
 				
 				<div class="dropdown-container" id="achats-dropdown">
 					<input type="radio" id="achats" name="achats-ventes" value="achats">
 					<label for="achats">Achats <span class="dropdown-arrow">↓</span></label>
 					
-					<ul id="achats-liste" class="dropdown">
+					<ul id="achats-liste" class="dropdown hidden">
 						<li>
 							<input type="checkbox" name="encheres-en-cours" id="encheres-en-cours" value="encheres-en-cours" class="achats">
 							<label for="encheres-en-cours">enchères ouvertes</label>
@@ -76,7 +82,7 @@
 					<input type="radio" id="ventes" name="achats-ventes" value="ventes">
 					<label for="ventes">Mes ventes <span class="dropdown-arrow">↓</span></label>
 					
-					<ul id="ventes-liste" class="dropdown">
+					<ul id="ventes-liste" class="dropdown hidden">
 						<li>
 							<input type="checkbox" name="ventes-en-cours" id="ventes-en-cours" value="ventes-en-cours" class="ventes">
 							<label for="ventes-en-cours">ventes en cours</label>
@@ -96,16 +102,18 @@
 			</form>
 		
 		
-		<ul class="articles">
-			<li th:each="a : ${articles}">
-				<div class="item-container">
-					<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
-					<p th:text="${a.nomArticle}"></p>
-					<p th:text="${a.descriptions}"></p>
-					<p th:text="'Vendeur : ' + ${a.utilisateur.pseudo}"></p>
+		<div class="articles">
+			<div class="item-container" th:each="a : ${articles}">
+				<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
+				<img src="">
+				<div>
+					<h3 th:text="${a.nomArticle}"></h3>
+					<p th:text="'Prix : ' + ${a.miseAPrix} + ' points'"></p>
+					<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(a.dateFinEncheres, 'dd/MM/yyyy')}"></p>
+					<p>Vendeur : <a th:href="@{/profil(pseudo=${a.utilisateur.pseudo})}" th:text="${a.utilisateur.pseudo}"></a></p>
 				</div>
-			</li>
-		</ul>
+			</div>
+		</div>
 		
 		<a th:href="@{/acquisition(idArticle=1)}">test</a>
 	
