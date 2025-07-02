@@ -19,18 +19,8 @@ public class EnchereDAOImpl implements EnchereDAO{
 
     @Override
     public void creerEnchere(Enchere enchere) {
-        String sql = "merge into enchere as vente " +
-                "using (select :dateEnchere as dateEnchere, :montantEnchere as montantEnchere, " +
-                ":idArticle as idArticle, :idUtilisateur as idUtilisateur) as source " +
-                "on vente.idArticle = source.idArticle " +
-                "when matched then " +
-                "update set dateEnchere = source.dateEnchere, " +
-                "montantEnchere = source.montantEnchere, " +
-                "idArticle = source.idArticle, " +
-                "idUtilisateur = source.idUtilisateur " +
-                "when not matched then  " +
-                "insert (dateEnchere,montantEnchere,idArticle,idUtilisateur) " +
-                "values (:dateEnchere, :montantEnchere, :idArticle, :idUtilisateur);";
+        String sql = "insert into enchere(dateEnchere, montantEnchere, idArticle, idUtilisateur) "
+                + " values(:dateEnchere, :montantEnchere,:idArticle, :idUtilisateur)";
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("dateEnchere", enchere.getDateEnchere());
