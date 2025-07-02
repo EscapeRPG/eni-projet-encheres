@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head th:insert="~{fragments/fragment-head :: head}">
-	<title>ENI Enchères - Inscription</title>
+	<title>Inscription</title>
 	
 </head>
 <body>
@@ -14,41 +14,43 @@
 		<h2>Créer un compte</h2>
 		
 		<form th:action="@{/inscription}" method="post">
+			<ul>
 			<div class="form-inscription">
 				<label for="pseudo">Pseudo :</label>
-				<input type="text" name="pseudo" id="pseudo">
+				<input type="text" id="inputPseudo" th:field="*{pseudo}">
 				
 				<label for="nom">Nom :</label>
-				<input type="text" name="nom" id="nom">
+				<input type="text" id="inputNom" th:field="*{nom}"/>
 				
 				<label for="prenom">Prénom :</label>
-				<input type="text" name="prenom" id="prenom">
+				<input type="text" id="inputPrenom" th:field="*{prenom}">
 				
 				<label for="email">Email :</label>
-				<input type="email" name="email" id="email">
+				<input type="email" id="inputEmail" th:field="*{email}">
 				
 				<label for="telephone">Téléphone :</label>
-				<input type="text" name="telephone" id="telephone">
+				<input type="number" id="inputTelephone" th:field="*{telephone}">
 				
 				<label for="rue">Rue :</label>
-				<input type="text" name="rue" id="rue">
+				<input type="text" id="inputRue" th:field="*{rue}">
 				
 				<label for="codePostal">Code postal :</label>
-				<input type="text" name="codePostal" id="codePostal">
+				<input type="number" id="inputCodePostal" th:field="*{codePostal}">
 				
 				<label for="ville">Ville :</label>
-				<input type="text" name="ville" id="ville">
+				<input type="text" id="inputVille" th:field="*{ville}
 				
 				<label for="password1">Mot de passe :</label>
-				<input type="password" name="password1" id="password1">
+				<input type="password" id="inputPassword" th:field="*{password}">
 				
 				<label for="password2">Confirmation :</label>
-				<input type="password" name="password2" id="password2">
+				<input type="password2" id="inputPassword2" th:field="*{password2}">
 			</div>
 			<div class="form-buttons">
 				<button type="submit">Créer</button>
-				<button @href="@{/}">Annuler</button>
+				<a class="button" th:href="@{/connexion}">Annuler</a>
 			</div>
+			</ul>
 		</form>
 	</main>
 </body>
