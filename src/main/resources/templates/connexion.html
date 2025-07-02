@@ -45,7 +45,7 @@
 	<form class="formulaire" th:action="@{/connexion}" method="post">
 		<label for="name">Identifiant :</label>
 		<br />
-		<input type="text" id="name" name="name" placeholder="votre identifiant" minlength="3" />
+		<input type="text" id="name" name="pseudo" placeholder="votre identifiant" minlength="3" />
 		<br />
 
 		<label for="password">
@@ -55,16 +55,20 @@
 			</span>
 		</label>
 		<br />
-		<input type="password" id="password" name="password" /><br />
+		<input type="password" id="password" name="motDePasse" /><br />
+
+		<div class="souvenir">
+			<input type="checkbox" id="checkbox" name="connexion" value="checkbox" />
+			<label for="checkbox">Se souvenir de moi</label>
+
+		</div>
+
+		<button class="button" type="submit">Connexion</button>
 	</form>
 
-	<div class="souvenir">
-		<input type="checkbox" id="checkbox" name="connexion" value="checkbox" />
-		<label for="checkbox">Se souvenir de moi</label>
 
-	</div>
 
-	<button class="button" type="submit">Connexion</button>
+
 
 	<div class="downbutton">
 		<form th:action="@{/inscription}" method="get">
