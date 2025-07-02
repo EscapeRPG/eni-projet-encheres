@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head th:insert="~{fragments/fragment-head :: head}">
-<title>Acquisition</title>
+<title>Detail de ma vente</title>
 </head>
 <body>
 	<header>
@@ -10,36 +10,40 @@
 		</h1>
 	</header>
 	<main>
-
-		<h2>Vous avez remporté l'enchère</h2>
-
-		<div class="item-container">
-			<!-- <img th:src="${article.src}" alt="${article.nomArticle}"> -->
-			<p th:text="${article.nomArticle}">Nom article</p>
+	
+	<div class="item-container">
+			<!-- <img th:src="${a.src}" alt="${e.nomArticle}"> -->
+			<p th:text="${article.nomArticle}">Nom de l'article :</p>
 			<p th:text="${article.descriptions}">Descriptions :</p>
 		</div>
-		<p>Meilleure offre :</p>
+		
+		
+		<p>Meilleure offre par (pseudo):</p>
 		<p th:text="'Mise à prix : ' + ${article.miseAPrix}">Mise à prix :</p>
 		<br>
-
-
+		
+		<p>Fin de l'enchère</p>
+		
 		<div class="item-container">
 			<p>Retrait</p>
 			<p th:text="${article.retrait.rue}">Rue</p>
 			<p th:text="${article.retrait.codePostal}">Code postal</p>
 			<p th:text="${article.retrait.ville}">Ville</p>
+			<p th:text="'Vendeur : ' +${article.utilisateur.pseudo}">Vendeur</p>
 			<br>
-			<p th:text="'Vendeur : ' +${article.utilisateur.pseudo}">Pseudo</p>
-			<p th:text="'Téléphone : ' +${article.utilisateur.telephone}">Téléphone</p>
 		</div>
-		<br>
-
-		<form th:action="@{/retraitEffectue}" method="post">
-			<button type="submit">Retrait effectué</button>
+		
+		<form th:action="@{/annulerVente}" method="post">
+		<input type="hidden" name ="idArticle" th:value="${article.idArticle}">
+			<button type="submit">Annuler la vente</button>
 		</form>
-
+		<br>
+		
+		<a th:href="@{/profil}">
+		<button type="button">Back</button>
+		</a>
+	
 	</main>
-
 
 </body>
 </html>
