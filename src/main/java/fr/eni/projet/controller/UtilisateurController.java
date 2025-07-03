@@ -53,19 +53,29 @@ public class UtilisateurController {
 	    return "redirect:/profil";
 	}
 
-	@GetMapping("/modifierProfil")
-	public String goTomodifierProfil() {
-		return "modifierProfil";
-	}
+
 
 	@GetMapping("/profil")
 	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
 		try {
 			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
+			model.addAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		return "profil";
+	}
+
+	@PostMapping("/profil")
+	public String changeProfil(@ModelAttribute("newUser") Utilisateur utilisateur,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+		utilisateur.setIdUtilisateur(utilisateurEnSession.getIdUtilisateur());
+		System.out.println(utilisateur);
+        try {
+            utilisateurService.modifierProfil(utilisateur);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/";
 	}
 	 
 	@GetMapping("/connexion")
