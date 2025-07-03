@@ -1,20 +1,16 @@
 package fr.eni.projet.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import fr.eni.projet.bll.UtilisateurService;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
@@ -73,9 +69,11 @@ public class UtilisateurController {
 	}
 	 
 	@GetMapping("/connexion")
-	public String gotoConnexion() {
+	public String gotoConnexion(@RequestParam(name="error",required = false) Integer error,Model model) {
+		model.addAttribute("error", error);
 		return "connexion";
 	}
+
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
@@ -97,15 +95,17 @@ public class UtilisateurController {
 				utilisateurEnSession.setMotDePasse(utilisateurInBDD.getMotDePasse());
 				utilisateurEnSession.setCredit(utilisateurInBDD.getCredit());
 				utilisateurEnSession.setAdministrateur(utilisateurInBDD.isAdministrateur());
-				return "redirect:/";
 			}
+			return "redirect:/";
+
 		} catch (BusinessException e) {
 			e.getExceptionMessages().forEach(m -> {
 				ObjectError error = new ObjectError("errorLogin", m);
 				bindingResult.addError(error);
+
 			});
+			return "redirect:/connexion?error=1";
 		}
-		return "/connexion";
 
 	}
 
