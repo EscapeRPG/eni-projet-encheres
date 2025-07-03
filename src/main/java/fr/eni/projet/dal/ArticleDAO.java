@@ -8,7 +8,13 @@ public interface ArticleDAO {
 
     void ajouterArticle(Article article);
     void supprimerArticle(long idArticle);
+    void updateEtatArticle(long idArticle, String etat);
+    
     List<Article> afficherArticles();
+    
     Article afficherArticle(long idArticle);
+    
+    boolean hasArticle(long idArticle);
+    
 
 }
