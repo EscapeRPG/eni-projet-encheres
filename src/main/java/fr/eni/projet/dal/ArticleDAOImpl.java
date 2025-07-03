@@ -84,6 +84,23 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return nbArticle != 0;
 	}
 
+	@Override
+	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
+			String mesEncheres, String encheresRemportees, String ventesEnCours, String ventesEnAttente,
+			String ventesTerminees) {
+		String sql = "SELECT * FROM article a WHERE "
+				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%'))"
+				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree)"
+				+ "AND (:encheresEnCours IS NULL OR a.etatVente = :)"
+				+ "AND ()"
+				+ "AND ()"
+				+ "AND ()"
+				+ "AND ()"
+				+ "AND ()";
+		
+		return null;
+	}
+
 	
 }
 

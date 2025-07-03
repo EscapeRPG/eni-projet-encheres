@@ -28,12 +28,23 @@ public class EncheresController {
 
 	@GetMapping({ "/", "/index" })
 	public String goToIndex(Model model) {
-		Article nouvelArticle = new Article();
 		List<Article> listeArticles = enchereService.consulterAllVentes();
-		List<Categorie> listeCategories = enchereService.consulterAllCategories();
-		model.addAttribute("nouvelArticle", nouvelArticle);
-		model.addAttribute("categoriesEnSession", listeCategories);
 		model.addAttribute("articles", listeArticles);
+		return "index";
+	}
+
+	@PostMapping("/encheres/rechercher")
+	public String filtrerRecherche(@RequestParam(name = "filtreNom") String filtreNomArticle,
+			@RequestParam(name = "categoriesEnSession") int categorieFiltree,
+			@RequestParam(name = "encheresEnCours") String encheresEnCours,
+			@RequestParam(name = "mesEncheres") String mesEncheres,
+			@RequestParam(name = "encheresRemportees") String encheresRemportees,
+			@RequestParam(name = "ventesEnCours") String ventesEnCours,
+			@RequestParam(name = "ventesEnAttente") String ventesEnAttente,
+			@RequestParam(name = "ventesTerminees") String ventesTerminees, Model model) {
+		List<Article> listeFiltree = this.enchereService.filtrerRecherche(filtreNomArticle, categorieFiltree,
+				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
+		model.addAttribute("articles", listeFiltree);
 		return "index";
 	}
 
@@ -70,7 +81,7 @@ public class EncheresController {
 		return "encherir";
 	}
 
-	@GetMapping("/vendreArticle")
+	@GetMapping("/vendre-article")
 	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
 		Article nouvelleArticle = enchereService.detailVente(idArticle);
@@ -80,8 +91,8 @@ public class EncheresController {
 	}
 
 	@ModelAttribute("categoriesEnSession")
-	public Categorie addCategorieEnSession() {
-		return new Categorie();
+	public List<Categorie> addCategorieEnSession() {
+		return this.enchereService.consulterAllCategories();
 	}
 
 }

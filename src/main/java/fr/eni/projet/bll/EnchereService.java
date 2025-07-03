@@ -40,5 +40,7 @@ public interface EnchereService {
     void clotureArticle(long idArticle) throws BusinessException;
     
     List<Categorie> consulterAllCategories();
+    
+    List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours, String mesEncheres, String encheresRemportees, String ventesEnCours, String ventesEnAttente, String ventesTerminees);
 
 }
