@@ -26,7 +26,7 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 
-	@GetMapping({ "/", "/index" })
+	@GetMapping({ "/", "/index", "/encheres" })
 	public String goToIndex(Model model) {
 		List<Article> listeArticles = enchereService.consulterAllVentes();
 		model.addAttribute("articles", listeArticles);
@@ -35,9 +35,9 @@ public class EncheresController {
 
 	@PostMapping("/encheres/rechercher")
 	public String filtrerRecherche(@RequestParam(name = "filtreNom", required = false) String filtreNomArticle,
-			@RequestParam(name = "categories", required = false, defaultValue = "1") int categorieFiltree,
+			@RequestParam(name = "categories", required = false, defaultValue = "0") int categorieFiltree,
 			@RequestParam(name = "encheresEnCours", required = false) String encheresEnCours,
-			@RequestParam(name = "mesEncheres", required = false) String mesEncheres,
+			@RequestParam(name = "mesEncheres", required = false, defaultValue = "0") int mesEncheres,
 			@RequestParam(name = "encheresRemportees", required = false, defaultValue = "0") int encheresRemportees,
 			@RequestParam(name = "ventesEnCours", required = false, defaultValue = "0") int ventesEnCours,
 			@RequestParam(name = "ventesEnAttente", required = false, defaultValue = "0") int ventesEnAttente,

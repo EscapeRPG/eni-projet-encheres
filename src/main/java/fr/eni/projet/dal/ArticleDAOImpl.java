@@ -85,16 +85,20 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
-			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		String sql = "SELECT * FROM article a inner join retrait r on a.idArticle = r.idArticle WHERE "
-				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%'))"
-				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree)"
-				+ "AND (:encheresEnCours IS NULL OR a.etatVente = :encheresEnCours)"
-				+ "AND (:mesEncheres IS NULL OR a.idUtilisateur = :mesEncheres)"
-				+ "AND (:encheresRemportees = 0 OR a.idUtilisateur = :encheresRemportees AND a.etatVente = 'ET')"
-				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC')"
-				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR')"
-				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET')";
+			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
+		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, r.rue, r.codePostal, r.ville, "
+				+ "MAX(e.montantEnchere) AS meilleureEnchere, " + "COUNT(e.idUtilisateur) AS nombreEncheres "
+				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
+				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
+				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree) "
+				+ "AND (:encheresEnCours IS NULL OR a.etatVente = :encheresEnCours) "
+				+ "AND (:mesEncheres = 0 OR e.idUtilisateur = :mesEncheres) "
+				+ "AND (:encheresRemportees = 0 OR a.idUtilisateur = :encheresRemportees AND a.etatVente = 'ET') "
+				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
+				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR') "
+				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET') "
+				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, r.rue, r.codePostal, r.ville "
+				+ "ORDER BY a.idArticle";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);
