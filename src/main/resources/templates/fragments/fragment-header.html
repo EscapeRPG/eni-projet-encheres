@@ -8,7 +8,7 @@
 
 		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/vente}">Vendre un objet</a>
 
-		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/profil(id=${utilisateurEnSession.idUtilisateur})}"></a>
+		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/profil(pseudo=${utilisateurEnSession.pseudo})}">Mon profil</a>
 
 		<a th:if="${utilisateurEnSession eq null || utilisateurEnSession.getIdUtilisateur() == 0}"  th:href="@{/inscription}">S'inscrire</a>
 
