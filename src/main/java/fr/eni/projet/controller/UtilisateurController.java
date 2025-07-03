@@ -65,6 +65,18 @@ public class UtilisateurController {
 		}
 		return "profil";
 	}
+
+	@PostMapping("/profil")
+	public String changeProfil(@ModelAttribute("newUser") Utilisateur utilisateur,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+		utilisateur.setIdUtilisateur(utilisateurEnSession.getIdUtilisateur());
+		System.out.println(utilisateur);
+        try {
+            utilisateurService.modifierProfil(utilisateur);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/";
+	}
 	 
 	@GetMapping("/connexion")
 	public String gotoConnexion(@RequestParam(name="error",required = false) Integer error,Model model) {
