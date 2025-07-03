@@ -93,7 +93,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add("L'utilisateur n'existe pas");
 			return false;
 		}
-
 	}
 
 }

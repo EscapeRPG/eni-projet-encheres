@@ -150,11 +150,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		map.addValue("codePostal", u.getCodePostal());
 		map.addValue("ville", u.getVille());
         map.addValue("idUtilisateur", u.getIdUtilisateur());
-
         jdb.update(sql,map);
 		
 	}
-
 
 }
 
