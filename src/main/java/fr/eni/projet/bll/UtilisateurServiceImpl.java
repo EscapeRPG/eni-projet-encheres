@@ -95,4 +95,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 	}
 
+	@Override
+	public boolean pseudoExiste(String pseudo) {	
+		return utilisateurDAO.isUtilisateurInBDD(pseudo);
+	}
+
+	
+	
+	
 }
