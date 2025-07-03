@@ -26,10 +26,12 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 
-	@GetMapping({"/", "/index"})
+	@GetMapping({ "/", "/index" })
 	public String goToIndex(Model model) {
+		Article nouvelArticle = new Article();
 		List<Article> listeArticles = enchereService.consulterAllVentes();
 		List<Categorie> listeCategories = enchereService.consulterAllCategories();
+		model.addAttribute("nouvelArticle", nouvelArticle);
 		model.addAttribute("categoriesEnSession", listeCategories);
 		model.addAttribute("articles", listeArticles);
 		return "index";
@@ -41,35 +43,39 @@ public class EncheresController {
 		model.addAttribute("article", articleGagne);
 		return "acquisition";
 	}
-	
+
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
-		
+
 		try {
 			this.enchereService.clotureArticle(idArticle);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
-		 
-	    return "redirect:/profil";
+
+		return "redirect:/profil";
 	}
 
 	@GetMapping("/encherir")
-	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
-		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), 20); // Le montant est indiqué ici en dur, il faudra le changer une fois la méthode adaptée créée
-		
+	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
+		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), 20); // Le montant est indiqué ici
+																							// en dur, il faudra le
+																							// changer une fois la
+																							// méthode adaptée créée
+
 		Article articleEncheri = enchereService.detailVente(idArticle);
 		model.addAttribute("article", articleEncheri);
 		return "encherir";
 	}
-	
-	
+
 	@GetMapping("/vendreArticle")
-	public String goToVendreArticle(@RequestParam(name="idArticle") long idArticle,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model ) {
-		Article nouvelleArticle = enchereService.detailVente(idArticle); 
-		//non foonctionnelle pour le moment 
-		model.addAttribute("article", nouvelleArticle);		
+	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
+		Article nouvelleArticle = enchereService.detailVente(idArticle);
+		// non foonctionnelle pour le moment
+		model.addAttribute("article", nouvelleArticle);
 		return "vendreArticle";
 	}
 
@@ -77,5 +83,5 @@ public class EncheresController {
 	public Categorie addCategorieEnSession() {
 		return new Categorie();
 	}
-	
+
 }
