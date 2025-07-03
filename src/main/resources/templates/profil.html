@@ -10,40 +10,78 @@
 		</h1>
 	</header>
 	<main>
-		<h2>Pseudo</h2>
+		<h2 th:text="${utilisateur.getPseudo()}"></h2>
 		
-		<form th:action="@{/profil}" method="post">
+		<form th:if="${utilisateurEnSession.getPseudo()} eq ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
 			<div class="form-profil">
 				<label for="pseudo">Pseudo :</label>
-				<input type="text" name="pseudo" id="pseudo">
+				<input type="text" name="pseudo" id="pseudo" th:value="${utilisateur.getPseudo()}" />
 				
 				<label for="nom">Nom :</label>
-				<input type="text" name="nom" id="nom">
+				<input type="text" name="nom" id="nom" th:value="${utilisateur.getNom()}" />
 				
 				<label for="prenom">Prénom :</label>
-				<input type="text" name="prenom" id="prenom">
+				<input type="text" name="prenom" id="prenom" th:value="${utilisateur.getPrenom()}" />
 				
 				<label for="email">Email :</label>
-				<input type="email" name="email" id="email">
-				
+				<input type="email" name="email" id="email" th:value="${utilisateur.getEmail()}" />
+				<div></div>
 				<label for="telephone">Téléphone :</label>
-				<input type="text" name="telephone" id="telephone">
+				<input type="text" name="telephone" id="telephone" th:value="${utilisateur.getTelephone()}" />
 				
 				<label for="rue">Rue :</label>
-				<input type="text" name="rue" id="rue">
+				<input type="text" name="rue" id="rue" th:value="${utilisateur.getRue()}" />
 				
 				<label for="codePostal">Code postal :</label>
-				<input type="text" name="codePostal" id="codePostal">
+				<input type="text" name="codePostal" id="codePostal" th:value="${utilisateur.getCodePostal()}" />
 				
 				<label for="ville">Ville :</label>
-				<input type="text" name="ville" id="ville">
-				
+				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" />
+
 			</div>
 			<div class="form-buttons">
-				<button @href="@{/modifierProfil}">Modifier</button>
-					
+				<button type="submit">Modifier</button>
 			</div>
+
+
+		</form>
+		<form th:action="@{supprimerProfil}" method="get">
+			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+			<button type="submit"   >Supprimer</button>
+		</form>
+
+		<form th:if="${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
+			<div class="form-profil">
+				<label for="pseudo">Pseudo :</label>
+				<input type="text" name="pseudo" id="pseudo" th:value="${utilisateur.getPseudo()}" readonly/>
+
+				<label for="nom">Nom :</label>
+				<input type="text" name="nom" id="nom" th:value="${utilisateur.getNom()}" readonly/>
+
+				<label for="prenom">Prénom :</label>
+				<input type="text" name="prenom" id="prenom" th:value="${utilisateur.getPrenom()}" readonly/>
+
+				<label for="email">Email :</label>
+				<input type="email" name="email" id="email" th:value="${utilisateur.getEmail()}" readonly/>
+				<div></div>
+				<label for="telephone">Téléphone :</label>
+				<input type="text" name="telephone" id="telephone" th:value="${utilisateur.getTelephone()}" readonly/>
+
+				<label for="rue">Rue :</label>
+				<input type="text" name="rue" id="rue" th:value="${utilisateur.getRue()}" readonly/>
+
+				<label for="codePostal">Code postal :</label>
+				<input type="text" name="codePostal" id="codePostal" th:value="${utilisateur.getCodePostal()}" readonly/>
+
+				<label for="ville">Ville :</label>
+				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" readonly/>
+
+			</div>
+
+
 		</form>
 	</main>
 </body>
+
+
 </html>

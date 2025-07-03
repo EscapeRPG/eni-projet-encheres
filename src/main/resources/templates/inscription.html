@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" th:href="@{/css/inscription.css}" />
+<link rel="stylesheet" data-th-href="@{/css/error.css}">
 <head>
 	<title>Inscription</title>
 	
@@ -16,8 +17,10 @@
 		
 		<form th:action="@{/inscription}" method="post" th:object="${utilisateur}">
 			<div class="form-inscription">
-				<label for="pseudo">Pseudo :</label>
+			
+				<label for="pseudo">Pseudo :</label>				
 				<input type="text" id="pseudo" th:field="*{pseudo}">
+				<p th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}" class="error"></p>
 				
 				<label for="nom">Nom :</label>
 				<input type="text" id="nom" th:field="*{nom}"/>
@@ -42,14 +45,15 @@
 				
 				<label for="password1">Mot de passe :</label>
 				<input type="password" id="password1" th:field="*{motDePasse}">
+				<p th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="error"></p>
 				
 				<label for="password2">Confirmation :</label>
-				<input type="password" id="password2" th:field="*{motDePasse}">
+				<input type="password" id="password2" name="confirmationMotDePasse">
 			</div>
 			
 			<button type="submit" class="form-buttons">Créer</button>
 		</form>
-		<form th:action="@{/}" method="get">
+		<form th:action="@{/connexion}" method="get">
 			<button type="submit">Annuler</button>
 		</form>
 	</main>
