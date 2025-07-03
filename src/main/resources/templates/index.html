@@ -11,41 +11,23 @@
 		<h2>Liste des enchères</h2>
 		
 		<!--
-		<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">
-			<label for="filtres">Filtres :</label>
 			<input type="text" th:field="*{filtreNomArticle}" id="filtres" placeholder="Le nom de l'article contient">
-			
-			<label for="categories">Catégorie :</label>
-			<select th:field="*{categories}" id="categories">
-				<option th:each="c : ${categoriesEnSession}" th:text="c.libelle" th:value="c.id"></option>
-			</select>
-			
-			<li th:if="${membreEnSession eq null}">
-				<a th:href="@{/inscription}">S'inscrire</a>
-			</li>
-			
-			<button type="submit">Rechercher</button>
-		</form>
 		-->
 		
 			<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">
 				<div>
 					<label for="filtres">Filtres :</label>
-					<input type="text" name="filtrer" id="filtres" placeholder="Le nom de l'article contient">
+					<input type="text" th:field="*{filtreNomArticle}" id="filtres" placeholder="Le nom de l'article contient">
 				</div>
-			
+				
 				<div>
 					<label for="categories">Catégorie :</label>
-					<select name="categories" id="categories">
-						<option value="1">Toutes</option>
-						<option value="2">Informatique</option>
-						<option value="3">Ameublement</option>
-						<option value="4">Vêtement</option>
-						<option value="5">Sports & Loisirs</option>
+					<select th:field="*{categoriesEnSession}" id="categories">
+						<option th:each="c : ${categoriesEnSession}" th:text="${c.libelle}" th:value="${c.idCategorie}"></option>
 					</select>
 				</div>
 				
-				<div class="dropdown-container" id="achats-dropdown">
+				<div th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" class="dropdown-container" id="achats-dropdown">
 					<input type="radio" id="achats" name="achats-ventes" value="achats">
 					<label for="achats">Achats <span class="dropdown-arrow">↓</span></label>
 					
@@ -65,7 +47,7 @@
 					</ul>
 				</div>
 				
-				<div class="dropdown-container" id="ventes-dropdown">
+				<div th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" class="dropdown-container" id="ventes-dropdown">
 					<input type="radio" id="ventes" name="achats-ventes" value="ventes">
 					<label for="ventes">Mes ventes <span class="dropdown-arrow">↓</span></label>
 					
