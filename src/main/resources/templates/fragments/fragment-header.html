@@ -4,32 +4,17 @@
 		<a th:href="@{/}">ENI-Enchères</a>
 	</h1>
 	<nav>
-		<ul>
-			<!-- Les liens ne sont visibles que si un membre n'est pas connecté présent -->
-			<!--
+		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/encheres}">Enchères</a>
 
-			<!-- Les liens ne sont visibles que si un membre est connecté -->
-			<!--
-			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
-				<a th:href="@{/encheres}">Enchères</a>
-			</li>
-			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
-				<a th:href="@{/vente}">Vendre un objet</a>
-			</li>
-			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
-				<a th:href="@{/profil(id=${membre.idUtilisateur})}"></a>
-			</li>
-			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
-				<a th:href="@{/deconnexion}">Déconnexion</a>
-			</li>
-			-->
+		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/vente}">Vendre un objet</a>
 
-			<a th:if="${utilisateurEnSession eq null || utilisateurEnSession.getIdUtilisateur() == 0}"  th:href="@{/inscription}">S'inscrire</a>
+		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/profil(id=${utilisateurEnSession.idUtilisateur})}"></a>
 
-			<a th:if="${utilisateurEnSession eq null ||utilisateurEnSession.getIdUtilisateur() == 0}" th:href="@{/connexion}">Se connecter</a>
+		<a th:if="${utilisateurEnSession eq null || utilisateurEnSession.getIdUtilisateur() == 0}"  th:href="@{/inscription}">S'inscrire</a>
 
-			<a  th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" th:href="@{/deconnexion}">Déconnexion</a>
+		<a th:if="${utilisateurEnSession eq null ||utilisateurEnSession.getIdUtilisateur() == 0}" th:href="@{/connexion}">Se connecter</a>
 
-		</ul>
+		<a  th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" th:href="@{/deconnexion}">Déconnexion</a>
+
 	</nav>
 </header>
