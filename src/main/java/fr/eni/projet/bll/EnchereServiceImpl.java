@@ -78,7 +78,7 @@ public class EnchereServiceImpl implements EnchereService {
 		boolean existArticle = isExistArticle(idArticle, be);
 
 		if (existArticle) {
-			articleDAO.updateEtatArticle(idArticle, "CL");
+			articleDAO.updateEtatArticle(idArticle, "RE");
 
 		} else {
 			throw be;
@@ -99,7 +99,14 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public List<Categorie> consulterAllCategories() {
-		return categorieDAO.listerCategorie();
+		return this.categorieDAO.listerCategorie();
+	}
+
+	@Override
+	public List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
+			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
+		return this.articleDAO.afficherArticlesFiltres(filtreNomArticle, categorieFiltree, encheresEnCours, mesEncheres,
+				encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
 	}
 
 }

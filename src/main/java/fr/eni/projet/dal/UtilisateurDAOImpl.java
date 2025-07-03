@@ -139,7 +139,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 	@Override
 	public void updateCompte(Utilisateur u) {
 		String sql = "update utilisateur set pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email,"
-				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville :ville";
+				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville where idUtilisateur = :idUtilisateur";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("pseudo", u.getPseudo());
 		map.addValue("nom", u.getNom());
@@ -147,20 +147,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		map.addValue("email", u.getEmail());
 		map.addValue("telephone", u.getTelephone());
 		map.addValue("rue", u.getRue());
-		map.addValue("prenom", u.getPrenom());
 		map.addValue("codePostal", u.getCodePostal());
 		map.addValue("ville", u.getVille());
-	}
-
-	
-
-		@Override	
-		public boolean pseudoExist(String pseudo) {
-		String sql = "SELECT * FROM UTILISATEUR WHERE pseudo = :pseudo";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("pseudo",pseudo);
-        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
-		return i !=0;
+        map.addValue("idUtilisateur", u.getIdUtilisateur());
+        jdb.update(sql,map);
+		
 	}
 
 }

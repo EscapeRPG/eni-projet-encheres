@@ -12,10 +12,15 @@ public class Utilisateur {
     private List<Article> articles;
 
     private long idUtilisateur;
+
     
     
     @NotBlank(message = "Le pseudo est obligatoire.")
     @Pattern(regexp = "^[a-zA-Z0-9_-]{3,20}$")
+
+
+
+
     private String pseudo;
     @Pattern(regexp = "^[\\p{L} '-]{2,30}$")
     private String nom;

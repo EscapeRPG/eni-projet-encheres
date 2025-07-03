@@ -24,6 +24,6 @@ public interface UtilisateurDAO {
     boolean isUtilisateurInBDD(long idUtilisateur);
     boolean isUtilisateurInBDD(String pseudo);  
     
-    boolean pseudoExist(String pseudo);
+ 
 
 }

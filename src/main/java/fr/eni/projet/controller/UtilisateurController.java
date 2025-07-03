@@ -1,12 +1,11 @@
 package fr.eni.projet.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import fr.eni.projet.bll.UtilisateurService;
 import fr.eni.projet.bll.UtilisateurServiceImpl;
@@ -14,9 +13,6 @@ import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
@@ -51,18 +47,7 @@ public class UtilisateurController {
 	        return "inscription";
 	    }
 	    
-	    
-		try {
-			if (utilisateurService.pseudoExist(utilisateur.getPseudo())) {
-			    bindingResult.rejectValue("pseudo", "error.utilisateur", "Ce pseudo est déjà utilisé.");
-			    return "inscription";
-			}
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	 
-	    			
+	  		
 	    try {
 	        utilisateurService.creerUtilisateur(utilisateur);
 	    } catch (BusinessException e) {
@@ -85,25 +70,37 @@ public class UtilisateurController {
 	    return "redirect:/profil";
 	}
 
-	@GetMapping("/modifierProfil")
-	public String goTomodifierProfil() {
-		return "modifierProfil";
-	}
+
 
 	@GetMapping("/profil")
 	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
 		try {
 			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
+			model.addAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		return "profil";
 	}
+
+	@PostMapping("/profil")
+	public String changeProfil(@ModelAttribute("newUser") Utilisateur utilisateur,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+		utilisateur.setIdUtilisateur(utilisateurEnSession.getIdUtilisateur());
+		System.out.println(utilisateur);
+        try {
+            utilisateurService.modifierProfil(utilisateur);
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/";
+	}
 	 
 	@GetMapping("/connexion")
-	public String gotoConnexion() {
+	public String gotoConnexion(@RequestParam(name="error",required = false) Integer error,Model model) {
+		model.addAttribute("error", error);
 		return "connexion";
 	}
+
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
@@ -125,38 +122,18 @@ public class UtilisateurController {
 				utilisateurEnSession.setMotDePasse(utilisateurInBDD.getMotDePasse());
 				utilisateurEnSession.setCredit(utilisateurInBDD.getCredit());
 				utilisateurEnSession.setAdministrateur(utilisateurInBDD.isAdministrateur());
-			} else {
-				utilisateurEnSession.setIdUtilisateur(0);
-				utilisateurEnSession.setPseudo(null);
-				utilisateurEnSession.setNom(null);
-				utilisateurEnSession.setPrenom(null);
-				utilisateurEnSession.setEmail(null);
-				utilisateurEnSession.setTelephone(null);
-				utilisateurEnSession.setRue(null);
-				utilisateurEnSession.setCodePostal(null);
-				utilisateurEnSession.setVille(null);
-				utilisateurEnSession.setMotDePasse(null);
-				utilisateurEnSession.setCredit(0);
-				utilisateurEnSession.setAdministrateur(false);
 			}
+			return "redirect:/";
+
 		} catch (BusinessException e) {
 			e.getExceptionMessages().forEach(m -> {
-				ObjectError error = new ObjectError("globalError", m);
+				ObjectError error = new ObjectError("errorLogin", m);
 				bindingResult.addError(error);
+
 			});
+			return "redirect:/connexion?error=1";
 		}
 
-		return "redirect:/";
 	}
 
-	@ModelAttribute("utilisateurEnSession")
-	public Utilisateur addUtilisateurEnSession() {
-		return new Utilisateur();
-	}
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> 14360094f5d162bc489c5351842019bd87f40976
-	
 }
