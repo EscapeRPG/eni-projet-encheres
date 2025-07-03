@@ -28,12 +28,26 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 
-	@GetMapping({"/", "/index"})
+	@GetMapping({ "/", "/index" })
 	public String goToIndex(Model model) {
 		List<Article> listeArticles = enchereService.consulterAllVentes();
-		List<Categorie> listeCategories = enchereService.consulterAllCategories();
-		model.addAttribute("categoriesEnSession", listeCategories);
 		model.addAttribute("articles", listeArticles);
+		return "index";
+	}
+
+	@PostMapping("/encheres/rechercher")
+	public String filtrerRecherche(@RequestParam(name = "filtreNom", required = false) String filtreNomArticle,
+			@RequestParam(name = "categories", required = false, defaultValue = "1") int categorieFiltree,
+			@RequestParam(name = "encheresEnCours", required = false) String encheresEnCours,
+			@RequestParam(name = "mesEncheres", required = false) String mesEncheres,
+			@RequestParam(name = "encheresRemportees", required = false, defaultValue = "0") int encheresRemportees,
+			@RequestParam(name = "ventesEnCours", required = false, defaultValue = "0") int ventesEnCours,
+			@RequestParam(name = "ventesEnAttente", required = false, defaultValue = "0") int ventesEnAttente,
+			@RequestParam(name = "ventesTerminees", required = false, defaultValue = "0") int ventesTerminees,
+			Model model) {
+		List<Article> listeFiltree = this.enchereService.filtrerRecherche(filtreNomArticle, categorieFiltree,
+				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
+		model.addAttribute("articles", listeFiltree);
 		return "index";
 	}
 
@@ -43,6 +57,7 @@ public class EncheresController {
 		model.addAttribute("article", articleGagne);
 		return "acquisition";
 	}
+
 	
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
@@ -52,18 +67,20 @@ public class EncheresController {
 		return "detail-vente";
 	}
 	
+
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
-		
+
 		try {
 			this.enchereService.clotureArticle(idArticle);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
-		 
-	    return "redirect:/profil";
+
+		return "redirect:/profil";
 	}
+
 
 	@PostMapping("/encherir")
 	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
@@ -72,19 +89,22 @@ public class EncheresController {
 		
 		
 		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
-		
 		Article articleEncheri = enchereService.detailVente(idArticle);
 		model.addAttribute("article", articleEncheri);
 		
 		return "detail-vente";
 	}
+
 	
 	
-	@GetMapping("/vendreArticle")
-	public String goToVendreArticle(@RequestParam(name="idArticle") long idArticle,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model ) {
-		Article newArticle = enchereService.detailVente(idArticle); 
-		//non foonctionnelle pour le moment 
-		model.addAttribute("article", newArticle);		
+
+	@GetMapping("/vendre-article")
+	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
+		Article nouvelleArticle = enchereService.detailVente(idArticle);
+		// non foonctionnelle pour le moment
+		model.addAttribute("article", nouvelleArticle);
+
 		return "vendreArticle";
 	}
 	
@@ -102,8 +122,8 @@ public class EncheresController {
 	}
 	
 	@ModelAttribute("categoriesEnSession")
-	public Categorie addCategorieEnSession() {
-		return new Categorie();
+	public List<Categorie> addCategorieEnSession() {
+		return this.enchereService.consulterAllCategories();
 	}
-	
+
 }

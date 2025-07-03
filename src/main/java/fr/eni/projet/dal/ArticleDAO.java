@@ -6,15 +6,19 @@ import java.util.List;
 
 public interface ArticleDAO {
 
-    void ajouterArticle(Article article);
-    void supprimerArticle(long idArticle);
-    void updateEtatArticle(long idArticle, String etat);
-    
-    List<Article> afficherArticles();
-    
-    Article afficherArticle(long idArticle);
-    
-    boolean hasArticle(long idArticle);
-    
+	void ajouterArticle(Article article);
+
+	void supprimerArticle(long idArticle);
+
+	void updateEtatArticle(long idArticle, String etat);
+
+	List<Article> afficherArticles();
+
+	Article afficherArticle(long idArticle);
+
+	boolean hasArticle(long idArticle);
+
+	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
+			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 
 }

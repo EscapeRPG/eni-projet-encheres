@@ -46,7 +46,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idArticle", idArticle);
 		jdb.update(sql, mapSqlParameterSource);
 	}
-	
+
 	@Override
 	public void updateEtatArticle(long idArticle, String etat) {
 		String sql = "UPDATE article SET etatVente = :etatVente WHERE idArticle = :idArticle";
@@ -54,8 +54,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("etatVente", etat);
 		mapSqlParameterSource.addValue("idArticle", idArticle);
 		jdb.update(sql, mapSqlParameterSource);
-	
-		
+
 	}
 
 	@Override
@@ -72,19 +71,42 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 		return jdb.queryForObject(sql, mapSqlParameterSource, new ArticleMapper());
 	}
-	
+
 	@Override
 	public boolean hasArticle(long idArticle) {
 		String sql = "select count(*) FROM article WHERE idArticle = :idArticle";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idArticle", idArticle);
-		
+
 		Integer nbArticle = jdb.queryForObject(sql, map, Integer.class);
-		
+
 		return nbArticle != 0;
 	}
 
-	
+	@Override
+	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
+			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
+		String sql = "SELECT * FROM article a inner join retrait r on a.idArticle = r.idArticle WHERE "
+				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%'))"
+				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree)"
+				+ "AND (:encheresEnCours IS NULL OR a.etatVente = :encheresEnCours)"
+				+ "AND (:mesEncheres IS NULL OR a.idUtilisateur = :mesEncheres)"
+				+ "AND (:encheresRemportees = 0 OR a.idUtilisateur = :encheresRemportees AND a.etatVente = 'ET')"
+				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC')"
+				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR')"
+				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET')";
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("filtreNomArticle", filtreNomArticle);
+		map.addValue("categorieFiltree", categorieFiltree);
+		map.addValue("encheresEnCours", encheresEnCours);
+		map.addValue("mesEncheres", mesEncheres);
+		map.addValue("encheresRemportees", encheresRemportees);
+		map.addValue("ventesEnCours", ventesEnCours);
+		map.addValue("ventesEnAttente", ventesEnAttente);
+		map.addValue("ventesTerminees", ventesTerminees);
+		return jdb.query(sql, map, new ArticleMapper());
+	}
+
 }
 
 class ArticleMapper implements RowMapper<Article> {

@@ -39,21 +39,22 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			if (this.utilisateurDAO.connecterCompte(pseudo, motDePasse) != null) {
 				return this.utilisateurDAO.connecterCompte(pseudo, motDePasse);
 			} else {
-				be.add("Le mot de passe ne correspond pas");
+				be.add("Le mot de passe ou user ne correspond pas");
 				throw be;
 			}
 		} else {
+			be.add("l'utilisateur n'existe pas");
 			throw be;
 		}
 
 	}
-	
+
 	@Override
 	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
 
 		BusinessException be = new BusinessException();
-		
-		utilisateurDAO.updateCompte(utilisateur);	
+
+		utilisateurDAO.updateCompte(utilisateur);
 
 	}
 
@@ -92,9 +93,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add("L'utilisateur n'existe pas");
 			return false;
 		}
-
 	}
-
-	
 
 }
