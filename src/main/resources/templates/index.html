@@ -18,7 +18,7 @@
 			
 			<div>
 				<label for="categories">Catégorie :</label>
-				<select th:field="*{categoriesEnSession}" id="categories">
+				<select name="categories" id="categories">
 					<option th:each="c : ${categoriesEnSession}" th:text="${c.libelle}" th:value="${c.idCategorie}"></option>
 				</select>
 			</div>
@@ -29,15 +29,15 @@
 				
 				<ul id="achats-liste" class="dropdown hidden">
 					<li>
-						<input type="checkbox" name="encheresEnCours" id="encheresEnCours" value="EC" class="achats">
+						<input type="checkbox" name="encheresEnCours" id="encheres-en-cours" value="EC" class="achats">
 						<label for="encheres-en-cours">enchères ouvertes</label>
 					</li>
 					<li>
-						<input type="checkbox" name="mesEncheres" id="mesEncheres" value="mes-encheres" class="achats">
+						<input type="checkbox" name="mesEncheres" id="mes-encheres" th:value="${utilisateurEnSession.idUtilisateur}" class="achats">
 						<label for="mes-encheres">mes enchères</label>
 					</li>
 					<li>
-						<input type="checkbox" name="encheresRemportees" id="encheresRemportees" value="encheres-remportees" class="achats">
+						<input type="checkbox" name="encheresRemportees" id="encheres-remportees" th:value="${utilisateurEnSession.idUtilisateur}" class="achats">
 						<label for="encheres-remportees">mes enchères remportées</label>
 					</li>
 				</ul>
@@ -49,15 +49,15 @@
 				
 				<ul id="ventes-liste" class="dropdown hidden">
 					<li>
-						<input type="checkbox" name="ventesEnCours" id="ventesEnCours" value="EC" class="ventes">
+						<input type="checkbox" name="ventesEnCours" id="ventes-en-cours" th:value="${utilisateurEnSession.idUtilisateur}" class="ventes">
 						<label for="ventes-en-cours">ventes en cours</label>
 					</li>
 					<li>
-						<input type="checkbox" name="ventesEnAttente" id="ventesEnAttente" value="CR" class="ventes">
+						<input type="checkbox" name="ventesEnAttente" id="ventes-en-attente" th:value="${utilisateurEnSession.idUtilisateur}" class="ventes">
 						<label for="ventes-en-attente">ventes non débutées</label>
 					</li>
 					<li>
-						<input type="checkbox" name="ventesTerminees" id="ventesTerminees" value="ET" class="ventes">
+						<input type="checkbox" name="ventesTerminees" id="ventes-terminees" th:value="${utilisateurEnSession.idUtilisateur}" class="ventes">
 						<label for="ventes-terminees">ventes terminées</label>
 					</li>
 				</ul>

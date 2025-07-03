@@ -19,7 +19,6 @@ public interface ArticleDAO {
 	boolean hasArticle(long idArticle);
 
 	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
-			String mesEncheres, String encheresRemportees, String ventesEnCours, String ventesEnAttente,
-			String ventesTerminees);
+			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 
 }

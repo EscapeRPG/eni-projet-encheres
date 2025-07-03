@@ -104,8 +104,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
-			String mesEncheres, String encheresRemportees, String ventesEnCours, String ventesEnAttente,
-			String ventesTerminees) {
+			String mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
 		return this.articleDAO.afficherArticlesFiltres(filtreNomArticle, categorieFiltree, encheresEnCours, mesEncheres,
 				encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
 	}

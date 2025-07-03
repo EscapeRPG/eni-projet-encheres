@@ -48,13 +48,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-	
+
 	@Override
 	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
 
 		BusinessException be = new BusinessException();
-		
-		utilisateurDAO.updateCompte(utilisateur);	
+
+		utilisateurDAO.updateCompte(utilisateur);
 
 	}
 
@@ -95,7 +95,5 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-
-	
 
 }

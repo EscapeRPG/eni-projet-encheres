@@ -34,14 +34,15 @@ public class EncheresController {
 	}
 
 	@PostMapping("/encheres/rechercher")
-	public String filtrerRecherche(@RequestParam(name = "filtreNom") String filtreNomArticle,
-			@RequestParam(name = "categoriesEnSession") int categorieFiltree,
-			@RequestParam(name = "encheresEnCours") String encheresEnCours,
-			@RequestParam(name = "mesEncheres") String mesEncheres,
-			@RequestParam(name = "encheresRemportees") String encheresRemportees,
-			@RequestParam(name = "ventesEnCours") String ventesEnCours,
-			@RequestParam(name = "ventesEnAttente") String ventesEnAttente,
-			@RequestParam(name = "ventesTerminees") String ventesTerminees, Model model) {
+	public String filtrerRecherche(@RequestParam(name = "filtreNom", required = false) String filtreNomArticle,
+			@RequestParam(name = "categories", required = false, defaultValue = "1") int categorieFiltree,
+			@RequestParam(name = "encheresEnCours", required = false) String encheresEnCours,
+			@RequestParam(name = "mesEncheres", required = false) String mesEncheres,
+			@RequestParam(name = "encheresRemportees", required = false, defaultValue = "0") int encheresRemportees,
+			@RequestParam(name = "ventesEnCours", required = false, defaultValue = "0") int ventesEnCours,
+			@RequestParam(name = "ventesEnAttente", required = false, defaultValue = "0") int ventesEnAttente,
+			@RequestParam(name = "ventesTerminees", required = false, defaultValue = "0") int ventesTerminees,
+			Model model) {
 		List<Article> listeFiltree = this.enchereService.filtrerRecherche(filtreNomArticle, categorieFiltree,
 				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
 		model.addAttribute("articles", listeFiltree);
