@@ -7,12 +7,7 @@
 		<ul>
 			<!-- Les liens ne sont visibles que si un membre n'est pas connecté présent -->
 			<!--
-			<li th:if="${membreEnSession eq null}">
-				<a th:href="@{/inscription}">S'inscrire</a>
-			</li>
-			<li th:if="${membreEnSession eq null}">
-				<a th:href="@{/connexion}">Se connecter</a>
-			</li>
+
 			<!-- Les liens ne sont visibles que si un membre est connecté -->
 			<!--
 			<li th:if="${membreEnSession != null && membreEnSession.id > 0}">
@@ -28,9 +23,13 @@
 				<a th:href="@{/deconnexion}">Déconnexion</a>
 			</li>
 			-->
-			
-				<a th:href="@{/inscription}">S'inscrire</a>
-				<a th:href="@{/connexion}">Se connecter</a>
+
+			<a th:if="${utilisateurEnSession eq null || utilisateurEnSession.getIdUtilisateur() == 0}"  th:href="@{/inscription}">S'inscrire</a>
+
+			<a th:if="${utilisateurEnSession eq null ||utilisateurEnSession.getIdUtilisateur() == 0}" th:href="@{/connexion}">Se connecter</a>
+
+			<a  th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" th:href="@{/deconnexion}">Déconnexion</a>
+
 		</ul>
 	</nav>
 </header>
