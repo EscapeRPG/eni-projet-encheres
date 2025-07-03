@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
+import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Utilisateur;
-import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.exception.BusinessException;
 
-@SessionAttributes({ "utilisateurEnSession" })
+@SessionAttributes({ "utilisateurEnSession", "categoriesEnSession" })
 @Controller
 public class EncheresController {
 
@@ -26,9 +26,11 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 
-	@GetMapping("/")
+	@GetMapping({"/", "/index"})
 	public String goToIndex(Model model) {
 		List<Article> listeArticles = enchereService.consulterAllVentes();
+		List<Categorie> listeCategories = enchereService.consulterAllCategories();
+		model.addAttribute("categoriesEnSession", listeCategories);
 		model.addAttribute("articles", listeArticles);
 		return "index";
 	}
@@ -69,6 +71,11 @@ public class EncheresController {
 		//non foonctionnelle pour le moment 
 		model.addAttribute("article", nouvelleArticle);		
 		return "vendreArticle";
+	}
+
+	@ModelAttribute("categoriesEnSession")
+	public Categorie addCategorieEnSession() {
+		return new Categorie();
 	}
 	
 }

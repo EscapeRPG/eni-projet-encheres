@@ -153,7 +153,10 @@ public class UtilisateurController {
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();
 	}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> 14360094f5d162bc489c5351842019bd87f40976
 	
 }
