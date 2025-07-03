@@ -11,34 +11,21 @@
 		<h2>Liste des enchères</h2>
 		
 		<!--
-		<div class="barre-filtre">
-			<form th:action="@{/encheres/rechercher}" method="post">
-				<label for="filtres">Filtres :</label>
-				<input type="text" th:field="*{}" id="filtres" placeholder="Le nom de l'article contient">
-				
-				<label for="categories">Catégorie :</label>
-				<select th:field="*{categories}" id="categories">
-					<option th:each="c : ${categoriesEnSession}" th:text="c.libelle" th:value="c.id"></option>
-				</select>
-				
-				<li th:if="${membreEnSession eq null}">
-					<a th:href="@{/inscription}">S'inscrire</a>
-				</li>
-				
-				<button type="submit">Rechercher</button>
-			</form>
-		</div>
-		
-		<ul class="articles">
-			<li th:each="{e : ${encheres}">
-				<div class="item-container">
-					<img th:src="${e.src}" alt="${e.nomArticle}">
-					<p th:text="${e.nomArticle}"></p>
-					<p th:text="${e.description}"></p>
-					<p th:text="Vendeur : ${e.utilisateur}"></p>
-				</div>
+		<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">
+			<label for="filtres">Filtres :</label>
+			<input type="text" th:field="*{filtreNomArticle}" id="filtres" placeholder="Le nom de l'article contient">
+			
+			<label for="categories">Catégorie :</label>
+			<select th:field="*{categories}" id="categories">
+				<option th:each="c : ${categoriesEnSession}" th:text="c.libelle" th:value="c.id"></option>
+			</select>
+			
+			<li th:if="${membreEnSession eq null}">
+				<a th:href="@{/inscription}">S'inscrire</a>
 			</li>
-		</ul>
+			
+			<button type="submit">Rechercher</button>
+		</form>
 		-->
 		
 			<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">

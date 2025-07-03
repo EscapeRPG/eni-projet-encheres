@@ -1,6 +1,7 @@
 package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
+import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.exception.BusinessException;
 
 import java.util.List;
@@ -37,5 +38,7 @@ public interface EnchereService {
     void remporterVente(long idArticle);
     
     void clotureArticle(long idArticle) throws BusinessException;
+    
+    List<Categorie> consulterAllCategories();
 
 }

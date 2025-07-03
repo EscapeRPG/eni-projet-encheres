@@ -79,6 +79,11 @@
 		
 		div {
 			width: 65%;
+			height: 100%;
+			
+			h3 {
+				margin: 0;
+			}
 		}
 	}
 }
