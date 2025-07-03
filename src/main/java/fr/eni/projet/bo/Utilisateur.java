@@ -9,6 +9,8 @@ public class Utilisateur {
     private List<Article> articles;
 
     private long idUtilisateur;
+
+
     private String pseudo;
     private String nom;
     private String prenom;
