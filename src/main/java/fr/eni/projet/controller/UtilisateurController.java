@@ -126,4 +126,14 @@ public class UtilisateurController {
 		return new Utilisateur();
 	}
 
+	
+	@Controller
+	public class HomeController {
+
+	    @GetMapping("/index")
+	    public String index() {
+	        return "index"; // Thymeleaf va chercher "index.html" dans src/main/resources/templates
+	    }
+	}
+	
 }

@@ -24,8 +24,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void creerCompte(Utilisateur u) {
-        String sql = "insert into utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,administrateur) "
-                + "value (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :administrateur)";
+        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,administrateur) "
+                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :administrateur)";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", u.getPseudo());
         mapSqlParameterSource.addValue("nom", u.getNom());
@@ -36,6 +36,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
         mapSqlParameterSource.addValue("ville", u.getVille());
         mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
+        mapSqlParameterSource.addValue("administrateur", u.isAdministrateur());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdb.update(sql,mapSqlParameterSource,keyHolder);
