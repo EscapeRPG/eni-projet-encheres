@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import fr.eni.projet.bll.UtilisateurService;
 import fr.eni.projet.bll.UtilisateurServiceImpl;
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
@@ -35,25 +36,34 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/inscription")
-	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
-	                               @RequestParam("confirmationMotDePasse") String confirmationMotDePasse, Model model) {
+	public String creerUtilisateur(
+	        @Valid @ModelAttribute Utilisateur utilisateur,
+	        BindingResult bindingResult,
+	        @RequestParam("confirmationMotDePasse") String confirmationMotDePasse,
+	        Model model) {
 
+	    // Vérifie si les mots de passe correspondent
 	    if (!utilisateur.getMotDePasse().equals(confirmationMotDePasse)) {
 	        bindingResult.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
-	        return "inscription";
 	    }
 
+	    // Vérifie si le pseudo existe déjà en base
+	    if (utilisateurService.pseudoExiste(utilisateur.getPseudo())) {
+	        bindingResult.rejectValue("pseudo", "error.pseudo", "Ce pseudo est déjà utilisé.");
+	    }
+
+	    // En cas d'erreur, on renvoie au formulaire
 	    if (bindingResult.hasErrors()) {
 	        return "inscription";
 	    }
 
+	    utilisateur.setAdministrateur(false); // sécurité
 
 	    try {
 	        utilisateurService.creerUtilisateur(utilisateur);
 	    } catch (BusinessException e) {
-	        e.getExceptionMessages().forEach(m -> {
-	            ObjectError error = new ObjectError("globalError", m);
-	            bindingResult.addError(error);
+	        e.getExceptionMessages().forEach(message -> {
+	            bindingResult.addError(new ObjectError("globalError", message));
 	        });
 	        return "inscription";
 	    }
@@ -62,15 +72,13 @@ public class UtilisateurController {
 	}
 
 
+	
+	
 	@PostMapping("/annulerVente")
-	public String annulerVente() {
-		
-		// Methode : annulerVente
-	   
+	public String annulerVente() {		
+		// Methode : annulerVente	   
 	    return "redirect:/profil";
 	}
-
-
 
 	@GetMapping("/profil")
 	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {

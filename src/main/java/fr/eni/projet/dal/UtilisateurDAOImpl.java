@@ -16,7 +16,8 @@ import java.util.List;
 
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO{
-
+	
+	private UtilisateurDAO utilisateurDAO;
     private final NamedParameterJdbcTemplate jdb;
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
         this.jdb = jdb;
@@ -136,7 +137,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return i != 0;
     }
 
-	@Override
+	@Override 
 	public void updateCompte(Utilisateur u) {
 		String sql = "update utilisateur set pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email,"
 				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville where idUtilisateur = :idUtilisateur";
@@ -154,6 +155,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		
 	}
 
+	
+	
+	
+	
 }
 
 
