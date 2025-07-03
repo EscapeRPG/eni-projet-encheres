@@ -42,6 +42,12 @@
 			<div class="form-buttons">
 				<button type="submit">Modifier</button>
 			</div>
+
+
+		</form>
+		<form th:action="@{supprimerProfil}" method="get">
+			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+			<button type="submit"   >Supprimer</button>
 		</form>
 
 		<form th:if="${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
@@ -72,7 +78,10 @@
 
 			</div>
 
+
 		</form>
 	</main>
 </body>
+
+
 </html>
