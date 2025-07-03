@@ -121,6 +121,26 @@ public class UtilisateurController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/deconnexion")
+	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+
+		utilisateurEnSession.setIdUtilisateur(0);
+		utilisateurEnSession.setPseudo(null);
+		utilisateurEnSession.setNom(null);
+		utilisateurEnSession.setPrenom(null);
+		utilisateurEnSession.setEmail(null);
+		utilisateurEnSession.setTelephone(null);
+		utilisateurEnSession.setRue(null);
+		utilisateurEnSession.setCodePostal(null);
+		utilisateurEnSession.setVille(null);
+		utilisateurEnSession.setMotDePasse(null);
+		utilisateurEnSession.setCredit(0);
+		utilisateurEnSession.setAdministrateur(false);
+
+		return "redirect:/";
+
+	}
+
 	@ModelAttribute("utilisateurEnSession")
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();
