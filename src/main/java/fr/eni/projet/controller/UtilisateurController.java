@@ -53,15 +53,13 @@ public class UtilisateurController {
 	    return "redirect:/profil";
 	}
 
-	@GetMapping("/modifierProfil")
-	public String goTomodifierProfil() {
-		return "modifierProfil";
-	}
+
 
 	@GetMapping("/profil")
 	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
 		try {
 			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
+			model.addAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
