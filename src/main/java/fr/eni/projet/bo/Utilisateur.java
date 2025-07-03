@@ -3,6 +3,7 @@ package fr.eni.projet.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -14,13 +15,19 @@ public class Utilisateur {
 
     @NotBlank(message = "Le pseudo est obligatoire.")
     private String pseudo;
-     
-    private String nom;	
-    private String prenom;   
-    private String email; 
-    private String telephone;        
-    private String rue;       
+    @Pattern(regexp = "^[a-zA-Z0-9À-ÿ'\\- ]+$", message = "Caractères non autorisés") 
+    private String nom;
+    @Pattern(regexp = "^[a-zA-Z0-9À-ÿ'\\- ]+$", message = "Caractères non autorisés")
+    private String prenom;
+    @Email(message = "Adresse email invalide")
+    private String email;
+    @Pattern(regexp = "^(\\+33|0)[1-9](\\s?\\d{2}){4}$", message = "Numéro de téléphone invalide")
+    private String telephone;
+    @Pattern(regexp = "^[a-zA-Z0-9À-ÿ'\\-,. ]+$", message = "Adresse invalide")
+    private String rue;
+    @Pattern(regexp = "^\\d{5}$", message = "Le code postal doit contenir 5 chiffres")
     private String codePostal;
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ'\\- ]+$", message = "Ville invalide")
     private String ville;
     
     @NotBlank(message = "Le mot de passe est obligatoire.") 
