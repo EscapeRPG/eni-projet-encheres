@@ -16,6 +16,9 @@
 		<label for="name">Identifiant :</label>
 		<br />
 		<input type="text" id="name" name="pseudo" placeholder="votre identifiant" minlength="3"/>
+		<div th:if="${error== 1}">
+			<p style="color:red;">Mauvais utilisateur ou mots de passe !</p>
+		</div>
 		<br />
 
 		<label for="password">
