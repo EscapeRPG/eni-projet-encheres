@@ -41,5 +41,6 @@ public interface UtilisateurService {
     
     Utilisateur connecterUtilisateur (String pseudo, String motDePasse) throws BusinessException;
     
+    boolean pseudoExist(String pseudo) throws BusinessException;  
 
 }

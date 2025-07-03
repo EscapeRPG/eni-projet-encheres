@@ -3,20 +3,37 @@ package fr.eni.projet.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class Utilisateur {
 
     private List<Enchere> encheres;
     private List<Article> articles;
 
     private long idUtilisateur;
+    
+    
+    @NotBlank(message = "Le pseudo est obligatoire.")
+    @Pattern(regexp = "^[a-zA-Z0-9_-]{3,20}$")
     private String pseudo;
+    @Pattern(regexp = "^[\\p{L} '-]{2,30}$")
     private String nom;
+    @Pattern(regexp = "^[\\p{L} '-]{2,30}$") 
+    		
     private String prenom;
+    
     private String email;
+    @Pattern(regexp = "^\\d{10}$")
     private String telephone;
-    private String rue;
+    @Pattern(regexp = "^[\\p{L}\\d\\s,'-.]{5,50}$") 
+    private String rue; 
+    @Pattern(regexp = "^\\d{5}$")
     private String codePostal;
     private String ville;
+    
+    @NotBlank(message = "Le mot de passe est obligatoire.")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
     private String motDePasse;
     private int credit;
     private boolean administrateur;

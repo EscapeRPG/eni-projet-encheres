@@ -92,9 +92,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add("L'utilisateur n'existe pas");
 			return false;
 		}
-
 	}
 
-	
+	@Override
+	public boolean pseudoExist(String pseudo) throws BusinessException {
+		return utilisateurDAO.isUtilisateurInBDD(pseudo);
+	}
+ 
+	 
 
 }

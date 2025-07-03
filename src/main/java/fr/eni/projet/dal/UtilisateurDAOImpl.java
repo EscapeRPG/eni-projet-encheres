@@ -150,9 +150,18 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		map.addValue("prenom", u.getPrenom());
 		map.addValue("codePostal", u.getCodePostal());
 		map.addValue("ville", u.getVille());
-		
 	}
 
+	
+
+		@Override	
+		public boolean pseudoExist(String pseudo) {
+		String sql = "SELECT * FROM UTILISATEUR WHERE pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo",pseudo);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+		return i !=0;
+	}
 
 }
 

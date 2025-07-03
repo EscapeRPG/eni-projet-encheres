@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.eni.projet.bll.UtilisateurService;
+import fr.eni.projet.bll.UtilisateurServiceImpl;
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
 
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 public class UtilisateurController {
 
+    private final UtilisateurServiceImpl utilisateurServiceImpl;
+
 	private UtilisateurService utilisateurService;
 
-	public UtilisateurController(UtilisateurService utilisateurService) {
+	public UtilisateurController(UtilisateurService utilisateurService, UtilisateurServiceImpl utilisateurServiceImpl) {
 		this.utilisateurService = utilisateurService;
+		this.utilisateurServiceImpl = utilisateurServiceImpl;
 	}
 
 	@GetMapping("/inscription")
@@ -34,20 +39,43 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/inscription")
-	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, Model model) {
+	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
+	                               @RequestParam("confirmationMotDePasse") String confirmationMotDePasse, Model model) {
+
+	    if (!utilisateur.getMotDePasse().equals(confirmationMotDePasse)) {
+	        bindingResult.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
+	        return "inscription";
+	    }
+
+	    if (bindingResult.hasErrors()) {
+	        return "inscription";
+	    }
+	    
+	    
 		try {
-			this.utilisateurService.creerUtilisateur(utilisateur);
+			if (utilisateurService.pseudoExist(utilisateur.getPseudo())) {
+			    bindingResult.rejectValue("pseudo", "error.utilisateur", "Ce pseudo est déjà utilisé.");
+			    return "inscription";
+			}
 		} catch (BusinessException e) {
-			e.getExceptionMessages().forEach(m -> {
-				ObjectError error = new ObjectError("globalError", m);
-				bindingResult.addError(error);
-			});
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (bindingResult.hasErrors()) {
-			return "inscription";
-		}
-		return "redirect:/index"; 
+	 
+	    			
+	    try {
+	        utilisateurService.creerUtilisateur(utilisateur);
+	    } catch (BusinessException e) {
+	        e.getExceptionMessages().forEach(m -> {
+	            ObjectError error = new ObjectError("globalError", m);
+	            bindingResult.addError(error);
+	        });
+	        return "inscription";
+	    }
+ 
+	    return "redirect:/index";
 	}
+	
 
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
@@ -121,39 +149,11 @@ public class UtilisateurController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/deconnexion")
-	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
-
-		utilisateurEnSession.setIdUtilisateur(0);
-		utilisateurEnSession.setPseudo(null);
-		utilisateurEnSession.setNom(null);
-		utilisateurEnSession.setPrenom(null);
-		utilisateurEnSession.setEmail(null);
-		utilisateurEnSession.setTelephone(null);
-		utilisateurEnSession.setRue(null);
-		utilisateurEnSession.setCodePostal(null);
-		utilisateurEnSession.setVille(null);
-		utilisateurEnSession.setMotDePasse(null);
-		utilisateurEnSession.setCredit(0);
-		utilisateurEnSession.setAdministrateur(false);
-
-		return "redirect:/";
-
-	}
-
 	@ModelAttribute("utilisateurEnSession")
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();
 	}
 
 	
-	@Controller
-	public class HomeController {
-
-	    @GetMapping("/index")
-	    public String index() {
-	        return "index"; // Thymeleaf va chercher "index.html" dans src/main/resources/templates
-	    }
-	}
 	
 }
