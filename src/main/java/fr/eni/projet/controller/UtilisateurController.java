@@ -97,28 +97,16 @@ public class UtilisateurController {
 				utilisateurEnSession.setMotDePasse(utilisateurInBDD.getMotDePasse());
 				utilisateurEnSession.setCredit(utilisateurInBDD.getCredit());
 				utilisateurEnSession.setAdministrateur(utilisateurInBDD.isAdministrateur());
-			} else {
-				utilisateurEnSession.setIdUtilisateur(0);
-				utilisateurEnSession.setPseudo(null);
-				utilisateurEnSession.setNom(null);
-				utilisateurEnSession.setPrenom(null);
-				utilisateurEnSession.setEmail(null);
-				utilisateurEnSession.setTelephone(null);
-				utilisateurEnSession.setRue(null);
-				utilisateurEnSession.setCodePostal(null);
-				utilisateurEnSession.setVille(null);
-				utilisateurEnSession.setMotDePasse(null);
-				utilisateurEnSession.setCredit(0);
-				utilisateurEnSession.setAdministrateur(false);
+				return "redirect:/";
 			}
 		} catch (BusinessException e) {
 			e.getExceptionMessages().forEach(m -> {
-				ObjectError error = new ObjectError("globalError", m);
+				ObjectError error = new ObjectError("errorLogin", m);
 				bindingResult.addError(error);
 			});
 		}
+		return "/connexion";
 
-		return "redirect:/";
 	}
 
 	@GetMapping("/deconnexion")
