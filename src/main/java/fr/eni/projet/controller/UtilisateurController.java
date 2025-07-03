@@ -49,14 +49,6 @@ public class UtilisateurController {
 		return "redirect:/index"; 
 	}
 
-	@PostMapping("/annulerVente")
-	public String annulerVente() {
-		
-		// Methode : annulerVente
-	   
-	    return "redirect:/profil";
-	}
-
 	@GetMapping("/modifierProfil")
 	public String goTomodifierProfil() {
 		return "modifierProfil";

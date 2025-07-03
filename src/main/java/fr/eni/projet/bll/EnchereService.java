@@ -40,5 +40,7 @@ public interface EnchereService {
     void clotureArticle(long idArticle) throws BusinessException;
     
     List<Categorie> consulterAllCategories();
+    
+    void supprimerVente(long idArticle);
 
 }
