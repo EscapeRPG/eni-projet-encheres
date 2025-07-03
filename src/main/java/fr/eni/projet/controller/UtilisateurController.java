@@ -46,8 +46,8 @@ public class UtilisateurController {
 	    if (bindingResult.hasErrors()) {
 	        return "inscription";
 	    }
-	    
-	  		
+
+
 	    try {
 	        utilisateurService.creerUtilisateur(utilisateur);
 	    } catch (BusinessException e) {
@@ -57,10 +57,10 @@ public class UtilisateurController {
 	        });
 	        return "inscription";
 	    }
- 
+
 	    return "redirect:/index";
 	}
-	
+
 
 	@PostMapping("/annulerVente")
 	public String annulerVente() {
@@ -136,4 +136,41 @@ public class UtilisateurController {
 
 	}
 
+	@GetMapping("/deconnexion")
+	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+
+		utilisateurEnSession.setIdUtilisateur(0);
+		utilisateurEnSession.setPseudo(null);
+		utilisateurEnSession.setNom(null);
+		utilisateurEnSession.setPrenom(null);
+		utilisateurEnSession.setEmail(null);
+		utilisateurEnSession.setTelephone(null);
+		utilisateurEnSession.setRue(null);
+		utilisateurEnSession.setCodePostal(null);
+		utilisateurEnSession.setVille(null);
+		utilisateurEnSession.setMotDePasse(null);
+		utilisateurEnSession.setCredit(0);
+		utilisateurEnSession.setAdministrateur(false);
+
+		return "redirect:/";
+
+	}
+
+	@GetMapping("/supprimerProfil")
+	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo)
+	{
+
+        try {
+            utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/deconnexion";
+	}
+
+	@ModelAttribute("utilisateurEnSession")
+	public Utilisateur addUtilisateurEnSession() {
+		return new Utilisateur();
+	}
+	
 }
