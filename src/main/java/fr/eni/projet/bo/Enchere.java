@@ -6,7 +6,6 @@ public class Enchere {
 
     private Utilisateur utilisateur;
     private Article enchereArticle;
-
     private LocalDateTime dateEnchere;
     private int montantEnchere;
 
