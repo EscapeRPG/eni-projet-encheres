@@ -12,21 +12,23 @@
 	</header>
 
 	<h2>Détail vente</h2>
-	<h3 th:if="${article.dateDebutEncheres == article.dateFinEncheres}" th:text="' a remporté l'enchère'">Affichage gagnant</h3>
+	<h3 th:if="${today >= article.dateFinEncheres}" th:text="${article.utilisateur.pseudo} + ' a remporté l'enchère'">Affichage gagnant</h3>
 	
 	<div class="item-container">
 	
 		<p th:text="${article.nomArticle} ?: 'Nom inconnu'"></p>
 		<!--  <img th:src="${article.src}" th:alt="${article.nomArticle}"><br>-->
 		
-		<div>
-			<p th:text="'Description : ' + ${article.descriptions} ?: 'Description vide'"></p>
-			<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
+		<div th:if="${article.dateFinEncheres <= today}">
+			<div>
+				<p th:text="'Description : ' + ${article.descriptions} ?: 'Description vide'"></p>
+				<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
+			</div>
 		</div><br>
 
 		<p th:text="${enchere != 0} ? 'Meilleure offre : ' + ${enchere} : 'Aucune offre'"></p>
 		<p th:text="'Mise à prix : ' + ${article.miseAPrix}">Mise à prix :</p><br>
-		<p th:if="${article.dateDebutEncheres >= today}" th:text="'Début de l\'enchère : ' + ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}">Début de l'enchère</p>
+		<p th:if="${article.dateDebutEncheres >= today && article.dateFinEncheres < today}" th:text="'Début de l\'enchère : ' + ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}">Début de l'enchère</p>
 		<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">Fin de l'enchère</p>
 		<p>Retrait :</p>
 		<p th:text="${article.retrait.rue}">Rue</p>
@@ -38,18 +40,20 @@
 				<label for="montant">Ma proposition :</label>
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 				<input type="number" id="montant" name="montant" th:min="${enchere != null && enchere >= article.miseAPrix} ? ${enchere + 1} : ${article.miseAPrix}"  required >
-				<button type="submit">Enchérir</button>
+				<div th:if="${article.dateFinEnchere <= today}">
+					<button type="submit">Enchérir</button>
+				</div>
 			</form>
 		</div>
 		
 		<div th:if="${utilisateurEnSession != null && article.utilisateur.idUtilisateur eq utilisateurEnSession.idUtilisateur && article.dateDebutEncheres != article.dateFinEncheres}">
-		<form th:action="@{/annulerVente}" method="post">
-		<input type="hidden" name ="idArticle" th:value="${article.idArticle}">
-			<button type="submit">Annuler la vente</button>
-		</form>
+			<form th:action="@{/annulerVente}" method="post">
+			<input type="hidden" name ="idArticle" th:value="${article.idArticle}">
+				<button type="submit">Annuler la vente</button>
+			</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq enchere.utilisateur.pseudo && article.dateFinEncheres <= today}">
+		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq article.utilisateur.pseudo && article.dateFinEncheres <= today}">
 			<form th:action="@{/retraitEffectue}" method="post">
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 				<button type="submit">Retrait effectué</button>
