@@ -64,6 +64,7 @@ public class EncheresController {
 		Article article = this.enchereService.detailVente(idArticle);
 		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 		
+		
 		model.addAttribute("article", article);
 		
 		if (enchereEnCours != 0) {
