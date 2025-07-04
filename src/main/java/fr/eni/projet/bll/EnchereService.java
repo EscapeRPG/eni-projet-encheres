@@ -2,6 +2,7 @@ package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
+import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.exception.BusinessException;
 
 import java.util.List;
@@ -51,5 +52,7 @@ public interface EnchereService {
 
 	List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
+	
+	int consulterEnchereMax(long idArticle);
 
 }

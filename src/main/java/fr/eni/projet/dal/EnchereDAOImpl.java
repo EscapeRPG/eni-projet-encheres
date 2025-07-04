@@ -32,16 +32,17 @@ public class EnchereDAOImpl implements EnchereDAO{
     }
 
     @Override
-    public Enchere enchereMax(long idArticle) {
-        String sql = "SELECT *" +
-                " FROM enchere" +
-                " WHERE idArticle = :idArticle and montantEnchere = (SELECT MAX(montantEnchere) FROM enchere where idArticle = :idArticle )";
-
+    public int enchereMax(long idArticle) {
+        String sql = "SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle";
+        
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
+        Integer enchereMax = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
 
-        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
-
+        if (enchereMax != null) {
+        	return enchereMax;
+		}
+        return 0;
     }
 
 

@@ -2,6 +2,7 @@ package fr.eni.projet.bll;
 
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
+import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.dal.CategorieDAO;
@@ -10,8 +11,7 @@ import fr.eni.projet.dal.RetraitDAO;
 import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.exception.BusinessException;
 
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Service;import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -44,10 +44,11 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void encherir(long idArticle, long idUtilisateur, int value) {
+	public void encherir(long idArticle, long idUtilisateur, int montant) {
 
-		if (value > enchereDAO.enchereMax(idArticle).getMontantEnchere()) {
-			this.enchereDAO.creerEnchere(enchereDAO.afficherEnchere(idArticle));
+		if (montant > enchereDAO.enchereMax(idArticle)) {
+			Enchere newEnchere = new Enchere(utilisateurDAO.consulterCompte(idUtilisateur), articleDAO.afficherArticle(idArticle), LocalDateTime.now(), montant);
+			this.enchereDAO.creerEnchere(newEnchere);
 		} else {
 			System.out.println("Saisir une enchère plus élevée");
 
@@ -119,6 +120,12 @@ public class EnchereServiceImpl implements EnchereService {
 			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
 		}
 		return articles;
+	}
+
+	@Override
+	public int consulterEnchereMax(long idArticle) {
+		
+		return this.enchereDAO.enchereMax(idArticle);
 	}
 
 	
