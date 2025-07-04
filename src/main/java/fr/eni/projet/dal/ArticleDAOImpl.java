@@ -86,7 +86,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, r.rue, r.codePostal, r.ville, "
+		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville, "
 				+ "MAX(e.montantEnchere) AS meilleureEnchere, " + "COUNT(e.idUtilisateur) AS nombreEncheres "
 				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
 				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
@@ -97,7 +97,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
 				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR') "
 				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET') "
-				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, r.rue, r.codePostal, r.ville "
+				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
 				+ "ORDER BY a.idArticle";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
@@ -125,6 +125,7 @@ class ArticleMapper implements RowMapper<Article> {
 		article.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
 		article.setMiseAPrix(rs.getInt("miseAPrix"));
 		article.setPrixVente(rs.getInt("prixVente"));
+		article.setEtatVente(rs.getString("etatVente"));
 
 		Categorie categorie = new Categorie();
 		categorie.setIdCategorie(rs.getLong("idCategorie"));

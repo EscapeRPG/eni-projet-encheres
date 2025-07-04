@@ -120,7 +120,6 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public int consulterEnchereMax(long idArticle) {
-		
 		return this.enchereDAO.enchereMax(idArticle);
 	}
 
