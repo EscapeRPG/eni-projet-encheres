@@ -51,15 +51,12 @@ public class EnchereServiceImpl implements EnchereService {
 			this.enchereDAO.creerEnchere(newEnchere);
 		} else {
 			System.out.println("Saisir une enchère plus élevée");
-
 		}
-
 	}
 
 	@Override
 	public Article detailVente(long idArticle) {
 		Article article = this.articleDAO.afficherArticle(idArticle);
-
 		article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
 		article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
 		article.setRetrait(retraitDAO.afficherRetrait(idArticle));
@@ -69,7 +66,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void remporterVente(long idArticle) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -94,7 +91,6 @@ public class EnchereServiceImpl implements EnchereService {
 
 
 	private boolean isExistArticle(long idArticle, BusinessException be) {
-
 		boolean i = articleDAO.hasArticle(idArticle);
 		if (i) {
 			return true;

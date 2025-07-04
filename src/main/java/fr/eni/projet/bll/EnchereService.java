@@ -41,7 +41,7 @@ public interface EnchereService {
      * N.B : À utiliser par le contrôleur lors de la clôture.
      * @param idArticle l'identifiant de l'article concerné.
      */
-    void remporterVente(long idArticle);
+    void remporterVente(long idArticle); 
     
     void clotureArticle(long idArticle) throws BusinessException;
     
