@@ -22,8 +22,12 @@ public interface UtilisateurDAO {
     int consulterNbreCredit(long idUtilisateur);
     
     boolean isUtilisateurInBDD(long idUtilisateur);
-    boolean isUtilisateurInBDD(String pseudo);  
+    boolean isUtilisateurInBDD(String pseudo);
     
+    boolean emailExist(String email);
+	boolean isEmailInBDD(String email);
+
+     
  
 
 }

@@ -44,6 +44,10 @@ public interface UtilisateurService {
 	boolean pseudoExiste(String pseudo);
 
 	
+
+	boolean emailExiste(String email);
+
+	
 	
     
    
