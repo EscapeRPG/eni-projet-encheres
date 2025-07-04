@@ -100,7 +100,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return utilisateurDAO.isUtilisateurInBDD(pseudo);
 	}
 
-	
-	
+	@Override
+	public boolean emailExiste(String email) {	
+		return utilisateurDAO.emailExist(email);
+	} 
+ 
 	
 }
