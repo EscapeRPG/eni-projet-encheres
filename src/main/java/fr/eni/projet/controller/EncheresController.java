@@ -62,7 +62,16 @@ public class EncheresController {
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
 		Article article = this.enchereService.detailVente(idArticle);
+		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+		
 		model.addAttribute("article", article);
+		
+		if (enchereEnCours != 0) {
+			model.addAttribute("enchere", enchereEnCours);
+		}
+		else {
+			model.addAttribute("enchere", 0);
+		}
 		
 		return "detail-vente";
 	}
@@ -85,14 +94,12 @@ public class EncheresController {
 	@PostMapping("/encherir")
 	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
 							   @RequestParam(name = "montant") int montant ,
-							   @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
+							   @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 		
 		
 		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
-		Article articleEncheri = enchereService.detailVente(idArticle);
-		model.addAttribute("article", articleEncheri);
 		
-		return "detail-vente";
+		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
 	
@@ -101,9 +108,9 @@ public class EncheresController {
 	@GetMapping("/vendre-article")
 	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
-		Article nouvelleArticle = enchereService.detailVente(idArticle);
+		Article nouvelArticle = enchereService.detailVente(idArticle);
 		// non foonctionnelle pour le moment
-		model.addAttribute("article", nouvelleArticle);
+		model.addAttribute("article", nouvelArticle);
 
 		return "vendreArticle";
 	}
