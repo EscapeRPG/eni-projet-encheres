@@ -1,5 +1,6 @@
 package fr.eni.projet.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -64,6 +65,8 @@ public class EncheresController {
 		Article article = this.enchereService.detailVente(idArticle);
 		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 		
+		LocalDateTime today = LocalDateTime.now();
+		model.addAttribute("today", today);
 		
 		model.addAttribute("article", article);
 		
