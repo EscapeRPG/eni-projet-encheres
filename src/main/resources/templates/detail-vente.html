@@ -49,7 +49,7 @@
 		</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq enchere.utilisateur.pseudo && article.dateFinEncheres >= today}">
+		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq enchere.utilisateur.pseudo && article.dateFinEncheres <= today}">
 			<form th:action="@{/retraitEffectue}" method="post">
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 				<button type="submit">Retrait effectué</button>
