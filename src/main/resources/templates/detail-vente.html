@@ -26,6 +26,7 @@
 
 		<p th:text="${enchere != 0} ? 'Meilleure offre : ' + ${enchere} : 'Aucune offre'"></p>
 		<p th:text="'Mise à prix : ' + ${article.miseAPrix}">Mise à prix :</p><br>
+		<p th:if="${article.dateDebutEncheres >= today}" th:text="'Début de l\'enchère : ' + ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}">Début de l'enchère</p>
 		<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">Fin de l'enchère</p>
 		<p>Retrait :</p>
 		<p th:text="${article.retrait.rue}">Rue</p>
@@ -41,23 +42,23 @@
 			</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && article.utilisateur.idUtilisateur eq utilisateurEnSession.idUtilisateur  && article.dateDebutEncheres != article.dateFinEncheres}">
+		<div th:if="${utilisateurEnSession != null && article.utilisateur.idUtilisateur eq utilisateurEnSession.idUtilisateur && article.dateDebutEncheres != article.dateFinEncheres}">
 		<form th:action="@{/annulerVente}" method="post">
 		<input type="hidden" name ="idArticle" th:value="${article.idArticle}">
 			<button type="submit">Annuler la vente</button>
 		</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && article.utilisateur.idUtilisateur  eq utilisateurEnSession.idUtilisateur  && article.dateDebutEncheres == article.dateFinEncheres}">
-		<form th:action="@{/retraitEffectue}" method="post">
-			<input type="hidden" name="idArticle" th:value="${article.idArticle}">
-			<button type="submit">Retrait effectué</button>
-		</form>
-		
-		<form th:action="@{/contacterAcheteur}" method="post">
-			<input type="hidden"  th:value="${article.idArticle}">
-			<button type="submit" th:text="'Contacter '" >Contacter acheteur</button>
-		</form>
+		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq enchere.utilisateur.pseudo && article.dateFinEncheres <= today}">
+			<form th:action="@{/retraitEffectue}" method="post">
+				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
+				<button type="submit">Retrait effectué</button>
+			</form>
+			
+			<form th:action="@{/contacterAcheteur}" method="post">
+				<input type="hidden"  th:value="${article.idArticle}">
+				<button type="submit" th:text="'Contacter '" >Contacter acheteur</button>
+			</form>
 		</div>
 		
 		
