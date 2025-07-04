@@ -116,7 +116,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     public void desactiverCompte(long idUtilisateur) {
 
     }
-
+ 
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {
         String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
@@ -129,13 +129,33 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     
     @Override
     public boolean isUtilisateurInBDD(String pseudo) {
-        String sql = "select count(*) from utilisateur where pseudo = :pseudo";
+        String sql = "select count(*) from utilisateur where pseudo = :pseudo";       
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", pseudo);
         int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
         
-        return i != 0;
+        return i != 0; 
     }
+    
+   
+    
+    @Override
+	public boolean emailExist(String email) {
+    	String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("email", email);
+        int count = jdb.queryForObject(sql, params, Integer.class);
+        return count != 0;
+    }
+ 
+    @Override
+	public boolean isEmailInBDD(String email) {
+		return false;
+	}
+
+    
+    
+    
 
 	@Override 
 	public void updateCompte(Utilisateur u) {
@@ -155,8 +175,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		
 	}
 
-	
-	
 	
 	
 }

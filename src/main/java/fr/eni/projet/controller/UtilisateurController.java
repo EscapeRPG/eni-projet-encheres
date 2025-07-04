@@ -51,6 +51,11 @@ public class UtilisateurController {
 	    if (utilisateurService.pseudoExiste(utilisateur.getPseudo())) {
 	        bindingResult.rejectValue("pseudo", "error.pseudo", "Ce pseudo est déjà utilisé.");
 	    }
+	    
+	    // Vérifie si l'email existe déjà en base
+	    if (utilisateurService.emailExiste(utilisateur.getEmail())) {
+	    	bindingResult.rejectValue("email", "error.email", "Cet email est déjà utilisé.");
+	    }
 
 	    // En cas d'erreur, on renvoie au formulaire
 	    if (bindingResult.hasErrors()) {
