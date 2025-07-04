@@ -19,9 +19,9 @@
 		<p th:text="${article.nomArticle} ?: 'Nom inconnu'"></p>
 		<!--  <img th:src="${article.src}" th:alt="${article.nomArticle}"><br>-->
 		
-		<div th:if="${utilisateurEnSession != null && article.utilisateur != utilisateurEnSession}">
-			<p th:text="${article.descriptions} ?: 'Description vide'"></p>
-			<p th:text="${article.categorie.idCategorie} ?: 'Categorie non renseignée'"></p>
+		<div>
+			<p th:text="'Description : ' + ${article.descriptions} ?: 'Description vide'"></p>
+			<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
 		</div><br>
 
 		<p th:text="${enchere != 0} ? 'Meilleure offre : ' + ${enchere} : 'Aucune offre'"></p>
