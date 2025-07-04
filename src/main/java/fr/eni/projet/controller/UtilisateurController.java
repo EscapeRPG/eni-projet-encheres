@@ -74,6 +74,7 @@ public class UtilisateurController {
 	@GetMapping("/modifierProfil")
 	public String goTomodifierProfil() {
 		return "modifierProfil";
+	}
 
 	@GetMapping("/profil")
 	public String goToProfil(@RequestParam(name = "pseudo") String pseudo, Model model) {
