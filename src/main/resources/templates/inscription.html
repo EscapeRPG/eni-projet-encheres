@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
-<link rel="stylesheet" th:href="@{/css/inscription.css}" />
-<link rel="stylesheet" data-th-href="@{/css/error.css}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Inscription</title>
-	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" th:href="@{/css/inscription.css}" />
+    <link rel="stylesheet" th:href="@{/css/error.css}">
 </head>
 <body>
 	<header>
@@ -21,6 +22,7 @@
 				<label for="pseudo">Pseudo :</label>				
 				<input type="text" id="pseudo" th:field="*{pseudo}">
 				<p th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}" class="error"></p>
+				
 				
 				<label for="nom">Nom :</label>
 				<input type="text" id="nom" th:field="*{nom}"/>
@@ -43,13 +45,14 @@
 				<label for="ville">Ville :</label>
 				<input type="text" id="ville" th:field="*{ville}">
 				
-				<label for="password1">Mot de passe :</label>
-				<input type="password" id="password1" th:field="*{motDePasse}">
-				<p th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="error"></p>
 				
-				<label for="password2">Confirmation :</label>
-				<input type="password" id="password2" name="confirmationMotDePasse">
-			</div>
+				<label for="password1">Mot de passe :</label>
+                <input type="password" id="password1" th:field="*{motDePasse}">
+                <p th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="error"></p>
+
+                <label for="password2">Confirmation :</label>
+                <input type="password" id="password2" name="confirmationMotDePasse">
+  			</div>
 			
 			<button type="submit" class="form-buttons">Créer</button>
 		</form>
