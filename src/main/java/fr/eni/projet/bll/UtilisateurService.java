@@ -40,6 +40,11 @@ public interface UtilisateurService {
     void supprimerUtilisateur (long idUtilisateur) throws BusinessException;
     
     Utilisateur connecterUtilisateur (String pseudo, String motDePasse) throws BusinessException;
+
+	boolean pseudoExiste(String pseudo);
+
+	
+	
     
    
 
