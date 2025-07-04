@@ -46,7 +46,7 @@ public class EnchereServiceImpl implements EnchereService {
 	@Override
 	public void encherir(long idArticle, long idUtilisateur, int value) {
 
-		if (value > enchereDAO.afficherEnchere(idArticle).getMontantEnchere()) {
+		if (value > enchereDAO.enchereMax(idArticle).getMontantEnchere()) {
 			this.enchereDAO.creerEnchere(enchereDAO.afficherEnchere(idArticle));
 		} else {
 			System.out.println("Saisir une enchère plus élevée");
@@ -84,6 +84,13 @@ public class EnchereServiceImpl implements EnchereService {
 			throw be;
 		}
 	}
+	
+	@Override
+	public void supprimerVente(long idArticle) {
+		// TODO Auto-generated method stub
+		this.articleDAO.supprimerArticle(idArticle);
+	}
+
 
 	private boolean isExistArticle(long idArticle, BusinessException be) {
 
@@ -114,4 +121,5 @@ public class EnchereServiceImpl implements EnchereService {
 		return articles;
 	}
 
+	
 }

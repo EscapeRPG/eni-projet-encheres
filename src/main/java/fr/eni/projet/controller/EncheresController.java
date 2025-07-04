@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
+import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
 
@@ -56,6 +58,16 @@ public class EncheresController {
 		return "acquisition";
 	}
 
+	
+	@GetMapping("/detail-vente")
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
+		Article article = this.enchereService.detailVente(idArticle);
+		model.addAttribute("article", article);
+		
+		return "detail-vente";
+	}
+	
+
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
 
@@ -69,18 +81,22 @@ public class EncheresController {
 		return "redirect:/profil";
 	}
 
-	@GetMapping("/encherir")
-	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
-		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), 20); // Le montant est indiqué ici
-																							// en dur, il faudra le
-																							// changer une fois la
-																							// méthode adaptée créée
 
+	@PostMapping("/encherir")
+	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
+							   @RequestParam(name = "montant") int montant ,
+							   @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
+		
+		
+		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
 		Article articleEncheri = enchereService.detailVente(idArticle);
 		model.addAttribute("article", articleEncheri);
-		return "encherir";
+		
+		return "detail-vente";
 	}
+
+	
+	
 
 	@GetMapping("/vendre-article")
 	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
@@ -88,9 +104,23 @@ public class EncheresController {
 		Article nouvelleArticle = enchereService.detailVente(idArticle);
 		// non foonctionnelle pour le moment
 		model.addAttribute("article", nouvelleArticle);
+
 		return "vendreArticle";
 	}
-
+	
+	@PostMapping("/annulerVente")
+	public String goToAnnulerArticle (@RequestParam(name="idArticle") long idArticle, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
+		
+		this.enchereService.supprimerVente(idArticle);
+		
+		List<Article> listeArticles = enchereService.consulterAllVentes();
+		List<Categorie> listeCategories = enchereService.consulterAllCategories();
+		model.addAttribute("categoriesEnSession", listeCategories);
+		model.addAttribute("articles", listeArticles);
+		
+		return "redirect:/";
+	}
+	
 	@ModelAttribute("categoriesEnSession")
 	public List<Categorie> addCategorieEnSession() {
 		return this.enchereService.consulterAllCategories();

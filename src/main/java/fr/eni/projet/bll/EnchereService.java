@@ -34,18 +34,20 @@ public interface EnchereService {
 	 */
 	Article detailVente(long idArticle);
 
-	/**
-	 * Détermine et enregistre l'utilisateur ayant remporté l'enchère sur un article
-	 * donné (c'est-à-dire celui ayant proposé la valeur la plus haute). N.B : À
-	 * utiliser par le contrôleur lors de la clôture.
-	 * 
-	 * @param idArticle l'identifiant de l'article concerné.
-	 */
-	void remporterVente(long idArticle);
+    /**
+     * Détermine et enregistre l'utilisateur ayant remporté l'enchère
+     * sur un article donné (c'est-à-dire celui ayant proposé la valeur la plus haute).
+     * N.B : À utiliser par le contrôleur lors de la clôture.
+     * @param idArticle l'identifiant de l'article concerné.
+     */
+    void remporterVente(long idArticle);
+    
+    void clotureArticle(long idArticle) throws BusinessException;
+    
+    List<Categorie> consulterAllCategories();
+    
+    void supprimerVente(long idArticle);
 
-	void clotureArticle(long idArticle) throws BusinessException;
-
-	List<Categorie> consulterAllCategories();
 
 	List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
