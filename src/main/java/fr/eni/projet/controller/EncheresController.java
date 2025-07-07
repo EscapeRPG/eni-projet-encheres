@@ -62,8 +62,11 @@ public class EncheresController {
 
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article article = this.enchereService.detailVente(idArticle);
-		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+
+	    Article article = this.enchereService.detailVente(idArticle);
+	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
 
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
@@ -81,6 +84,7 @@ public class EncheresController {
 
 		return "detail-vente";
 	}
+
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
