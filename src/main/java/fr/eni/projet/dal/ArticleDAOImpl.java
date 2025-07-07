@@ -26,8 +26,20 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	@Override
 	public long ajouterArticle(Article article) {
-		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
-				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
+//		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
+//				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
+		String sql1 = "merge into article as v" +
+				" using (select :nomArticle as nomArticle, :descriptions as descriptions, :dateDebutEncheres as dateDebutEncheres,:dateFinEncheres as dateFinEncheres" +
+				" , :miseAPrix as miseAPrix, :prixVente as prixVente, :idUtilisateur as idUtilisateur, :idCategorie as idCategorie) as s" +
+				" on v.nomArticle = s.nomArticle and v.descriptions = s.descriptions and v.dateDebutEncheres = s.dateDebutEncheres and v.dateFinEncheres = s.dateFinEncheres and" +
+				" v.miseAPrix = s.miseAPrix and v.prixVente = s.prixVente and v.idUtilisateur = s.idUtilisateur and v.idCategorie = s.idCategorie" +
+				" when matched then" +
+				" update set nomArticle = s.nomArticle, descriptions = s.descriptions, dateDebutEncheres = s.dateDebutEncheres, dateFinEncheres = s.dateFinEncheres, miseAPrix = s.miseAPrix, prixVente = s.prixVente," +
+				" idUtilisateur = s.idUtilisateur, idCategorie = s.idCategorie" +
+				" when not matched then" +
+				" insert (nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie)" +
+				" values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie);";
+
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("nomArticle", article.getNomArticle());
 		mapSqlParameterSource.addValue("descriptions", article.getDescriptions());
@@ -39,7 +51,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idCategorie", article.getCategorie().getIdCategorie());
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdb.update(sql,mapSqlParameterSource,keyHolder);
+		jdb.update(sql1,mapSqlParameterSource,keyHolder);
 
 		if(keyHolder.getKey()!=null) {
 			article.setIdArticle(keyHolder.getKey().longValue());
