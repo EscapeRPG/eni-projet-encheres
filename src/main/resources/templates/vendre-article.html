@@ -69,11 +69,11 @@
                 <div>
                     <h3>Retrait</h3>
                     <label for="Rue">Rue : </label>
-                    <input type="text" id="Rue" th:field="*{retrait.rue}" />
+                    <input type="text" id="Rue" th:field="*{retrait.rue}" th:value="*{retrait.rue}"   />
                     <label for="codePostal">Code Postal : </label>
-                    <input type="text" id="codePostal" th:field="*{retrait.codePostal}" />
+                    <input type="text" id="codePostal" th:field="*{retrait.codePostal}"  />
                     <label for="ville">Ville : </label>
-                    <input type="text" id="ville" th:field="*{retrait.ville}" />
+                    <input type="text" id="ville" th:field="*{retrait.ville}"  />
                 </div>
                 <div>
                     <button type="submit">Enregistrer</button>

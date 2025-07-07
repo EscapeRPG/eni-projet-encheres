@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ArticleDAO {
 
-	void ajouterArticle(Article article);
+	long ajouterArticle(Article article);
 
 	void supprimerArticle(long idArticle);
 
@@ -21,4 +21,5 @@ public interface ArticleDAO {
 	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 
-}
+} 
+ 

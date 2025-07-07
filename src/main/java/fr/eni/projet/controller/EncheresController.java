@@ -1,12 +1,8 @@
 package fr.eni.projet.controller;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import fr.eni.projet.bo.Retrait;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,22 +63,25 @@ public class EncheresController {
 
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article article = this.enchereService.detailVente(idArticle);
-		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+	    Article article = this.enchereService.detailVente(idArticle);
+	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
 
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
 
-		model.addAttribute("article", article);
-
-		if (enchereEnCours != 0) {
-			model.addAttribute("enchere", enchereEnCours);
-		} else {
-			model.addAttribute("enchere", 0);
+		if (article.getDateFinEncheres().isBefore(today)) {
+			enchereService.remporterVente(idArticle);
 		}
+		model.addAttribute("article", article);
+		model.addAttribute("enchere", enchereEnCours);
+		model.addAttribute("today", LocalDateTime.now());
 
 		return "detail-vente";
 	}
+
+
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
@@ -107,10 +106,19 @@ public class EncheresController {
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
+	
+	
+
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			Model model) {
-		model.addAttribute("article", new Article());
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+		Article article = new Article();
+
+		Retrait retrait = new Retrait();
+		retrait.setRue(utilisateurEnSession.getRue());
+		retrait.setCodePostal(utilisateurEnSession.getCodePostal());
+		retrait.setVille(utilisateurEnSession.getVille());
+		article.setRetrait(retrait);
+		model.addAttribute("article", article);
 
 		model.addAttribute("utilisateurEnSession", utilisateurEnSession);
 
@@ -124,6 +132,7 @@ public class EncheresController {
 		article.setUtilisateur(utilisateurEnSession);
 
 		System.out.println(article);
+
 		enchereService.CreationArticle(article);
 
 		return "redirect:/index";

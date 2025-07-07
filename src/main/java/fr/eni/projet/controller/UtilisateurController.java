@@ -34,7 +34,7 @@ public class UtilisateurController {
 		model.addAttribute("utilisateur", utilisateur);
 		return "inscription";
 	}
-
+ 
 	@PostMapping("/inscription")
 	public String creerUtilisateur(
 	        @Valid @ModelAttribute Utilisateur utilisateur,

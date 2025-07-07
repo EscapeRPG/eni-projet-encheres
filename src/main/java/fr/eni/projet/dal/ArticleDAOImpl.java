@@ -7,6 +7,8 @@ import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -20,10 +22,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	public ArticleDAOImpl(NamedParameterJdbcTemplate jdb) {
 		this.jdb = jdb;
-	}
+	} 
 
 	@Override
-	public void ajouterArticle(Article article) {
+	public long ajouterArticle(Article article) {
 		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
 				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -36,9 +38,15 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idUtilisateur", article.getUtilisateur().getIdUtilisateur());
 		mapSqlParameterSource.addValue("idCategorie", article.getCategorie().getIdCategorie());
 
-		jdb.update(sql, mapSqlParameterSource);
-	}
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdb.update(sql,mapSqlParameterSource,keyHolder);
 
+		if(keyHolder.getKey()!=null) {
+			article.setIdArticle(keyHolder.getKey().longValue());
+		}
+		return article.getIdArticle();
+	}
+ 
 	@Override
 	public void supprimerArticle(long idArticle) {
 		String sql = "delete from article where idArticle = :idArticle";
