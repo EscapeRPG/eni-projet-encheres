@@ -110,13 +110,20 @@ public class EncheresController {
 	
 
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
-		Article nouvelArticle = enchereService.detailVente(idArticle);
-		// non foonctionnelle pour le moment
-		model.addAttribute("article", nouvelArticle);
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+		model.addAttribute("article", new Article());
 
 		return "vendreArticle";
+	}
+
+	@PostMapping("articleEnVente")
+	public String creationArticle(@ModelAttribute("article") Article article,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+			, Model model) throws BusinessException {
+		article.setUtilisateur(utilisateurEnSession);
+		System.out.println(article);
+		enchereService.CreationArticle(article);
+		return "redirect:/";
+
 	}
 	
 	@PostMapping("/annulerVente")

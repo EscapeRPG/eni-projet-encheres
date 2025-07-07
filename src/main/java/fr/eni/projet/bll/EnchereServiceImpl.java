@@ -123,5 +123,10 @@ public class EnchereServiceImpl implements EnchereService {
 		return this.enchereDAO.enchereMax(idArticle);
 	}
 
-	
+	@Override
+	public void CreationArticle(Article article) throws BusinessException {
+		articleDAO.ajouterArticle(article);
+	}
+
+
 }
