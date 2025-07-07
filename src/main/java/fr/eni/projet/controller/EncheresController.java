@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
-import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
+import org.springframework.web.multipart.MultipartFile;
 
 @SessionAttributes({ "utilisateurEnSession", "categoriesEnSession" })
 @Controller
@@ -115,13 +114,21 @@ public class EncheresController {
 	
 
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
-		Article nouvelArticle = enchereService.detailVente(idArticle);
-		// non foonctionnelle pour le moment
-		model.addAttribute("article", nouvelArticle);
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+		model.addAttribute("article", new Article());
 
-		return "vendreArticle";
+		return "vendre-article";
+	}
+
+	@PostMapping("articleEnVente")
+	public String creationArticle(@ModelAttribute("article") Article article
+			, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+			, @RequestParam("img")MultipartFile file) throws BusinessException {
+		article.setUtilisateur(utilisateurEnSession);
+		System.out.println(article);
+		enchereService.CreationArticle(article);
+		return "redirect:/";
+
 	}
 	
 	@PostMapping("/annulerVente")

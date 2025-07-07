@@ -6,7 +6,7 @@
 	<nav>
 		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/encheres}">Enchères</a>
 
-		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/vente}">Vendre un objet</a>
+		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/vendre-article}">Vendre un objet</a>
 
 		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/profil(pseudo=${utilisateurEnSession.pseudo})}">Mon profil</a>
 
