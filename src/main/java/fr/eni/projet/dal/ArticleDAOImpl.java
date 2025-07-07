@@ -86,8 +86,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville, "
-				+ "MAX(e.montantEnchere) AS meilleureEnchere, " + "COUNT(e.idUtilisateur) AS nombreEncheres "
+		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
 				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
 				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
 				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree) "
@@ -95,10 +94,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:mesEncheres = 0 OR e.idUtilisateur = :mesEncheres) "
 				+ "AND (:encheresRemportees = 0 OR a.idUtilisateur = :encheresRemportees AND a.etatVente = 'ET') "
 				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
-				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR') "
-				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET') "
-				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
-				+ "ORDER BY a.idArticle";
+				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnAttente AND a.etatVente = 'CR') "
+				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesTerminees AND a.etatVente = 'ET') "
+				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);
