@@ -32,8 +32,9 @@ public interface EnchereService {
 	 * @param idArticle l'identifiant de l'article à consulter.
 	 * @return l'objet {@link Article} contenant les informations détaillées de la
 	 *         vente.
+	 * @throws BusinessException 
 	 */
-	Article detailVente(long idArticle);
+	Article detailVente(long idArticle) throws BusinessException;
 
     /**
      * Détermine et enregistre l'utilisateur ayant remporté l'enchère
@@ -54,7 +55,7 @@ public interface EnchereService {
 	List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 	
-	int consulterEnchereMax(long idArticle);
+	Enchere consulterEnchereMax(long idArticle);
 
 	void CreationArticle(Article article) throws BusinessException;
 

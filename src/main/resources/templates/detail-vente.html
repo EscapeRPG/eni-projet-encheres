@@ -12,49 +12,69 @@
 	</header>
 
 	<h2>Détail vente</h2>
-	<h3 th:if="${today >= article.dateFinEncheres}" th:text="${article.utilisateur.pseudo} + ' a remporté l'enchère'">Affichage gagnant</h3>
+	<h3 th:if="${today >= article.dateFinEncheres 
+			  and (venteTermine == 'ET' or venteTermine == 'RE')}" 
+			  th:text="|'${pseudoAcheteur}' a remporté l'enchère.|">Affichage gagnant</h3>
 	
 	<div class="item-container">
 	
 		<p th:text="${article.nomArticle} ?: 'Nom inconnu'"></p>
 		<!--  <img th:src="${article.src}" th:alt="${article.nomArticle}"><br>-->
 		
-		<div th:if="${article.dateFinEncheres <= today}">
+		<div th:if="${article.dateFinEncheres <= today 
+					and venteEnCours == 'EC'}">
 			<div>
 				<p th:text="'Description : ' + ${article.descriptions} ?: 'Description vide'"></p>
 				<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
 			</div>
 		</div><br>
 
-		<p th:text="${enchere != 0} ? 'Meilleure offre : ' + ${enchere} : 'Aucune offre'"></p>
-		<p th:text="'Mise à prix : ' + ${article.miseAPrix}">Mise à prix :</p><br>
-		<p th:if="${article.dateDebutEncheres >= today && article.dateFinEncheres < today}" th:text="'Début de l\'enchère : ' + ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}">Début de l'enchère</p>
-		<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}">Fin de l'enchère</p>
+		<p th:text="${enchere != 0} ? |Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
+		<p th:text="|Mise à prix : ${article.miseAPrix} points|">Mise à prix (points) :</p><br>
+		
+		
+		<p th:if="${article.dateDebutEncheres >= today 
+				 and article.dateFinEncheres < today}" 
+		   th:text="|Début de l'enchère : ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}|">Début de l'enchère</p>
+		<p th:text="|Fin de l'enchère : ${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}|">Fin de l'enchère</p>
+		
+	    
+		<fieldset>
 		<p>Retrait :</p>
 		<p th:text="${article.retrait.rue}">Rue</p>
 		<p th:text="|${article.retrait.codePostal} ${article.retrait.ville}|">Code postal + Ville</p><br>
+		</fieldset>
 		<p th:text="'Vendeur : ' +${article.utilisateur.pseudo}">Vendeur</p><br>
 		
-		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0 && article.utilisateur.idUtilisateur  != utilisateurEnSession.idUtilisateur }">
+		<div th:if="${utilisateurEnSession != null 
+					and utilisateurEnSession.idUtilisateur > 0 
+					and article.utilisateur.idUtilisateur  != utilisateurEnSession.idUtilisateur 
+					and venteEnCours == 'EC'}">
 			<form th:action="@{/encherir}" method="post">
 				<label for="montant">Ma proposition :</label>
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
-				<input type="number" id="montant" name="montant" th:min="${enchere != null && enchere >= article.miseAPrix} ? ${enchere + 1} : ${article.miseAPrix}"  required >
-				<div th:if="${article.dateFinEnchere <= today}">
+				<input type="number" id="montant" name="montant" th:min="${enchere != null and enchere >= article.miseAPrix} ? ${enchere + 1} : ${article.miseAPrix}"  required >
+				<div>
 					<button type="submit">Enchérir</button>
 				</div>
 			</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && article.utilisateur.idUtilisateur eq utilisateurEnSession.idUtilisateur && article.dateDebutEncheres != article.dateFinEncheres}">
+		<div th:if="${utilisateurEnSession != null 
+					and article.utilisateur.idUtilisateur == utilisateurEnSession.idUtilisateur 
+					and article.dateDebutEncheres >= today && article.dateFinEncheres < today}">
+					
 			<form th:action="@{/annulerVente}" method="post">
 			<input type="hidden" name ="idArticle" th:value="${article.idArticle}">
 				<button type="submit">Annuler la vente</button>
 			</form>
 		</div>
 		
-		<div th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur eq article.utilisateur.pseudo && article.dateFinEncheres <= today}">
-			<form th:action="@{/retraitEffectue}" method="post">
+		<div th:if="${utilisateurEnSession != null 
+					and article.utilisateur.idUtilisateur == utilisateurEnSession.idUtilisateur 
+					and article.dateFinEncheres < today}">
+					
+			<form th:if ="${venteTermine == 'ET'}" th:action="@{/retraitEffectue}" method="post">
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 				<button type="submit">Retrait effectué</button>
 			</form>
