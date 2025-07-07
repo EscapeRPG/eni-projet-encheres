@@ -21,4 +21,5 @@ public interface ArticleDAO {
 	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 
-}
+} 
+ 

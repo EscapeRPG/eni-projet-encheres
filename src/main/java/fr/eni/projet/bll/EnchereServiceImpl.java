@@ -1,9 +1,12 @@
 package fr.eni.projet.bll;
 
+import fr.eni.projet.EncheresApplication;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.controller.EncheresController;
+import fr.eni.projet.controller.UtilisateurController;
 import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
@@ -16,6 +19,14 @@ import java.util.List;
 
 @Service
 public class EnchereServiceImpl implements EnchereService {
+	
+	private final UtilisateurServiceImpl utilisateurServiceImpl;
+	
+    private final UtilisateurController utilisateurController;
+
+    private final EncheresApplication encheresApplication;
+
+    private final EncheresController encheresController;
 
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
@@ -24,12 +35,16 @@ public class EnchereServiceImpl implements EnchereService {
 	private UtilisateurDAO utilisateurDAO;
 
 	public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO,
-			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO) {
+			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO, EncheresController encheresController, UtilisateurServiceImpl utilisateurServiceImpl, EncheresApplication encheresApplication, UtilisateurController utilisateurController) {
 		this.articleDAO = articleDAO;
 		this.enchereDAO = enchereDAO;
 		this.categorieDAO = categorieDAO;
 		this.retraitDAO = retraitDAO;
 		this.utilisateurDAO = utilisateurDAO;
+		this.encheresController = encheresController;
+		this.utilisateurServiceImpl = utilisateurServiceImpl;
+		this.encheresApplication = encheresApplication;
+		this.utilisateurController = utilisateurController;
 	}
 
 	@Override
@@ -65,11 +80,18 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void remporterVente(long idArticle) {
-		
+	public void remporterVente(long idArticle) {		
+	    Article article = articleDAO.afficherArticle(idArticle);
+	    LocalDateTime now = LocalDateTime.now();
+	
+	    if (now.isAfter(article.getDateFinEncheres())) {
+	    	article.setEtatVente("ET");
+            articleDAO.updateEtatArticle(idArticle, "ET");           
+	    }	    	   
+	}   
 
-	}
-
+	 
+	
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
 		BusinessException be = new BusinessException();

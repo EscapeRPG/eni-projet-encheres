@@ -64,22 +64,27 @@ public class EncheresController {
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
 		Article article = this.enchereService.detailVente(idArticle);
 		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+		try {
+			enchereService.remporterVente(idArticle);
+		} catch (BusinessException e) {
+			
+			return "detail-vente";
+		} 
 		
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
-		
 		model.addAttribute("article", article);
-		
+		 
 		if (enchereEnCours != 0) {
 			model.addAttribute("enchere", enchereEnCours);
 		}
 		else {
 			model.addAttribute("enchere", 0);
-		}
+		} 
 		
 		return "detail-vente";
 	}
-	
+	 
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {

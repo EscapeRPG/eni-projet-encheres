@@ -38,7 +38,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 		jdb.update(sql, mapSqlParameterSource);
 	}
-
+ 
 	@Override
 	public void supprimerArticle(long idArticle) {
 		String sql = "delete from article where idArticle = :idArticle";
