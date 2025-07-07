@@ -17,6 +17,7 @@ import fr.eni.projet.bll.EnchereService;
 import fr.eni.projet.bll.filestorage.ImageService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
+import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,20 +59,32 @@ public class EncheresController {
 
 	@GetMapping("/acquisition")
 	public String goToAcquisition(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article articleGagne = enchereService.detailVente(idArticle);
-		model.addAttribute("article", articleGagne);
-		return "acquisition";
+
+		try {
+			Article articleGagne = enchereService.detailVente(idArticle);
+			model.addAttribute("article", articleGagne);
+			return "acquisition";
+
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			return "redirect:/";
+		}
+
 	}
 
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
 
+<<<<<<< HEAD
 	    Article article = this.enchereService.detailVente(idArticle);
 	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
+=======
+>>>>>>> 1399966ec007550d42c33463cba72e64db659ced
 		LocalDateTime today = LocalDateTime.now();
-		model.addAttribute("today", today);
 
+<<<<<<< HEAD
 		if (article.getDateFinEncheres().isBefore(today)) {
 			try {
 				enchereService.remporterVente(idArticle);
@@ -85,21 +98,48 @@ public class EncheresController {
 		model.addAttribute("today", LocalDateTime.now());
 
 		return "acquisition";
+=======
+		try {
+			Article article = this.enchereService.detailVente(idArticle);
+			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+			model.addAttribute("today", today);
+			model.addAttribute("article", article);
+			model.addAttribute("venteEnCours", article.getEtatVente());
+
+			if (enchereEnCours != null) {
+				model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
+				model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
+
+				if (article.getEtatVente().equals("ET") || article.getEtatVente().equals("RE")) {
+					model.addAttribute("venteTermine", article.getEtatVente());
+				}
+			} else {
+				model.addAttribute("enchere", 0);
+			}
+			return "detail-vente";
+
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			return "redirect:/";
+		}
+		
+>>>>>>> 1399966ec007550d42c33463cba72e64db659ced
 	}
-
-
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
 
 		try {
+
 			this.enchereService.clotureArticle(idArticle);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
 
-		return "redirect:/profil";
+		return "redirect:/";
 	}
 
 	@PostMapping("/encherir")
@@ -112,14 +152,12 @@ public class EncheresController {
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
-	
-	
-
 	@GetMapping("/vendre-article")
+
 	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
 		Article article = new Article();
-
 		Retrait retrait = new Retrait();
+		
 		retrait.setRue(utilisateurEnSession.getRue());
 		retrait.setCodePostal(utilisateurEnSession.getCodePostal());
 		retrait.setVille(utilisateurEnSession.getVille());

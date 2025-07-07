@@ -1,11 +1,20 @@
 package fr.eni.projet.dal;
 
+import fr.eni.projet.bo.Article;
+import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
+import fr.eni.projet.bo.Retrait;
+import fr.eni.projet.bo.Utilisateur;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -32,17 +41,22 @@ public class EnchereDAOImpl implements EnchereDAO{
     }
 
     @Override
-    public int enchereMax(long idArticle) {
-        String sql = "SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle";
+    public Enchere enchereMax(long idArticle) {
+       
+         String sql = "SELECT e.montantEnchere, e.dateEnchere, e.idArticle, e.idUtilisateur, u.pseudo " 
+        			   + "FROM enchere e " 
+        			   + "INNER JOIN utilisateur u ON e.idUtilisateur = u.idUtilisateur "
+        			   + "WHERE idArticle = :idArticle "
+        			   + "AND e.montantEnchere = ( SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle)";
         
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
-        Integer enchereMax = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
-
-        if (enchereMax != null) {
-        	return enchereMax;
-		}
-        return 0;
+        
+        try {
+            return jdb.queryForObject(sql, mapSqlParameterSource, new EnchereMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null; 
+        }
     }
 
 
@@ -61,4 +75,27 @@ public class EnchereDAOImpl implements EnchereDAO{
     }
     
 
+}
+
+class EnchereMapper implements RowMapper<Enchere> {
+
+	@Override
+	public Enchere mapRow(ResultSet rs, int rowNum) throws SQLException {
+		
+		Enchere enchere = new Enchere();
+		enchere.setMontantEnchere(rs.getInt("montantEnchere"));
+        enchere.setDateEnchere(rs.getTimestamp("dateEnchere").toLocalDateTime());
+
+        Utilisateur utilisateur = new Utilisateur();
+        
+        utilisateur.setIdUtilisateur(rs.getLong("idUtilisateur"));
+        utilisateur.setPseudo(rs.getString("pseudo"));
+        enchere.setUtilisateur(utilisateur);
+        
+        Article article = new Article();
+        article.setIdArticle(rs.getLong("idArticle"));
+        enchere.setEnchereArticle(article);
+        
+        return enchere;
+	}
 }
