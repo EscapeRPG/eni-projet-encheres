@@ -60,26 +60,27 @@ public class EncheresController {
 		return "acquisition";
 	}
 
-	
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-	    Article article = this.enchereService.detailVente(idArticle);
-	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+		Article article = this.enchereService.detailVente(idArticle);
+		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
-	    try {
-	        enchereService.remporterVente(idArticle); 
-	    } catch (BusinessException e) {
-	        model.addAttribute("errors", e.getExceptionMessages());
-	    }
+		LocalDateTime today = LocalDateTime.now();
+		model.addAttribute("today", today);
 
-	    model.addAttribute("article", article);
-	    model.addAttribute("enchere", enchereEnCours);
-	    model.addAttribute("today", LocalDateTime.now());
+		if (article.getDateFinEncheres().isBefore(today)) {
+			try {
+				enchereService.remporterVente(idArticle);
+			} catch (BusinessException e) {
+				model.addAttribute("errors", e.getExceptionMessages());
+			}
+		}
+		model.addAttribute("article", article);
+		model.addAttribute("enchere", enchereEnCours);
+		model.addAttribute("today", LocalDateTime.now());
 
-	    return "detail-vente";
+		return "detail-vente";
 	}
-
-	  
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
@@ -94,52 +95,49 @@ public class EncheresController {
 		return "redirect:/profil";
 	}
 
-
 	@PostMapping("/encherir")
 	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
-							   @RequestParam(name = "montant") int montant ,
-							   @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
-		
-		
+			@RequestParam(name = "montant") int montant,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+
 		enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
-		
+
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
-	
-	
-
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
+			Model model) {
 		model.addAttribute("article", new Article());
 
 		return "vendre-article";
 	}
 
 	@PostMapping("articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article
-			, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
-			, @RequestParam("img")MultipartFile file) throws BusinessException {
+	public String creationArticle(@ModelAttribute("article") Article article,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
+			@RequestParam("img") MultipartFile file) throws BusinessException {
 		article.setUtilisateur(utilisateurEnSession);
 		System.out.println(article);
 		enchereService.CreationArticle(article);
 		return "redirect:/";
 
 	}
-	
+
 	@PostMapping("/annulerVente")
-	public String goToAnnulerArticle (@RequestParam(name="idArticle") long idArticle, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
-		
+	public String goToAnnulerArticle(@RequestParam(name = "idArticle") long idArticle,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
+
 		this.enchereService.supprimerVente(idArticle);
-		
+
 		List<Article> listeArticles = enchereService.consulterAllVentes();
 		List<Categorie> listeCategories = enchereService.consulterAllCategories();
 		model.addAttribute("categoriesEnSession", listeCategories);
 		model.addAttribute("articles", listeArticles);
-		
+
 		return "redirect:/";
 	}
-	
+
 	@ModelAttribute("categoriesEnSession")
 	public List<Categorie> addCategorieEnSession() {
 		return this.enchereService.consulterAllCategories();
