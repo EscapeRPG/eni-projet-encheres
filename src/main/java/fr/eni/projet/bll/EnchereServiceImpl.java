@@ -1,5 +1,6 @@
 package fr.eni.projet.bll;
 
+import fr.eni.projet.bo.*;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
@@ -15,8 +16,8 @@ import java.util.List;
 
 @Service
 public class EnchereServiceImpl implements EnchereService {
-	
-	
+
+
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
@@ -30,7 +31,7 @@ public class EnchereServiceImpl implements EnchereService {
 		this.categorieDAO = categorieDAO;
 		this.retraitDAO = retraitDAO;
 		this.utilisateurDAO = utilisateurDAO;
-		
+
 	}
 
 	@Override
@@ -66,18 +67,18 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void remporterVente(long idArticle) {		
+	public void remporterVente(long idArticle) {
 	    Article article = articleDAO.afficherArticle(idArticle);
 	    LocalDateTime now = LocalDateTime.now();
-	
+
 	    if (now.isAfter(article.getDateFinEncheres())) {
 	    	article.setEtatVente("ET");
-            articleDAO.updateEtatArticle(idArticle, "ET");           
-	    }	    	   
-	}   
+            articleDAO.updateEtatArticle(idArticle, "ET");
+	    }
+	}
 
-	 
-	
+
+
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
 		BusinessException be = new BusinessException();
@@ -133,7 +134,17 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
-		articleDAO.ajouterArticle(article);
+		long id = articleDAO.ajouterArticle(article);
+		article.setIdArticle(id);
+
+		Retrait retrait = new Retrait();
+		retrait.setVille(article.getRetrait().getVille());
+		retrait.setRue(article.getRetrait().getRue());
+		retrait.setCodePostal(article.getRetrait().getCodePostal());
+		retrait.setArticle(article);
+
+		retraitDAO.creerRetrait(retrait);
+
 	}
 
 
