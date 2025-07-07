@@ -60,22 +60,29 @@ public class EncheresController {
 
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article article = this.enchereService.detailVente(idArticle);
-		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+	    Article article = this.enchereService.detailVente(idArticle);
+	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
 
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
 
-		model.addAttribute("article", article);
-
-		if (enchereEnCours != 0) {
-			model.addAttribute("enchere", enchereEnCours);
-		} else {
-			model.addAttribute("enchere", 0);
+		if (article.getDateFinEncheres().isBefore(today)) {
+			try {
+				enchereService.remporterVente(idArticle);
+			} catch (BusinessException e) {
+				model.addAttribute("errors", e.getExceptionMessages());
+			}
 		}
+		model.addAttribute("article", article);
+		model.addAttribute("enchere", enchereEnCours);
+		model.addAttribute("today", LocalDateTime.now());
 
 		return "detail-vente";
 	}
+
+
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
@@ -101,16 +108,17 @@ public class EncheresController {
 	}
 
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
+			Model model) {
 		model.addAttribute("article", new Article());
 
 		return "vendre-article";
 	}
 
 	@PostMapping("articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article
-			, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
-			, @RequestParam("img")MultipartFile file) throws BusinessException {
+	public String creationArticle(@ModelAttribute("article") Article article,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
+			@RequestParam("img") MultipartFile file) throws BusinessException {
 		article.setUtilisateur(utilisateurEnSession);
 		System.out.println(article);
 		enchereService.CreationArticle(article);
