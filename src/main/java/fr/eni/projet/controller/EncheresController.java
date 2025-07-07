@@ -2,7 +2,7 @@ package fr.eni.projet.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import fr.eni.projet.bo.Retrait;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
+import fr.eni.projet.bll.filestorage.ImageService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Utilisateur;
@@ -23,9 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class EncheresController {
 
 	private EnchereService enchereService;
+	private ImageService imageService;
 
-	public EncheresController(EnchereService enchereService) {
+	public EncheresController(EnchereService enchereService, ImageService imageService) {
 		this.enchereService = enchereService;
+		this.imageService = imageService;
 	}
 
 	@GetMapping({ "/", "/index", "/encheres" })
@@ -69,11 +72,7 @@ public class EncheresController {
 		model.addAttribute("today", today);
 
 		if (article.getDateFinEncheres().isBefore(today)) {
-			try {
-				enchereService.remporterVente(idArticle);
-			} catch (BusinessException e) {
-				model.addAttribute("errors", e.getExceptionMessages());
-			}
+			enchereService.remporterVente(idArticle);
 		}
 		model.addAttribute("article", article);
 		model.addAttribute("enchere", enchereEnCours);
@@ -107,10 +106,21 @@ public class EncheresController {
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
+	
+	
+
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			Model model) {
-		model.addAttribute("article", new Article());
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+		Article article = new Article();
+
+		Retrait retrait = new Retrait();
+		retrait.setRue(utilisateurEnSession.getRue());
+		retrait.setCodePostal(utilisateurEnSession.getCodePostal());
+		retrait.setVille(utilisateurEnSession.getVille());
+		article.setRetrait(retrait);
+		model.addAttribute("article", article);
+
+		model.addAttribute("utilisateurEnSession", utilisateurEnSession);
 
 		return "vendre-article";
 	}
@@ -118,11 +128,14 @@ public class EncheresController {
 	@PostMapping("articleEnVente")
 	public String creationArticle(@ModelAttribute("article") Article article,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			@RequestParam("img") MultipartFile file) throws BusinessException {
+			@RequestParam("file") MultipartFile file) throws BusinessException {
 		article.setUtilisateur(utilisateurEnSession);
+
 		System.out.println(article);
+
 		enchereService.CreationArticle(article);
-		return "redirect:/";
+
+		return "redirect:/index";
 
 	}
 
