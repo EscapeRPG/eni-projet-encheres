@@ -22,23 +22,11 @@ header {
 	padding: 20px 50px;				
 }
 
-header a {
-	color: white;
-	text-decoration: none;
-	margin: 10px;	
-}
-
-#nav-title {
-	margin-right: auto;
-	font-size: 1.1em;	
-}
-
 h2 {	
 	text-align: center;
 }
 
-.form-inscription {
-	
+.form-profil {	
 	display: flex;
     align-items: center; /* aligne verticalement au milieu */
     gap: 10px; /* espace entre le label et le champ */
@@ -53,4 +41,8 @@ h2 {
 	label {
 		text-align: left;
 	}
-}	
+	
+	
+}
+	
+	
