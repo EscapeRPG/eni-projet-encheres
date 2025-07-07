@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/* Barre de filtres */
 .barre-filtre-f {
 	display: flex;
 	flex-direction: row;
@@ -12,6 +13,7 @@
 	margin-bottom: 20px;
 }
 
+/* Menu déroulant */
 .dropdown-container {
 	position: relative;
 	background-color: white;
@@ -43,6 +45,7 @@
 	display: none;
 }
 
+/* Articles */
 .articles {
 	display: flex;
 	flex-wrap: wrap;
@@ -50,42 +53,77 @@
 	margin: auto;
 	justify-content: space-between;
 	align-items: center;
-		
-	.item-container {
-		width: 30%;
-		min-height: 250px;
-		background-color: rgba(70, 180, 230, 0.2);
-		border: 1px solid rgb(200, 200, 230);
-		border-radius: 20px;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		text-align: justify;
-		padding: 10px;
-		overflow: hidden;
-		
-		h3 {
-			text-decoration: underline;
-			font-size: 1em;
-		}
-		
-		img {
-			width: 25%;
-			height: 100%;
-			border: 1px solid rgb(200, 200, 230);
-			border-radius: 10px;
-			overflow: hidden;
-		}
-		
-		div {
-			width: 65%;
-			height: 100%;
-			
-			h3 {
-				margin: 0;
-			}
-			
-			
-		}
+}
+
+.articles .item-container {
+	width: 30%;
+	min-height: 250px;
+	background-color: rgba(70, 180, 230, 0.2);
+	border: 1px solid rgb(200, 200, 230);
+	border-radius: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	text-align: justify;
+	padding: 10px;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.articles .item-container h3 {
+	text-decoration: underline;
+	font-size: 1em;
+	margin: 0;
+}
+
+.articles .item-container img {
+	width: 25%;
+	height: 100%;
+	border: 1px solid rgb(200, 200, 230);
+	border-radius: 10px;
+	object-fit: cover;
+}
+
+.articles .item-container div {
+	width: 65%;
+	height: 100%;
+}
+
+.articles .item-container div h3 {
+	margin: 0;
+}
+
+/* Responsive - Tablettes */
+@media (max-width: 1024px) {
+	.articles .item-container {
+		width: 45%;
+	}
+}
+
+/* Responsive - Smartphones */
+@media (max-width: 600px) {
+	.barre-filtre-f {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.articles {
+		width: 95%;
+	}
+
+	.articles .item-container {
+		width: 100%;
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.articles .item-container img {
+		width: 60%;
+		height: auto;
+		margin-bottom: 10px;
+	}
+
+	.articles .item-container div {
+		width: 100%;
 	}
 }

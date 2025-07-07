@@ -79,7 +79,7 @@ public class EncheresController {
 		model.addAttribute("enchere", enchereEnCours);
 		model.addAttribute("today", LocalDateTime.now());
 
-		return "detail-vente";
+		return "acquisition";
 	}
 
 
