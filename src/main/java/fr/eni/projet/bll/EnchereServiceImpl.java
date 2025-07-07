@@ -3,7 +3,6 @@ package fr.eni.projet.bll;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
-import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
