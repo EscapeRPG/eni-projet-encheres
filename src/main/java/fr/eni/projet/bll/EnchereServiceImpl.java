@@ -1,12 +1,8 @@
 package fr.eni.projet.bll;
 
-import fr.eni.projet.EncheresApplication;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
-import fr.eni.projet.bo.Utilisateur;
-import fr.eni.projet.controller.EncheresController;
-import fr.eni.projet.controller.UtilisateurController;
 import fr.eni.projet.dal.ArticleDAO;
 import fr.eni.projet.dal.CategorieDAO;
 import fr.eni.projet.dal.EnchereDAO;
@@ -20,14 +16,7 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService {
 	
-	private final UtilisateurServiceImpl utilisateurServiceImpl;
 	
-    private final UtilisateurController utilisateurController;
-
-    private final EncheresApplication encheresApplication;
-
-    private final EncheresController encheresController;
-
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
@@ -35,16 +24,13 @@ public class EnchereServiceImpl implements EnchereService {
 	private UtilisateurDAO utilisateurDAO;
 
 	public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO,
-			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO, EncheresController encheresController, UtilisateurServiceImpl utilisateurServiceImpl, EncheresApplication encheresApplication, UtilisateurController utilisateurController) {
+			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO) {
 		this.articleDAO = articleDAO;
 		this.enchereDAO = enchereDAO;
 		this.categorieDAO = categorieDAO;
 		this.retraitDAO = retraitDAO;
 		this.utilisateurDAO = utilisateurDAO;
-		this.encheresController = encheresController;
-		this.utilisateurServiceImpl = utilisateurServiceImpl;
-		this.encheresApplication = encheresApplication;
-		this.utilisateurController = utilisateurController;
+		
 	}
 
 	@Override

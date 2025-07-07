@@ -20,7 +20,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	public ArticleDAOImpl(NamedParameterJdbcTemplate jdb) {
 		this.jdb = jdb;
-	}
+	} 
 
 	@Override
 	public void ajouterArticle(Article article) {

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,29 +63,23 @@ public class EncheresController {
 	
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article article = this.enchereService.detailVente(idArticle);
-		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
-		try {
-			enchereService.remporterVente(idArticle);
-		} catch (BusinessException e) {
-			
-			return "detail-vente";
-		} 
-		
-		LocalDateTime today = LocalDateTime.now();
-		model.addAttribute("today", today);
-		model.addAttribute("article", article);
-		 
-		if (enchereEnCours != 0) {
-			model.addAttribute("enchere", enchereEnCours);
-		}
-		else {
-			model.addAttribute("enchere", 0);
-		} 
-		
-		return "detail-vente";
+	    Article article = this.enchereService.detailVente(idArticle);
+	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+	    try {
+	        enchereService.remporterVente(idArticle); 
+	    } catch (BusinessException e) {
+	        model.addAttribute("errors", e.getExceptionMessages());
+	    }
+
+	    model.addAttribute("article", article);
+	    model.addAttribute("enchere", enchereEnCours);
+	    model.addAttribute("today", LocalDateTime.now());
+
+	    return "detail-vente";
 	}
-	 
+
+	  
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
