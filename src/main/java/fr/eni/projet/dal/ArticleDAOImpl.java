@@ -7,6 +7,8 @@ import fr.eni.projet.bo.Utilisateur;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -20,10 +22,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	public ArticleDAOImpl(NamedParameterJdbcTemplate jdb) {
 		this.jdb = jdb;
-	}
+	} 
 
 	@Override
-	public void ajouterArticle(Article article) {
+	public long ajouterArticle(Article article) {
 		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
 				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
@@ -36,9 +38,15 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idUtilisateur", article.getUtilisateur().getIdUtilisateur());
 		mapSqlParameterSource.addValue("idCategorie", article.getCategorie().getIdCategorie());
 
-		jdb.update(sql, mapSqlParameterSource);
-	}
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdb.update(sql,mapSqlParameterSource,keyHolder);
 
+		if(keyHolder.getKey()!=null) {
+			article.setIdArticle(keyHolder.getKey().longValue());
+		}
+		return article.getIdArticle();
+	}
+ 
 	@Override
 	public void supprimerArticle(long idArticle) {
 		String sql = "delete from article where idArticle = :idArticle";
@@ -86,8 +94,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville, "
-				+ "MAX(e.montantEnchere) AS meilleureEnchere, " + "COUNT(e.idUtilisateur) AS nombreEncheres "
+		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
 				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
 				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
 				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree) "
@@ -95,10 +102,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:mesEncheres = 0 OR e.idUtilisateur = :mesEncheres) "
 				+ "AND (:encheresRemportees = 0 OR a.idUtilisateur = :encheresRemportees AND a.etatVente = 'ET') "
 				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
-				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'CR') "
-				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'ET') "
-				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
-				+ "ORDER BY a.idArticle";
+				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnAttente AND a.etatVente = 'CR') "
+				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesTerminees AND a.etatVente = 'ET') "
+				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);

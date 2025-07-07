@@ -41,8 +41,9 @@ public interface EnchereService {
      * sur un article donné (c'est-à-dire celui ayant proposé la valeur la plus haute).
      * N.B : À utiliser par le contrôleur lors de la clôture.
      * @param idArticle l'identifiant de l'article concerné.
+     * @throws BusinessException 
      */
-    void remporterVente(long idArticle); 
+    void remporterVente(long idArticle) throws BusinessException; 
     
     void clotureArticle(long idArticle) throws BusinessException;
     
@@ -55,5 +56,7 @@ public interface EnchereService {
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
 	
 	Enchere consulterEnchereMax(long idArticle);
+
+	void CreationArticle(Article article) throws BusinessException;
 
 }
