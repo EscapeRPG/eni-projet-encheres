@@ -54,44 +54,71 @@ public class EncheresController {
 
 	@GetMapping("/acquisition")
 	public String goToAcquisition(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article articleGagne = enchereService.detailVente(idArticle);
-		model.addAttribute("article", articleGagne);
-		return "acquisition";
+		
+		
+		try {
+			Article articleGagne = enchereService.detailVente(idArticle);
+			model.addAttribute("article", articleGagne);
+			return "acquisition";
+			
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			return "redirect:/";
+		}
+		
 	}
 
 	
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-		Article article = this.enchereService.detailVente(idArticle);
-		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 		
 		LocalDateTime today = LocalDateTime.now();
-		model.addAttribute("today", today);
 		
-		model.addAttribute("article", article);
-		
-		if (enchereEnCours != 0) {
-			model.addAttribute("enchere", enchereEnCours);
+		try {
+			Article article = this.enchereService.detailVente(idArticle);
+			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+	
+			model.addAttribute("today", today);
+			model.addAttribute("article", article);
+			model.addAttribute("venteEnCours",article.getEtatVente());
+			
+			if (enchereEnCours != null) {
+				model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
+				model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
+				
+				if(article.getEtatVente().equals("ET") || article.getEtatVente().equals("RE")){
+					model.addAttribute("venteTermine", article.getEtatVente());
+				}
+			}
+			else {
+				model.addAttribute("enchere", 0);
+			}
+			return "detail-vente";
+			
+			
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+			return "redirect:/";
 		}
-		else {
-			model.addAttribute("enchere", 0);
-		}
 		
-		return "detail-vente";
+	
 	}
 	
 
 	@PostMapping("/retraitEffectue")
-	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
-
+	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle){
+		
 		try {
+	
 			this.enchereService.clotureArticle(idArticle);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
 
-		return "redirect:/profil";
+		return "redirect:/";
 	}
 
 
@@ -112,9 +139,9 @@ public class EncheresController {
 	@GetMapping("/vendre-article")
 	public String goToVendreArticle(@RequestParam(name = "idArticle") long idArticle,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurenSession, Model model) {
-		Article nouvelArticle = enchereService.detailVente(idArticle);
+//		Article nouvelArticle = enchereService.detailVente(idArticle);
 		// non foonctionnelle pour le moment
-		model.addAttribute("article", nouvelArticle);
+//		model.addAttribute("article", nouvelArticle);
 
 		return "vendreArticle";
 	}

@@ -7,7 +7,9 @@ import java.util.List;
 public interface EnchereDAO {
 
     void creerEnchere(Enchere enchere);
-    int enchereMax(long idArticle);
+   
     List<Enchere> consulterEnchere();
+    
     Enchere afficherEnchere(long idArticle);
+    Enchere enchereMax(long idArticle);
 }
