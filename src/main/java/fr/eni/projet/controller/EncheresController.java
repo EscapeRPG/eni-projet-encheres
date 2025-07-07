@@ -104,8 +104,6 @@ public class EncheresController {
 //			e.printStackTrace();
 			return "redirect:/";
 		}
-		
->>>>>>> 1399966ec007550d42c33463cba72e64db659ced
 	}
 
 	@PostMapping("/retraitEffectue")
@@ -133,18 +131,8 @@ public class EncheresController {
 	}
 
 	@GetMapping("/vendre-article")
-<<<<<<< HEAD
-	public String goToVendreArticle(@SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			Model model) {
-		Article article = new Article();
-
-		article.setCategorie(new Categorie());
-
-=======
-
 	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
 		Article article = new Article();
->>>>>>> 296cf8fab7359e42eed3c5361d37c59f45fbc358
 		Retrait retrait = new Retrait();
 		
 		retrait.setRue(utilisateurEnSession.getRue());
