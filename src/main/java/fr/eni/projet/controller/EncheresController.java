@@ -74,31 +74,14 @@ public class EncheresController {
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) throws BusinessException {
 
-<<<<<<< HEAD
-	    Article article = this.enchereService.detailVente(idArticle);
-	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
-=======
->>>>>>> 1399966ec007550d42c33463cba72e64db659ced
+
 		LocalDateTime today = LocalDateTime.now();
 
-<<<<<<< HEAD
-		if (article.getDateFinEncheres().isBefore(today)) {
-			try {
-				enchereService.remporterVente(idArticle);
-			} catch (BusinessException e) {
-				System.err.println("Erreur : impossible de remporter la vente pour l'article suivant :" + idArticle);
-	            e.printStackTrace(); 
-			}
-		}
-		model.addAttribute("article", article);
-		model.addAttribute("enchere", enchereEnCours);
-		model.addAttribute("today", LocalDateTime.now());
 
-		return "acquisition";
-=======
+
 		try {
 			Article article = this.enchereService.detailVente(idArticle);
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
@@ -125,7 +108,6 @@ public class EncheresController {
 			return "redirect:/";
 		}
 		
->>>>>>> 1399966ec007550d42c33463cba72e64db659ced
 	}
 
 	@PostMapping("/retraitEffectue")
