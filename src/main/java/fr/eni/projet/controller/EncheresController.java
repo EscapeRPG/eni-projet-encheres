@@ -2,7 +2,9 @@ package fr.eni.projet.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
+import fr.eni.projet.bo.Retrait;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -107,20 +109,30 @@ public class EncheresController {
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
+	
+	
+
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			Model model) {
-		model.addAttribute("article", new Article());
+	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+		Article article = new Article();
+
+		Retrait retrait = new Retrait();
+		retrait.setRue(utilisateurEnSession.getRue());
+		retrait.setCodePostal(utilisateurEnSession.getCodePostal());
+		retrait.setVille(utilisateurEnSession.getVille());
+		article.setRetrait(retrait);
+		model.addAttribute("article", article);
 
 		return "vendre-article";
 	}
 
 	@PostMapping("articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			@RequestParam("img") MultipartFile file) throws BusinessException {
+	public String creationArticle(@ModelAttribute("article") Article article
+			, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+			, @RequestParam(name="img",required = false)MultipartFile file) throws BusinessException {
 		article.setUtilisateur(utilisateurEnSession);
 		System.out.println(article);
+
 		enchereService.CreationArticle(article);
 		return "redirect:/";
 
