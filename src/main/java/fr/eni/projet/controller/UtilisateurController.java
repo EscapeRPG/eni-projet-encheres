@@ -144,7 +144,7 @@ public class UtilisateurController {
 		}
 
 	}
-
+ 
 	@GetMapping("/deconnexion")
 	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 

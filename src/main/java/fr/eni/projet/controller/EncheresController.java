@@ -3,6 +3,8 @@ package fr.eni.projet.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 import fr.eni.projet.bo.Retrait;
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,12 +69,16 @@ public class EncheresController {
 	    Article article = this.enchereService.detailVente(idArticle);
 	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
-
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
 
 		if (article.getDateFinEncheres().isBefore(today)) {
-			enchereService.remporterVente(idArticle);
+			try {
+				enchereService.remporterVente(idArticle);
+			} catch (BusinessException e) {
+				System.err.println("Erreur : impossible de remporter la vente pour l'article suivant :" + idArticle);
+	            e.printStackTrace(); 
+			}
 		}
 		model.addAttribute("article", article);
 		model.addAttribute("enchere", enchereEnCours);
