@@ -23,12 +23,6 @@
                     <input type="text" id="inputTitle" th:field="*{nomArticle}" />
                 </div>
                 <div>
-                    <label for="idCategorie">Catégorie :</label>
-                    <select th:field="*{categorie.idCategorie}" id="idCategorie">
-                        <option th:each="c : ${categoriesEnSession}" th:value="${c.idCategorie}" th:text="${c.libelle}"></option>
-                    </select>
-                </div>
-                <div>
                     <label for="description">Description : </label>
                     <textarea id="description" rows="3" th:field="*{descriptions}"></textarea>
                 </div>
@@ -69,7 +63,7 @@
                 <div>
                     <h3>Retrait</h3>
                     <label for="Rue">Rue : </label>
-                    <input type="text" id="Rue" th:field="*{retrait.rue}" th:value="*{retrait.rue}"   />
+                    <input type="text" id="Rue" th:field="*{retrait.rue}" />
                     <label for="codePostal">Code Postal : </label>
                     <input type="text" id="codePostal" th:field="*{retrait.codePostal}"  />
                     <label for="ville">Ville : </label>

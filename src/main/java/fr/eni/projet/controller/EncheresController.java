@@ -1,5 +1,6 @@
 package fr.eni.projet.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import fr.eni.projet.bo.Retrait;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
@@ -64,9 +66,8 @@ public class EncheresController {
 	@GetMapping("/detail-vente")
 	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
 
-	    Article article = this.enchereService.detailVente(idArticle);
-	    int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
-
+		Article article = this.enchereService.detailVente(idArticle);
+		int enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
 		LocalDateTime today = LocalDateTime.now();
 		model.addAttribute("today", today);
@@ -80,8 +81,6 @@ public class EncheresController {
 
 		return "detail-vente";
 	}
-
-
 
 	@PostMapping("/retraitEffectue")
 	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
@@ -106,12 +105,12 @@ public class EncheresController {
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
 
-	
-	
-
 	@GetMapping("/vendre-article")
-	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
+	public String goToVendreArticle(@SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
+			Model model) {
 		Article article = new Article();
+
+		article.setCategorie(new Categorie());
 
 		Retrait retrait = new Retrait();
 		retrait.setRue(utilisateurEnSession.getRue());
@@ -125,18 +124,28 @@ public class EncheresController {
 		return "vendre-article";
 	}
 
-	@PostMapping("articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			@RequestParam("file") MultipartFile file) throws BusinessException {
-		article.setUtilisateur(utilisateurEnSession);
+	@PostMapping("/articleEnVente")
+	public String creationArticle(
+	    @ModelAttribute("article") Article article,
+	    @RequestParam("file") MultipartFile file,
+	    @SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+	) throws BusinessException {
+	    article.setUtilisateur(utilisateurEnSession);
 
-		System.out.println(article);
+	    if (!file.isEmpty()) {
+	        String uploadDirectory = "src/main/resources/static/images";
+	        try {
+	            String imageNom = imageService.saveImageToStorage(uploadDirectory, file);
+	            // Tu peux ici associer imageNom à ton article si tu as un champ pour ça
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            // gérer erreur upload ici
+	        }
+	    }
 
-		enchereService.CreationArticle(article);
+	    enchereService.CreationArticle(article);
 
-		return "redirect:/index";
-
+	    return "redirect:/index";
 	}
 
 	@PostMapping("/annulerVente")
