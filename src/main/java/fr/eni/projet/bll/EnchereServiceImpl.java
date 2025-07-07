@@ -47,23 +47,44 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void encherir(long idArticle, long idUtilisateur, int montant) {
-
-		if (montant > enchereDAO.enchereMax(idArticle)) {
-			Enchere newEnchere = new Enchere(utilisateurDAO.consulterCompte(idUtilisateur), articleDAO.afficherArticle(idArticle), LocalDateTime.now(), montant);
+		
+		Enchere enchereActuelle = enchereDAO.enchereMax(idArticle);
+		int montantActuel = 0;
+		
+		if(enchereActuelle != null) {
+			montantActuel = enchereActuelle.getMontantEnchere();
+		}
+		
+		if(montant > montantActuel) {
+			Utilisateur utilisateur = utilisateurDAO.consulterCompte(idUtilisateur);
+			Article article = articleDAO.afficherArticle(idArticle);
+			Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 			this.enchereDAO.creerEnchere(newEnchere);
-		} else {
+		}
+		else {
 			System.out.println("Saisir une enchère plus élevée");
 		}
+
 	}
 
 	@Override
-	public Article detailVente(long idArticle) {
-		Article article = this.articleDAO.afficherArticle(idArticle);
-		article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
-		article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
-		article.setRetrait(retraitDAO.afficherRetrait(idArticle));
-
+	public Article detailVente(long idArticle) throws BusinessException {
+		
+		BusinessException be = new BusinessException();
+		boolean existArticle = isExistArticle(idArticle, be);
+		
+		if(existArticle) {
+			Article article = this.articleDAO.afficherArticle(idArticle);
+			article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+			article.setRetrait(retraitDAO.afficherRetrait(idArticle));
+			
 		return article;
+		}
+		else {
+			throw be;
+		}
+	
 	}
 
 	@Override
@@ -128,7 +149,7 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public int consulterEnchereMax(long idArticle) {
+	public Enchere consulterEnchereMax(long idArticle) {
 		return this.enchereDAO.enchereMax(idArticle);
 	}
 

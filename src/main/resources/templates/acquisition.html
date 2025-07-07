@@ -37,7 +37,7 @@
 		<br>
 
 		<form th:action="@{/retraitEffectue}" method="post">
-			<input type="hidden"  th:value="${article.idArticle}">
+			<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 			<button type="submit">Retrait effectué</button>
 		</form>
 

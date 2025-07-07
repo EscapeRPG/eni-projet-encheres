@@ -37,20 +37,3 @@ h2 {
 	text-align: center;
 }
 
-.form-inscription {
-	
-	display: flex;
-    align-items: center; /* aligne verticalement au milieu */
-    gap: 10px; /* espace entre le label et le champ */
-    margin: 10px 0;
-    align-items: center;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: center;
-	text-align: center;
-	padding: 30px;
-	margin: auto;
-	label {
-		text-align: left;
-	}
-}	

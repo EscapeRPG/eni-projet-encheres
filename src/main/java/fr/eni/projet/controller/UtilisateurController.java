@@ -87,7 +87,7 @@ public class UtilisateurController {
 			Utilisateur utilisateur = utilisateurService.afficherProfil(pseudo);
 			model.addAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return "profil";
 	}
@@ -144,7 +144,7 @@ public class UtilisateurController {
 		}
 
 	}
-
+ 
 	@GetMapping("/deconnexion")
 	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
