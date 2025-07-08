@@ -58,6 +58,6 @@ public interface EnchereService {
 	
 	Enchere consulterEnchereMax(long idArticle);
 
-	void CreationArticle(Article article, String image) throws BusinessException;
+	void CreationArticle(Article article) throws BusinessException;
 
 }

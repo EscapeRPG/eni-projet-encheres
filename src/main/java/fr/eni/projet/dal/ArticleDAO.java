@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ArticleDAO {
 
-	long ajouterArticle(Article article, String image);
+	long ajouterArticle(Article article);
 
 	void supprimerArticle(long idArticle);
 

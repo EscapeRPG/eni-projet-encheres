@@ -73,7 +73,7 @@ public class UtilisateurController {
 	        return "inscription";
 	    }
 
-	    return "redirect:/index";
+	    return "redirect:/connexion";
 	}
 
 	@GetMapping("/modifierProfil")

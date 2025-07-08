@@ -5,11 +5,7 @@
 <title>ENI Enchères</title>
 </head>
 <body>
-	<header>
-		<h1 id="nav-title">
-			<a th:href="@{/}">ENI-Enchères</a>
-		</h1>
-	</header>
+	<header th:replace="~{fragments/fragment-header :: header}"></header>
 	<main>
 		<h2 th:text="${utilisateur.getPseudo()}"></h2>
 		
