@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService {
 
+
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
@@ -46,7 +47,10 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void encherir(long idArticle, long idUtilisateur, int montant) {
+
+	public void encherir(long idArticle, long idUtilisateur, int montant) throws BusinessException {
+		
+		BusinessException be = new BusinessException();
 
 		Enchere enchereActuelle = enchereDAO.enchereMax(idArticle);
 		int montantActuel = 0;
@@ -57,11 +61,23 @@ public class EnchereServiceImpl implements EnchereService {
 
 		if (montant > montantActuel) {
 			Utilisateur utilisateur = utilisateurDAO.consulterCompte(idUtilisateur);
-			Article article = articleDAO.afficherArticle(idArticle);
-			Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
-			this.enchereDAO.creerEnchere(newEnchere);
-		} else {
-			System.out.println("Saisir une enchère plus élevée");
+
+			
+			if(utilisateur.getCredit() >= montant) {
+				Article article = articleDAO.afficherArticle(idArticle);
+				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
+				this.enchereDAO.creerEnchere(newEnchere);
+				this.utilisateurDAO.debiter(idUtilisateur, montant);
+			}
+			else {
+				be.add("Crédits insuffisant");
+				throw be;
+			}
+		}
+		else {
+			be.add("Saisir une enchère plus élevée");
+			throw be;
+
 		}
 
 	}
@@ -91,6 +107,7 @@ public class EnchereServiceImpl implements EnchereService {
 		article.setEtatVente("ET");
 		articleDAO.updateEtatArticle(idArticle, "ET");
 	}
+
 
 
 	@Override
@@ -147,17 +164,25 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
-		long id = articleDAO.ajouterArticle(article);
-		article.setIdArticle(id);
+		if(article.getIdArticle()==0)
+		{
+			long id = articleDAO.ajouterArticle(article);
+			article.setIdArticle(id);
 
-		Retrait retrait = new Retrait();
-		retrait.setVille(article.getRetrait().getVille());
-		retrait.setRue(article.getRetrait().getRue());
-		retrait.setCodePostal(article.getRetrait().getCodePostal());
-		retrait.setArticle(article);
+			Retrait retrait = new Retrait();
+			retrait.setVille(article.getRetrait().getVille());
+			retrait.setRue(article.getRetrait().getRue());
+			retrait.setCodePostal(article.getRetrait().getCodePostal());
+			retrait.setArticle(article);
+			retraitDAO.creerRetrait(retrait);
+		}
+		else
+		{
+		 articleDAO.ajouterArticle(article);
+		}
 
-		retraitDAO.creerRetrait(retrait);
 
 	}
+
 
 }

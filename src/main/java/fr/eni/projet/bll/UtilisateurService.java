@@ -42,9 +42,6 @@ public interface UtilisateurService {
     Utilisateur connecterUtilisateur (String pseudo, String motDePasse) throws BusinessException;
 
 	boolean pseudoExiste(String pseudo);
-
-	
-
 	boolean emailExiste(String email);
 
 	

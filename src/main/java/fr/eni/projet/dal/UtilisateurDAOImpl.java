@@ -1,6 +1,8 @@
 package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.exception.BusinessException;
+
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -173,6 +175,25 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         map.addValue("idUtilisateur", u.getIdUtilisateur());
         jdb.update(sql,map);
 		
+	}
+
+	@Override
+	public void crediter(long idUtiisateur) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void debiter(long idUtilisateur, int montant) {
+		
+		String sql ="update utilisateur set credit = :montant where idUtilisateur = :idUtilisateur";
+		
+		int montantDebit = (consulterCompte(idUtilisateur).getCredit() - montant);
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idUtilisateur", idUtilisateur);
+		map.addValue("montant", montantDebit);
+		
+		jdb.update(sql,map);
 	}
 
 	
