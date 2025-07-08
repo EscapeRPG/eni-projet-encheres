@@ -21,6 +21,9 @@ public class Article {
     private int miseAPrix;
     private int prixVente;
     private String etatVente;
+
+    private String parsedDateDebut;
+    private String parsedDateFin;
     
     public Article() {
 		// TODO Auto-generated constructor stub
@@ -147,6 +150,22 @@ public class Article {
 
     public void setEtatVente(String etatVente) {
         this.etatVente = etatVente;
+    }
+
+    public String getParsedDateDebut() {
+        return parsedDateDebut;
+    }
+
+    public void setParsedDateDebut(String parsedDateDebut) {
+        this.parsedDateDebut = parsedDateDebut;
+    }
+
+    public String getParsedDateFin() {
+        return parsedDateFin;
+    }
+
+    public void setParsedDateFin(String parsedDateFin) {
+        this.parsedDateFin = parsedDateFin;
     }
 
     @Override
