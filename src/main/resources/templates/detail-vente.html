@@ -13,7 +13,7 @@
 
 	<h2>Détail vente</h2>
 	<h3 th:if="${today >= article.dateFinEncheres 
-			  and (venteTermine == 'ET' or venteTermine == 'RE')}" 
+			  and (etatVente == 'ET' or etatVente == 'RE')}" 
 			  th:text="|'${pseudoAcheteur}' a remporté l'enchère.|">Affichage gagnant</h3>
 	
 	<div class="item-container">
@@ -21,21 +21,20 @@
 		<p th:text="${article.nomArticle} ?: 'Nom inconnu'"></p>
 		<!--  <img th:src="${article.src}" th:alt="${article.nomArticle}"><br>-->
 		
-		<div th:if="${article.dateFinEncheres <= today 
-					and venteEnCours == 'EC'}">
+		<div th:if="${etatVente == 'CR' or etatVente == 'EC'}">
 			<div>
-				<p th:text="'Description : ' + ${article.descriptions} ?: 'Description vide'"></p>
+				<p th:text="${article.descriptions != null} ? |Description : ${article.descriptions}| : 'Aucune description'"></p>
 				<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
 			</div>
-		</div><br>
+		</div>
 
 		<p th:text="${enchere != 0} ? |Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
 		<p th:text="|Mise à prix : ${article.miseAPrix} points|">Mise à prix (points) :</p><br>
 		
 		
-		<p th:if="${article.dateDebutEncheres >= today 
-				 and article.dateFinEncheres < today}" 
+		<p th:if="${article.dateDebutEncheres >= today}"  
 		   th:text="|Début de l'enchère : ${#temporals.format(article.dateDebutEncheres, 'dd/MM/yyyy')}|">Début de l'enchère</p>
+		   
 		<p th:text="|Fin de l'enchère : ${#temporals.format(article.dateFinEncheres, 'dd/MM/yyyy')}|">Fin de l'enchère</p>
 		
 	    
