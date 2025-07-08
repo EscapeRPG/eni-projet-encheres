@@ -76,7 +76,7 @@ public class EncheresController {
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) throws BusinessException {
 		LocalDateTime today = LocalDateTime.now();
 
 		try {
