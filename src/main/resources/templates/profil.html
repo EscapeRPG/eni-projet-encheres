@@ -47,6 +47,11 @@
 			<button type="submit"   >Supprimer</button>
 		</form>
 
+		<form th:if="${utilisateurEnSession.administrateur} eq true" th:action="@{desactiverProfil}" method="get">
+			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+			<button type="submit"   >Desactiver</button>
+		</form>
+
 		<form th:if="${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
 			<div class="form-profil">
 				<label for="pseudo">Pseudo :</label>
