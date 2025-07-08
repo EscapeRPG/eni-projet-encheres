@@ -86,7 +86,7 @@
 	</div>
 
 	<a class="button-retour" th:href="@{/}">Retour</a>
-	<a class="button-retour" th:href="@{/modifierVente(arti=${article.getIdArticle()})}">Modifier</a>
+	<a  th:if="${utilisateurEnSession.getIdUtilisateur()} == ${article.getUtilisateur().getIdUtilisateur()}" th:href="@{/modifierVente(arti=${article.getIdArticle()})}">Modifier</a>
 
 </body>
 </html>
