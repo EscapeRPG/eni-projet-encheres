@@ -9,11 +9,9 @@
     <main>
         <h2>Nouvelle vente</h2>
         <form th:action="@{/articleEnVente}" th:object="${article}" method="post" enctype="multipart/form-data">
-                <!-- 
                 <div>
-                    <img th:if="${source != null}" th:src="@{${article.src}}" th:alt="${article.nomArticle}" />
+                    <img th:if="${article.photoArticle != null}" th:src="@{'/images/' + ${article.photoArticle}}" th:alt="${article.nomArticle}" />
                 </div>
-                -->
                 <div>
                     <label for="fileUpload">Photo de l'article :</label>
                     <input type="file" id="fileUpload" name="file" />
