@@ -59,10 +59,12 @@ public class EnchereServiceImpl implements EnchereService {
 		}
 
 		if (montant > montantActuel) {
-			Utilisateur utilisateur = utilisateurDAO.consulterCompte(idUtilisateur);
+			Utilisateur utilisateur = this.utilisateurDAO.consulterCompte(idUtilisateur);
 
 			if (utilisateur.getCredit() >= montant) {
-				Article article = articleDAO.afficherArticle(idArticle);
+				Article article = this.articleDAO.afficherArticle(idArticle);
+				Utilisateur lastUser = enchereActuelle.getUtilisateur();
+				this.utilisateurDAO.crediterVendeur(lastUser.getIdUtilisateur(), idArticle);   
 				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 				this.enchereDAO.creerEnchere(newEnchere);
 				this.utilisateurDAO.debiter(idUtilisateur, montant);
@@ -106,9 +108,11 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void remporterVente(long idArticle) {
+	
 		Article article = articleDAO.afficherArticle(idArticle);
 		article.setEtatVente("ET");
 		articleDAO.updateEtatArticle(idArticle, "ET");
+		utilisateurDAO.crediterVendeur(article.getUtilisateur().getIdUtilisateur(), idArticle);
 	}
 
 	@Override

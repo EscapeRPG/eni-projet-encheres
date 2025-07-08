@@ -165,9 +165,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		return false;
 	}
 
-    
-    
-    
 
 	@Override 
 	public void updateCompte(Utilisateur u) {
@@ -192,6 +189,23 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void crediterVendeur(long idUtilisateur, long idArticle) {
+		
+		String sql = "SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle";
+		
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("idArticle", idArticle);
+		Integer montantCredit = jdb.queryForObject(sql, map,Integer.class);
+	
+		String sqlUpdate = "update utilisateur set credit = :montantCredit where idUtilisateur = :idUtilisateur";
+		MapSqlParameterSource map2 = new MapSqlParameterSource();
+		map2.addValue("montantCredit", montantCredit + consulterNbreCredit(idUtilisateur));
+		map2.addValue("idUtilisateur", idUtilisateur);
+		
+		jdb.update(sqlUpdate, map2);
+	}
 
 	@Override
 	public void debiter(long idUtilisateur, int montant) {
@@ -205,6 +219,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		
 		jdb.update(sql,map);
 	}
+
+	
 
 	
 	
