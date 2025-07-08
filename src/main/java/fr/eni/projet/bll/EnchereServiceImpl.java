@@ -97,7 +97,7 @@ public class EnchereServiceImpl implements EnchereService {
             articleDAO.updateEtatArticle(idArticle, "ET");
 	    }
 	}
-
+ 
 
 
 	@Override
