@@ -40,11 +40,11 @@
                 </div>
                 <div>
                     <label for="enchèreDébut">Début de l'enchère :</label>
-                    <input type="datetime-local" id="enchèreDébut" th:field="*{dateDebutEncheres}" />
+                    <input type="datetime-local" id="enchèreDébut" th:field="*{parsedDateDebut}" />
                 </div>
                 <div>
                     <label for="enchèreFin">Fin de l'enchère :</label>
-                    <input type="datetime-local" id="enchèreFin" th:field="*{dateFinEncheres}" />
+                    <input type="datetime-local" id="enchèreFin"  th:field="*{parsedDateFin}"  />
                 </div>
                 <div>
                     <h3>Retrait</h3>
