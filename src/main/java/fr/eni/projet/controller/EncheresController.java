@@ -153,19 +153,19 @@ public class EncheresController {
 	    @SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
 	) throws BusinessException {
 	    article.setUtilisateur(utilisateurEnSession);
+	    
+	    String imageNom = "";
 
 	    if (!file.isEmpty()) {
 	        String uploadDirectory = "src/main/resources/static/images";
 	        try {
-	            String imageNom = imageService.saveImageToStorage(uploadDirectory, file);
-	            // Tu peux ici associer imageNom à ton article si tu as un champ pour ça
+	            imageNom = imageService.saveImageToStorage(uploadDirectory, file);
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            // gérer erreur upload ici
 	        }
 	    }
 
-	    enchereService.CreationArticle(article);
+	    enchereService.CreationArticle(article, imageNom);
 
 	    return "redirect:/index";
 	}
