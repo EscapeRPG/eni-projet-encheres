@@ -154,8 +154,8 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void CreationArticle(Article article) throws BusinessException {
-		long id = articleDAO.ajouterArticle(article);
+	public void CreationArticle(Article article, String image) throws BusinessException {
+		long id = articleDAO.ajouterArticle(article, image);
 		article.setIdArticle(id);
 
 		Retrait retrait = new Retrait();

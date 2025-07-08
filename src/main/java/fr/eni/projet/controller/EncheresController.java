@@ -1,14 +1,18 @@
 package fr.eni.projet.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import fr.eni.projet.bo.Retrait;
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
@@ -72,8 +76,7 @@ public class EncheresController {
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) {
-
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model) throws BusinessException {
 		LocalDateTime today = LocalDateTime.now();
 
 		try {
@@ -98,7 +101,6 @@ public class EncheresController {
 //			e.printStackTrace();
 			return "redirect:/";
 		}
-		
 	}
 
 	@PostMapping("/retraitEffectue")
@@ -126,7 +128,6 @@ public class EncheresController {
 	}
 
 	@GetMapping("/vendre-article")
-
 	public String goToVendreArticle(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,Model model) {
 		Article article = new Article();
 		Retrait retrait = new Retrait();
@@ -142,18 +143,28 @@ public class EncheresController {
 		return "vendre-article";
 	}
 
-	@PostMapping("articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession,
-			@RequestParam("file") MultipartFile file) throws BusinessException {
-		article.setUtilisateur(utilisateurEnSession);
+	@PostMapping("/articleEnVente")
+	public String creationArticle(
+	    @ModelAttribute("article") Article article,
+	    @RequestParam("file") MultipartFile file,
+	    @SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+	) throws BusinessException {
+	    article.setUtilisateur(utilisateurEnSession);
+	    
+	    String imageNom = "";
 
-		System.out.println(article);
+	    if (!file.isEmpty()) {
+	        String uploadDirectory = "src/main/resources/static/images";
+	        try {
+	            imageNom = imageService.saveImageToStorage(uploadDirectory, file);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-		enchereService.CreationArticle(article);
+	    enchereService.CreationArticle(article, imageNom);
 
-		return "redirect:/index";
-
+	    return "redirect:/index";
 	}
 
 	@PostMapping("/annulerVente")
