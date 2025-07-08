@@ -3,15 +3,12 @@ package fr.eni.projet.bo;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.eni.projet.dal.UtilisateurDAO;
-import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public class Utilisateur {
 
-	private UtilisateurDAO utilisateurDAO;
 	private List<Enchere> encheres;
 	private List<Article> articles;
 	private long idUtilisateur;
@@ -38,12 +35,13 @@ public class Utilisateur {
 
 	private int credit;
 	private boolean administrateur;
+	private boolean desactiver;
 
 	public Utilisateur() {
 	}
 
 	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur) {
+			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur, boolean desactiver) {
 		this.encheres = new ArrayList<>();
 		this.articles = new ArrayList<>();
 		this.idUtilisateur = idUtilisateur;
@@ -58,6 +56,7 @@ public class Utilisateur {
 		this.motDePasse = motDePasse;
 		this.credit = credit;
 		this.administrateur = administrateur;
+		this.desactiver = desactiver;
 	}
 
 
@@ -171,6 +170,14 @@ public class Utilisateur {
 
 	public void setAdministrateur(boolean administrateur) {
 		this.administrateur = administrateur;
+	}
+
+	public boolean isDesactiver() {
+		return desactiver;
+	}
+
+	public void setDesactiver(boolean desactiver) {
+		this.desactiver = desactiver;
 	}
 
 	@Override

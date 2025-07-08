@@ -42,9 +42,14 @@
 
 
 		</form>
-		<form th:action="@{supprimerProfil}" method="get">
+		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit"   >Supprimer</button>
+		</form>
+
+		<form th:if="${utilisateurEnSession.administrateur} eq true" th:action="@{desactiverProfil}" method="get">
+			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+			<button type="submit"   >Desactiver</button>
 		</form>
 
 		<form th:if="${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >

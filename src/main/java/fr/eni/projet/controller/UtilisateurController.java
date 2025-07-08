@@ -166,7 +166,7 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/supprimerProfil")
-	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo)
+	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
 	{
 
         try {
@@ -174,7 +174,25 @@ public class UtilisateurController {
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
+		if(utilisateurEnSession.isAdministrateur())
+		{
+			return "redirect:/";
+		}
         return "redirect:/deconnexion";
+	}
+
+	@GetMapping("/desactiverProfil")
+	public String desactiverProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
+	{
+
+		try {
+			utilisateurService.desactiverUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
+		} catch (BusinessException e) {
+			throw new RuntimeException(e);
+		}
+
+			return "redirect:/";
+
 	}
 
 	@ModelAttribute("utilisateurEnSession")
