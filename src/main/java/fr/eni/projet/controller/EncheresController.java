@@ -83,6 +83,10 @@ public class EncheresController {
 
 		try {
 			Article article = this.enchereService.detailVente(idArticle);
+			
+			if (today.isAfter(article.getDateDebutEncheres()) && today.isBefore(article.getDateFinEncheres())) {
+				this.enchereService.debuterVente(idArticle);
+			}
 
 			if (today.isAfter(article.getDateFinEncheres())) {
 				this.enchereService.remporterVente(idArticle);

@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService {
 
-
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
@@ -49,7 +48,7 @@ public class EnchereServiceImpl implements EnchereService {
 	@Override
 
 	public void encherir(long idArticle, long idUtilisateur, int montant) throws BusinessException {
-		
+
 		BusinessException be = new BusinessException();
 
 		Enchere enchereActuelle = enchereDAO.enchereMax(idArticle);
@@ -62,19 +61,16 @@ public class EnchereServiceImpl implements EnchereService {
 		if (montant > montantActuel) {
 			Utilisateur utilisateur = utilisateurDAO.consulterCompte(idUtilisateur);
 
-			
-			if(utilisateur.getCredit() >= montant) {
+			if (utilisateur.getCredit() >= montant) {
 				Article article = articleDAO.afficherArticle(idArticle);
 				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 				this.enchereDAO.creerEnchere(newEnchere);
 				this.utilisateurDAO.debiter(idUtilisateur, montant);
-			}
-			else {
+			} else {
 				be.add("Crédits insuffisant");
 				throw be;
 			}
-		}
-		else {
+		} else {
 			be.add("Saisir une enchère plus élevée");
 			throw be;
 
@@ -102,13 +98,18 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
+	public void debuterVente(long idArticle) throws BusinessException {
+		Article article = articleDAO.afficherArticle(idArticle);
+		article.setEtatVente("EC");
+		articleDAO.updateEtatArticle(idArticle, "EC");
+	}
+
+	@Override
 	public void remporterVente(long idArticle) {
 		Article article = articleDAO.afficherArticle(idArticle);
 		article.setEtatVente("ET");
 		articleDAO.updateEtatArticle(idArticle, "ET");
 	}
-
-
 
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
@@ -164,8 +165,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
-		if(article.getIdArticle()==0)
-		{
+		if (article.getIdArticle() == 0) {
 			long id = articleDAO.ajouterArticle(article);
 			article.setIdArticle(id);
 
@@ -175,14 +175,10 @@ public class EnchereServiceImpl implements EnchereService {
 			retrait.setCodePostal(article.getRetrait().getCodePostal());
 			retrait.setArticle(article);
 			retraitDAO.creerRetrait(retrait);
+		} else {
+			articleDAO.ajouterArticle(article);
 		}
-		else
-		{
-		 articleDAO.ajouterArticle(article);
-		}
-
 
 	}
-
 
 }
