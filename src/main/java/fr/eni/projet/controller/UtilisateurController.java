@@ -166,7 +166,7 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/supprimerProfil")
-	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo)
+	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
 	{
 
         try {
@@ -174,6 +174,10 @@ public class UtilisateurController {
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
+		if(utilisateurEnSession.isAdministrateur())
+		{
+			return "redirect:/";
+		}
         return "redirect:/deconnexion";
 	}
 
