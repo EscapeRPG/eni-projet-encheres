@@ -2,6 +2,7 @@ package fr.eni.projet.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import fr.eni.projet.bo.Retrait;
 
@@ -27,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class EncheresController {
 
-	
+
 	private EnchereService enchereService;
 	private ImageService imageService;
 
@@ -76,13 +77,13 @@ public class EncheresController {
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model)
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
 			throws BusinessException {
 		LocalDateTime today = LocalDateTime.now();
 
 		try {
 			Article article = this.enchereService.detailVente(idArticle);
-			
+
 			if (today.isAfter(article.getDateDebutEncheres()) && today.isBefore(article.getDateFinEncheres())) {
 				this.enchereService.debuterVente(idArticle);
 			}
@@ -134,13 +135,13 @@ public class EncheresController {
 
 		try {
 			enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
-		} 
+		}
 		catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 
 		return "redirect:/detail-vente?idArticle=" + idArticle;
 	}
@@ -163,9 +164,14 @@ public class EncheresController {
 	}
 
 	@PostMapping("/articleEnVente")
-	public String creationArticle(@ModelAttribute("article") Article article, @RequestParam("file") MultipartFile file,
-			@SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) throws BusinessException {
-		article.setUtilisateur(utilisateurEnSession);
+	public String creationArticle(
+	    @ModelAttribute("article") Article article,
+	    @RequestParam("file") MultipartFile file,
+	    @SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
+	) throws BusinessException {
+	    article.setUtilisateur(utilisateurEnSession);
+	    article.setDateDebutEncheres(LocalDateTime.parse(article.getParsedDateDebut()));
+		article.setDateFinEncheres(LocalDateTime.parse(article.getParsedDateFin()));
 
 		String imageNom = "";
 
@@ -177,7 +183,7 @@ public class EncheresController {
 				e.printStackTrace();
 			}
 		}
-		
+
 	    if (!file.isEmpty()) {
 	        String uploadDirectory = "src/main/resources/static/images";
 	        try {
@@ -211,9 +217,15 @@ public class EncheresController {
 	@GetMapping("/modifierVente")
 	public String modifierArticle(@RequestParam(name="arti",required = false)long idArticle,Model model) throws BusinessException {
 
-		Article article = enchereService.detailVente(idArticle);;
+		Article article = enchereService.detailVente(idArticle);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+		article.setParsedDateDebut(article.getDateDebutEncheres().format(formatter));
+		article.setParsedDateFin(article.getDateFinEncheres().format(formatter));
+
 
 		model.addAttribute("article", article);
+
 		System.out.println("modifVente " + article.getIdArticle());
 		return "vendre-article";
 	}
@@ -221,6 +233,11 @@ public class EncheresController {
 	@ModelAttribute("categoriesEnSession")
 	public List<Categorie> addCategorieEnSession() {
 		return this.enchereService.consulterAllCategories();
+	}
+
+	@ModelAttribute("utilisateurEnSession")
+	public Utilisateur addUtilisateurEnSession() {
+		return new Utilisateur();
 	}
 
 }
