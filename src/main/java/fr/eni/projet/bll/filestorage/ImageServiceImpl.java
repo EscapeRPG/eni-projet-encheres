@@ -18,7 +18,7 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public String saveImageToStorage(String uploadDirectory, MultipartFile imageFile) throws IOException {
-		String uniqueFileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+		String uniqueFileName = UUID.randomUUID().toString() + ".jpg";
 
 		Path uploadPath = Path.of(uploadDirectory);
 		Path filePath = uploadPath.resolve(uniqueFileName);

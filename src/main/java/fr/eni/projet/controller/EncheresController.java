@@ -81,6 +81,11 @@ public class EncheresController {
 
 		try {
 			Article article = this.enchereService.detailVente(idArticle);
+
+			if (today.isAfter(article.getDateFinEncheres())) {
+				this.enchereService.remporterVente(idArticle);
+			}
+				
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
 			model.addAttribute("today", today);
@@ -161,8 +166,10 @@ public class EncheresController {
 	            e.printStackTrace();
 	        }
 	    }
+	    
+	    article.setPhotoArticle(imageNom);
 
-	    enchereService.CreationArticle(article, imageNom);
+	    enchereService.CreationArticle(article);
 
 	    return "redirect:/index";
 	}
