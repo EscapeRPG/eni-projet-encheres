@@ -191,7 +191,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 	
 		String sqlUpdate = "update utilisateur set credit = :montantCredit where idUtilisateur = :idUtilisateur";
 		MapSqlParameterSource map2 = new MapSqlParameterSource();
-		map2.addValue("montantCredit", montantCredit);
+		map2.addValue("montantCredit", montantCredit + consulterNbreCredit(idUtilisateur));
 		map2.addValue("idUtilisateur", idUtilisateur);
 		
 		jdb.update(sqlUpdate, map2);

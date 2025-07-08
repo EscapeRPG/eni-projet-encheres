@@ -63,9 +63,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 			if (utilisateur.getCredit() >= montant) {
 				Article article = this.articleDAO.afficherArticle(idArticle);
-				List<Enchere> listEnchere = enchereDAO.afficherEncheres(idArticle);
-				Enchere lastEnchere = listEnchere.get(listEnchere.size()-1);
-				Utilisateur lastUser = lastEnchere.getUtilisateur();
+				Utilisateur lastUser = enchereActuelle.getUtilisateur();
 				this.utilisateurDAO.crediterVendeur(lastUser.getIdUtilisateur(), idArticle);   
 				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 				this.enchereDAO.creerEnchere(newEnchere);
