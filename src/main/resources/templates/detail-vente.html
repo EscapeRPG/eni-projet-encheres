@@ -28,7 +28,7 @@
 			</div>
 		</div>
 
-		<p th:text="${enchere != 0} ? |Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
+		<p th:text="${enchere != 0} ? | Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
 		<p th:text="|Mise à prix : ${article.miseAPrix} points|">Mise à prix (points) :</p><br>
 		
 		
@@ -88,6 +88,8 @@
 	</div>
 
 	<a class="button-retour" th:href="@{/}">Retour</a>
+	<a class="button-retour" th:href="@{/modifierVente(arti=${article.getIdArticle()})}">Modifier</a>
+
 
 </body>
 </html>

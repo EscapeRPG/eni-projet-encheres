@@ -12,7 +12,7 @@ public class Article {
     private Categorie categorie;
     private Retrait retrait;
 
-    private long idArticle;
+    private long idArticle = 0;
     private String photoArticle;
     private String nomArticle;
     private String descriptions;
