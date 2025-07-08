@@ -49,8 +49,7 @@
 				<p th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}" class="error"></p>
 
 				<label for="ville">Ville :</label> 
-				<input type="text" id="ville"
-					th:field="*{ville}">
+				<input type="text" id="ville" th:field="*{ville}">
 				<p th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="error"></p>
 
 				<label for="password1">Mot de passe :</label> 
@@ -60,14 +59,12 @@
 				<label for="password2">Confirmation :</label> 
 				<input type="password" id="password2" name="confirmationMotDePasse">
 			</div>
-					
-			<form th:action="@{/connexion}" method="post">
-				<button type="submit">Créer</button>
-			</form>							
+
+			<button type="submit">Créer</button>
+		</form>							
 		
 		<form th:action="@{/connexion}" method="get">
 			<button type="submit">Annuler</button>
-		</form>
 		</form>
 	</main>
 </body>
