@@ -36,6 +36,8 @@ public interface EnchereService {
 	 * @throws BusinessException 
 	 */
 	Article detailVente(long idArticle) throws BusinessException;
+	
+	void debuterVente(long idArticle) throws BusinessException;
 
     /**
      * Détermine et enregistre l'utilisateur ayant remporté l'enchère
