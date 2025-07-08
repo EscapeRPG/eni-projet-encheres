@@ -92,6 +92,7 @@ public class EnchereServiceImpl implements EnchereService {
 		articleDAO.updateEtatArticle(idArticle, "ET");
 	}
 
+
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
 		BusinessException be = new BusinessException();
