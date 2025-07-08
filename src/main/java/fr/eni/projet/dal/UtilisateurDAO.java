@@ -1,6 +1,7 @@
 package fr.eni.projet.dal;
 
 import fr.eni.projet.bo.Utilisateur;
+import fr.eni.projet.exception.BusinessException;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface UtilisateurDAO {
     
     boolean emailExist(String email);
 	boolean isEmailInBDD(String email);
+	
+	void crediter(long idUtiisateur);
+    void debiter(long idUtilisateur, int montant);
 
      
  
