@@ -5,12 +5,7 @@
     <th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
 </head>
 <body>
-    <header>
-        <h1 id="nav-title">
-            <a th:href="@{/}">ENI-Enchères</a>
-        </h1>
-    </header>
-
+    <header th:replace="~{fragments/fragment-header :: header}"></header>
     <main>
         <h2>Nouvelle vente</h2>
         <form th:action="@{/articleEnVente}" th:object="${article}" method="post" enctype="multipart/form-data">
