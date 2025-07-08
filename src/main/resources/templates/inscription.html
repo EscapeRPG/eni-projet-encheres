@@ -60,15 +60,13 @@
 				<label for="password2">Confirmation :</label> 
 				<input type="password" id="password2" name="confirmationMotDePasse">
 			</div>
-					
-			<form th:action="@{/connexion}" method="post">
-				<button type="submit">Créer</button>
-			</form>							
+			<button type="submit">Créer</button>
+		</form>							
 		
 		<form th:action="@{/connexion}" method="get">
 			<button type="submit">Annuler</button>
 		</form>
-		</form>
+		
 	</main>
 </body>
 </html>

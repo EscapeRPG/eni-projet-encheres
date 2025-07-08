@@ -114,7 +114,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void desactiverCompte(long idUtilisateur) {
-
+    		
     }
  
     @Override
