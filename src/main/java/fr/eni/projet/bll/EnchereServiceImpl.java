@@ -11,12 +11,12 @@ import fr.eni.projet.dal.RetraitDAO;
 import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.exception.BusinessException;
 
-import org.springframework.stereotype.Service;import java.time.LocalDateTime;
+import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EnchereServiceImpl implements EnchereService {
-
 
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
@@ -47,21 +47,20 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void encherir(long idArticle, long idUtilisateur, int montant) {
-		
+
 		Enchere enchereActuelle = enchereDAO.enchereMax(idArticle);
 		int montantActuel = 0;
-		
-		if(enchereActuelle != null) {
+
+		if (enchereActuelle != null) {
 			montantActuel = enchereActuelle.getMontantEnchere();
 		}
-		
-		if(montant > montantActuel) {
+
+		if (montant > montantActuel) {
 			Utilisateur utilisateur = utilisateurDAO.consulterCompte(idUtilisateur);
 			Article article = articleDAO.afficherArticle(idArticle);
 			Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 			this.enchereDAO.creerEnchere(newEnchere);
-		}
-		else {
+		} else {
 			System.out.println("Saisir une enchère plus élevée");
 		}
 
@@ -69,36 +68,29 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public Article detailVente(long idArticle) throws BusinessException {
-		
+
 		BusinessException be = new BusinessException();
 		boolean existArticle = isExistArticle(idArticle, be);
-		
-		if(existArticle) {
+
+		if (existArticle) {
 			Article article = this.articleDAO.afficherArticle(idArticle);
 			article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
 			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
 			article.setRetrait(retraitDAO.afficherRetrait(idArticle));
-			
-		return article;
-		}
-		else {
+
+			return article;
+		} else {
 			throw be;
 		}
-	
+
 	}
 
 	@Override
 	public void remporterVente(long idArticle) {
-	    Article article = articleDAO.afficherArticle(idArticle);
-	    LocalDateTime now = LocalDateTime.now();
-
-	    if (now.isAfter(article.getDateFinEncheres())) {
-	    	article.setEtatVente("ET");
-            articleDAO.updateEtatArticle(idArticle, "ET");
-	    }
+		Article article = articleDAO.afficherArticle(idArticle);
+		article.setEtatVente("ET");
+		articleDAO.updateEtatArticle(idArticle, "ET");
 	}
-
-
 
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
@@ -112,13 +104,12 @@ public class EnchereServiceImpl implements EnchereService {
 			throw be;
 		}
 	}
-	
+
 	@Override
 	public void supprimerVente(long idArticle) {
 		// TODO Auto-generated method stub
 		this.articleDAO.supprimerArticle(idArticle);
 	}
-
 
 	private boolean isExistArticle(long idArticle, BusinessException be) {
 		boolean i = articleDAO.hasArticle(idArticle);
@@ -139,8 +130,8 @@ public class EnchereServiceImpl implements EnchereService {
 	@Override
 	public List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		List<Article> articles = this.articleDAO.afficherArticlesFiltres(filtreNomArticle, categorieFiltree, encheresEnCours, mesEncheres,
-				encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
+		List<Article> articles = this.articleDAO.afficherArticlesFiltres(filtreNomArticle, categorieFiltree,
+				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
 
 		for (Article article : articles) {
 			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
@@ -154,8 +145,8 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void CreationArticle(Article article, String image) throws BusinessException {
-		long id = articleDAO.ajouterArticle(article, image);
+	public void CreationArticle(Article article) throws BusinessException {
+		long id = articleDAO.ajouterArticle(article);
 		article.setIdArticle(id);
 
 		Retrait retrait = new Retrait();
@@ -167,6 +158,5 @@ public class EnchereServiceImpl implements EnchereService {
 		retraitDAO.creerRetrait(retrait);
 
 	}
-
 
 }

@@ -25,7 +25,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	} 
 
 	@Override
-	public long ajouterArticle(Article article, String image) {
+	public long ajouterArticle(Article article) {
 //		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
 //				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
 		String sql1 = "merge into article as v" +
@@ -41,7 +41,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 				" values(:photoArticle, :nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie);";
 
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("photoArticle", image);
+		mapSqlParameterSource.addValue("photoArticle", article.getPhotoArticle());
 		mapSqlParameterSource.addValue("nomArticle", article.getNomArticle());
 		mapSqlParameterSource.addValue("descriptions", article.getDescriptions());
 		mapSqlParameterSource.addValue("dateDebutEncheres", article.getDateDebutEncheres());
@@ -107,7 +107,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
-		String sql = "SELECT a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
+		String sql = "SELECT a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
 				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
 				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
 				+ "AND (:categorieFiltree = 0 OR a.idCategorie = :categorieFiltree) "
@@ -117,7 +117,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
 				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnAttente AND a.etatVente = 'CR') "
 				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesTerminees AND a.etatVente = 'ET') "
-				+ "GROUP BY a.idArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
+				+ "GROUP BY a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);
@@ -138,6 +138,7 @@ class ArticleMapper implements RowMapper<Article> {
 	public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Article article = new Article();
 		article.setIdArticle(rs.getLong("idArticle"));
+		article.setPhotoArticle(rs.getString("photoArticle"));
 		article.setNomArticle(rs.getString("nomArticle"));
 		article.setDescriptions(rs.getString("descriptions"));
 		article.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());

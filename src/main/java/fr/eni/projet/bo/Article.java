@@ -13,6 +13,7 @@ public class Article {
     private Retrait retrait;
 
     private long idArticle;
+    private String photoArticle;
     private String nomArticle;
     private String descriptions;
     private LocalDateTime dateDebutEncheres;
@@ -25,24 +26,34 @@ public class Article {
 		// TODO Auto-generated constructor stub
 	}
 
-    public Article(Utilisateur utilisateur, Categorie categorie, Retrait retrait,
-                   long idArticle, String nomArticle, String descriptions, LocalDateTime dateDebutEncheres,
-                   LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
-        this.encheres = new ArrayList<>();
-        this.utilisateur = utilisateur;
-        this.categorie = categorie;
-        this.retrait = retrait;
-        this.idArticle = idArticle;
-        this.nomArticle = nomArticle;
-        this.descriptions = descriptions;
-        this.dateDebutEncheres = dateDebutEncheres;
-        this.dateFinEncheres = dateFinEncheres;
-        this.miseAPrix = miseAPrix;
-        this.prixVente = prixVente;
-        this.etatVente = etatVente;
-    }
+    public Article(List<Enchere> encheres, Utilisateur utilisateur, Categorie categorie, Retrait retrait,
+			long idArticle, String photoArticle, String nomArticle, String descriptions,
+			LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente,
+			String etatVente) {
+		this.encheres = encheres;
+		this.utilisateur = utilisateur;
+		this.categorie = categorie;
+		this.retrait = retrait;
+		this.idArticle = idArticle;
+		this.photoArticle = photoArticle;
+		this.nomArticle = nomArticle;
+		this.descriptions = descriptions;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
+	}
 
-    public List<Enchere> getEncheres() {
+	public String getPhotoArticle() {
+		return photoArticle;
+	}
+
+	public void setPhotoArticle(String photoArticle) {
+		this.photoArticle = photoArticle;
+	}
+
+	public List<Enchere> getEncheres() {
         return encheres;
     }
 

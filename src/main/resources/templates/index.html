@@ -69,11 +69,12 @@
 		
 		<div class="articles">
 			<div class="item-container" th:each="a : ${articles}" >
-				<a th:href="@{/detail-vente(idArticle=${a.idArticle})}">
-					<!-- <img th:src="${a.src}" alt="${a.nomArticle}"> -->
-					<img src="">
-				</a>
-				<div>
+				<div class="photo-article">
+					<a th:href="@{/detail-vente(idArticle=${a.idArticle})}">
+						<img th:src="'/images/' + ${a.photoArticle}" th:alt="${a.nomArticle}">
+					</a>
+				</div>
+				<div class="description-article">
 					<a th:href="@{/detail-vente(idArticle=${a.idArticle})}" th:text="${a.nomArticle}"></a>
 					<p th:text="'Prix : ' + ${a.miseAPrix} + ' points'"></p>
 					<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(a.dateFinEncheres, 'dd/MM/yyyy')}"></p>
