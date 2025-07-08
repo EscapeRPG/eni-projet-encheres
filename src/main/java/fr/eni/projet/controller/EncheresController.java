@@ -85,15 +85,12 @@ public class EncheresController {
 
 			model.addAttribute("today", today);
 			model.addAttribute("article", article);
-			model.addAttribute("venteEnCours", article.getEtatVente());
+			model.addAttribute("etatVente", article.getEtatVente());
 
 			if (enchereEnCours != null) {
 				model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
 				model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
 
-				if (article.getEtatVente().equals("ET") || article.getEtatVente().equals("RE")) {
-					model.addAttribute("venteTermine", article.getEtatVente());
-				}
 			} else {
 				model.addAttribute("enchere", 0);
 			}
@@ -153,19 +150,19 @@ public class EncheresController {
 	    @SessionAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession
 	) throws BusinessException {
 	    article.setUtilisateur(utilisateurEnSession);
+	    
+	    String imageNom = "";
 
 	    if (!file.isEmpty()) {
 	        String uploadDirectory = "src/main/resources/static/images";
 	        try {
-	            String imageNom = imageService.saveImageToStorage(uploadDirectory, file);
-	            // Tu peux ici associer imageNom à ton article si tu as un champ pour ça
+	            imageNom = imageService.saveImageToStorage(uploadDirectory, file);
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            // gérer erreur upload ici
 	        }
 	    }
 
-	    enchereService.CreationArticle(article);
+	    enchereService.CreationArticle(article, imageNom);
 
 	    return "redirect:/index";
 	}
