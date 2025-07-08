@@ -181,6 +181,20 @@ public class UtilisateurController {
         return "redirect:/deconnexion";
 	}
 
+	@GetMapping("/desactiverProfil")
+	public String desactiverProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
+	{
+
+		try {
+			utilisateurService.desactiverUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
+		} catch (BusinessException e) {
+			throw new RuntimeException(e);
+		}
+
+			return "redirect:/";
+
+	}
+
 	@ModelAttribute("utilisateurEnSession")
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();

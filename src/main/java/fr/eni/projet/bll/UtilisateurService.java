@@ -44,9 +44,6 @@ public interface UtilisateurService {
 	boolean pseudoExiste(String pseudo);
 	boolean emailExiste(String email);
 
-	
-	
-    
-   
 
+    void desactiverUtilisateur(long idUtilisateur) throws BusinessException;
 }
