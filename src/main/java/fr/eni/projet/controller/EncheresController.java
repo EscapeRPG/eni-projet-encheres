@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.projet.bll.EnchereService;
-import fr.eni.projet.bll.UtilisateurService;
 import fr.eni.projet.bll.filestorage.ImageService;
 import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Categorie;

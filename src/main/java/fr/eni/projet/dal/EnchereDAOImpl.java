@@ -67,11 +67,11 @@ public class EnchereDAOImpl implements EnchereDAO{
     }
 
     @Override
-    public Enchere afficherEnchere(long idArticle) {
+    public List<Enchere> afficherEncheres(long idArticle) {
         String sql = "select * from enchere where idArticle = :idArticle";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
-        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
+        return jdb.query(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
     }
     
 

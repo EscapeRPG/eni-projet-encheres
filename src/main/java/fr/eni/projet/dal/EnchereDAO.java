@@ -10,6 +10,7 @@ public interface EnchereDAO {
    
     List<Enchere> consulterEnchere();
     
-    Enchere afficherEnchere(long idArticle);
+    List<Enchere> afficherEncheres(long idArticle);
+    
     Enchere enchereMax(long idArticle);
 }
