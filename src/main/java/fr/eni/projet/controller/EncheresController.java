@@ -88,7 +88,7 @@ public class EncheresController {
 				this.enchereService.debuterVente(idArticle);
 			}
 
-			if (today.isAfter(article.getDateFinEncheres())) {
+			if (today.isAfter(article.getDateFinEncheres()) && !article.getEtatVente().equals("RE")) {
 				this.enchereService.remporterVente(idArticle);
 			}
 
