@@ -78,7 +78,7 @@ public class EncheresController {
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model)
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
 			throws BusinessException {
 		LocalDateTime today = LocalDateTime.now();
 
@@ -234,6 +234,11 @@ public class EncheresController {
 	@ModelAttribute("categoriesEnSession")
 	public List<Categorie> addCategorieEnSession() {
 		return this.enchereService.consulterAllCategories();
+	}
+
+	@ModelAttribute("utilisateurEnSession")
+	public Utilisateur addUtilisateurEnSession() {
+		return new Utilisateur();
 	}
 
 }
