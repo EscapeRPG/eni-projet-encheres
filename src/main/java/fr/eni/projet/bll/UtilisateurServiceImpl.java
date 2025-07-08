@@ -74,6 +74,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	}
 
+	@Override
+	public void desactiverUtilisateur(long idUtilisateur) throws BusinessException {
+		BusinessException be = new BusinessException();
+		boolean existUser = isExistUtilisateur(idUtilisateur, be);
+
+		if (existUser) {
+			utilisateurDAO.desactiverCompte(idUtilisateur);
+
+		} else {
+			System.out.println("Erreur de désactivation de l'utilisateur avec l'identifiant : Identifiant introuvable");
+			throw be;
+		}
+	}
+
 	private boolean isExistUtilisateur(long idUtilisateur, BusinessException be) {
 		boolean i = utilisateurDAO.isUtilisateurInBDD(idUtilisateur);
 		if (i) {
@@ -106,5 +120,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 
-	
+
+
 }
