@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class EnchereServiceImpl implements EnchereService {
 
+
 	private ArticleDAO articleDAO;
 	private EnchereDAO enchereDAO;
 	private CategorieDAO categorieDAO;
@@ -93,6 +94,7 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 
+
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
 		BusinessException be = new BusinessException();
@@ -147,17 +149,25 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
-		long id = articleDAO.ajouterArticle(article);
-		article.setIdArticle(id);
+		if(article.getIdArticle()==0)
+		{
+			long id = articleDAO.ajouterArticle(article);
+			article.setIdArticle(id);
 
-		Retrait retrait = new Retrait();
-		retrait.setVille(article.getRetrait().getVille());
-		retrait.setRue(article.getRetrait().getRue());
-		retrait.setCodePostal(article.getRetrait().getCodePostal());
-		retrait.setArticle(article);
+			Retrait retrait = new Retrait();
+			retrait.setVille(article.getRetrait().getVille());
+			retrait.setRue(article.getRetrait().getRue());
+			retrait.setCodePostal(article.getRetrait().getCodePostal());
+			retrait.setArticle(article);
+			retraitDAO.creerRetrait(retrait);
+		}
+		else
+		{
+		 articleDAO.ajouterArticle(article);
+		}
 
-		retraitDAO.creerRetrait(retrait);
 
 	}
+
 
 }

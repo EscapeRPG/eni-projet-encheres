@@ -85,7 +85,7 @@ public class EncheresController {
 			if (today.isAfter(article.getDateFinEncheres())) {
 				this.enchereService.remporterVente(idArticle);
 			}
-				
+
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
 
 			model.addAttribute("today", today);
@@ -166,7 +166,7 @@ public class EncheresController {
 	            e.printStackTrace();
 	        }
 	    }
-	    
+
 	    article.setPhotoArticle(imageNom);
 
 	    enchereService.CreationArticle(article);
@@ -186,6 +186,16 @@ public class EncheresController {
 		model.addAttribute("articles", listeArticles);
 
 		return "redirect:/";
+	}
+
+	@GetMapping("/modifierVente")
+	public String modifierArticle(@RequestParam(name="arti",required = false)long idArticle,Model model) throws BusinessException {
+
+		Article article = enchereService.detailVente(idArticle);;
+
+		model.addAttribute("article", article);
+		System.out.println("modifVente " + article.getIdArticle());
+		return "vendre-article";
 	}
 
 	@ModelAttribute("categoriesEnSession")
