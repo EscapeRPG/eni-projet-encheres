@@ -3,7 +3,11 @@ package fr.eni.projet.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import fr.eni.projet.bo.Retrait;
 
 import org.springframework.stereotype.Controller;
@@ -39,8 +43,27 @@ public class EncheresController {
 
 	@GetMapping({ "/", "/index", "/encheres" })
 	public String goToIndex(Model model) {
+		LocalDateTime today = LocalDateTime.now();
 		List<Article> listeArticles = enchereService.consulterAllVentes();
-		model.addAttribute("articles", listeArticles);
+		
+		Map<Long, String> couleurParArticle = new HashMap<>();
+
+	    for (Article a : listeArticles) {
+	        long joursRestants = ChronoUnit.DAYS.between(today, a.getDateFinEncheres());
+	        String couleur;
+	        if (joursRestants < 2) {
+	            couleur = "red";
+	        } else if (joursRestants < 7) {
+	            couleur = "orange";
+	        } else {
+	            couleur = "";
+	        }
+	        couleurParArticle.put(a.getIdArticle(), couleur);
+	    }
+
+	    model.addAttribute("articles", listeArticles);
+	    model.addAttribute("couleurs", couleurParArticle);
+		
 		return "index";
 	}
 
