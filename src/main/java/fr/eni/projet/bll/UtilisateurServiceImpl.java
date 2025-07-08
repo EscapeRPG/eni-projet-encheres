@@ -103,7 +103,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public boolean emailExiste(String email) {	
 		return utilisateurDAO.emailExist(email);
-	} 
- 
+	}
+
+
 	
 }

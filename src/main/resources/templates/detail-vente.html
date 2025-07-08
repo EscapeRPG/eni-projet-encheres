@@ -28,7 +28,7 @@
 			</div>
 		</div>
 
-		<p th:text="${enchere != 0} ? |Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
+		<p th:text="${enchere != 0} ? | Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
 		<p th:text="|Mise à prix : ${article.miseAPrix} points|">Mise à prix (points) :</p><br>
 		
 		
@@ -48,7 +48,7 @@
 		<div th:if="${utilisateurEnSession != null 
 					and utilisateurEnSession.idUtilisateur > 0 
 					and article.utilisateur.idUtilisateur  != utilisateurEnSession.idUtilisateur 
-					and venteEnCours == 'EC'}">
+					and etatVente == 'EC'}">
 			<form th:action="@{/encherir}" method="post">
 				<label for="montant">Ma proposition :</label>
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
@@ -73,7 +73,7 @@
 					and article.utilisateur.idUtilisateur == utilisateurEnSession.idUtilisateur 
 					and article.dateFinEncheres < today}">
 					
-			<form th:if ="${venteTermine == 'ET'}" th:action="@{/retraitEffectue}" method="post">
+			<form th:if ="${etatVente == 'ET'}" th:action="@{/retraitEffectue}" method="post">
 				<input type="hidden" name="idArticle" th:value="${article.idArticle}">
 				<button type="submit">Retrait effectué</button>
 			</form>
@@ -88,6 +88,8 @@
 	</div>
 
 	<a class="button-retour" th:href="@{/}">Retour</a>
+	<a class="button-retour" th:href="@{/modifierVente(arti=${article.getIdArticle()})}">Modifier</a>
+
 
 </body>
 </html>
