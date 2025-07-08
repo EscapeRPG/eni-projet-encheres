@@ -62,19 +62,18 @@ public class EnchereDAOImpl implements EnchereDAO{
 
     @Override
     public List<Enchere> consulterEnchere() {
-        String sql = "select * from enchere";
+        String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur ";
         return jdb.query(sql,new EnchereMapper());
     }
 
     @Override
     public List<Enchere> afficherEncheres(long idArticle) {
-        String sql = "select * from enchere where idArticle = :idArticle";
+        String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur where idArticle = :idArticle";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
+
         return jdb.query(sql,mapSqlParameterSource,new EnchereMapper());
     }
-    
-
 }
 
 class EnchereMapper implements RowMapper<Enchere> {
