@@ -128,6 +128,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
 
 
+    @Override
+    public void desactiverCompte(long idUtilisateur) {
+    		
+    }
+
  
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {
