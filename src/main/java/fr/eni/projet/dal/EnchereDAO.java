@@ -11,5 +11,6 @@ public interface EnchereDAO {
     List<Enchere> consulterEnchere();
     
     List<Enchere> afficherEncheres(long idArticle);
+
     Enchere enchereMax(long idArticle);
 }

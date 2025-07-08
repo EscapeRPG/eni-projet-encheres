@@ -63,7 +63,7 @@ public class EnchereDAOImpl implements EnchereDAO{
     @Override
     public List<Enchere> consulterEnchere() {
         String sql = "select * from enchere";
-        return jdb.query(sql,new BeanPropertyRowMapper<>(Enchere.class));
+        return jdb.query(sql,new EnchereMapper());
     }
 
     @Override
@@ -71,7 +71,9 @@ public class EnchereDAOImpl implements EnchereDAO{
         String sql = "select * from enchere where idArticle = :idArticle";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
-        return jdb.query(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Enchere.class));
+
+        return jdb.query(sql,mapSqlParameterSource,new EnchereMapper());
+
     }
     
 
@@ -87,7 +89,6 @@ class EnchereMapper implements RowMapper<Enchere> {
         enchere.setDateEnchere(rs.getTimestamp("dateEnchere").toLocalDateTime());
 
         Utilisateur utilisateur = new Utilisateur();
-        
         utilisateur.setIdUtilisateur(rs.getLong("idUtilisateur"));
         utilisateur.setPseudo(rs.getString("pseudo"));
         enchere.setUtilisateur(utilisateur);

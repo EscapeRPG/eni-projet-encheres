@@ -1,8 +1,6 @@
 package fr.eni.projet.bo;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Article {
@@ -21,6 +19,9 @@ public class Article {
     private int miseAPrix;
     private int prixVente;
     private String etatVente;
+
+    private String parsedDateDebut;
+    private String parsedDateFin;
     
     public Article() {
 		// TODO Auto-generated constructor stub
@@ -147,6 +148,22 @@ public class Article {
 
     public void setEtatVente(String etatVente) {
         this.etatVente = etatVente;
+    }
+
+    public String getParsedDateDebut() {
+        return parsedDateDebut;
+    }
+
+    public void setParsedDateDebut(String parsedDateDebut) {
+        this.parsedDateDebut = parsedDateDebut;
+    }
+
+    public String getParsedDateFin() {
+        return parsedDateFin;
+    }
+
+    public void setParsedDateFin(String parsedDateFin) {
+        this.parsedDateFin = parsedDateFin;
     }
 
     @Override
