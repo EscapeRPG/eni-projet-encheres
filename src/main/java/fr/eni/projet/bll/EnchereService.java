@@ -69,6 +69,8 @@ public interface EnchereService {
 	 *                           déjà terminée).
 	 */
 	void clotureArticle(long idArticle) throws BusinessException;
+	
+	
 
 	/**
 	 * Récupère la liste complète des ventes disponibles sur la plateforme.
@@ -117,6 +119,10 @@ public interface EnchereService {
 	 * @return une liste d'encheres associés à cet article.
 	 */
 	List<Enchere> consulterEncheres(long idArticle);
+	
+	List<Article> getTopTrendingArticles();
+	
+	
 
 	/**
 	 * Récupère les détails complets d'un article en vente.
@@ -136,8 +142,6 @@ public interface EnchereService {
 	 *         enchère n'est encore placée.
 	 */
 	Enchere consulterEnchereMax(long idArticle);
-
-	List<Article> getTopTrendingArticles();
 
 	List<Article> getArticlesByPage(int page, int pageSize);
 
