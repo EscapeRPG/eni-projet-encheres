@@ -103,67 +103,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
     }
 
-    @Override
-    public Utilisateur consulterCompte(long idUtilisateur) {
-        String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
-    }
-
-    @Override
-    public Utilisateur consulterCompte(String pseudo) {
-        String sql = "select * from utilisateur where pseudo = :pseudo";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("pseudo", pseudo);
-        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
-    }
-
-    @Override
-    public List<Utilisateur> afficherComptes() {
-        String sql = "select * from utilisateur";
-        return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
-    }
-
-<<<<<<< HEAD
-	@Override
-	public int consulterNbreCredit(long idUtilisateur) {
-		String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		return jdb.queryForObject(sql, mapSqlParameterSource, Integer.class);
-	}
-
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> b636c71cde77b4142e20fb2819c628d43523b4a0
-    @Override
-    public boolean isUtilisateurInBDD(long idUtilisateur) {
-        String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
-        
-        return i != 0;
-    }
-    
-    @Override
-    public boolean isUtilisateurInBDD(String pseudo) {
-        String sql = "select count(*) from utilisateur where pseudo = :pseudo";       
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("pseudo", pseudo);
-        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
-        
-        return i != 0; 
-    }
-    
-<<<<<<< HEAD
-   
-    
-    @Override
-=======
 	@Override
 	public Utilisateur consulterCompte(long idUtilisateur) {
 		String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
@@ -207,9 +146,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 	}
 
 	@Override
->>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
-=======
->>>>>>> b636c71cde77b4142e20fb2819c628d43523b4a0
 	public boolean emailExist(String email) {
 		String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
 		MapSqlParameterSource params = new MapSqlParameterSource();
@@ -241,7 +177,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
 	}
 
-<<<<<<< HEAD
 	@Override 
 	public void crediter(long idUtilisateur, int montant) {
 		String sqlUpdate = "update utilisateur set credit = :montantCredit where idUtilisateur = :idUtilisateur";
@@ -250,12 +185,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		map2.addValue("idUtilisateur", idUtilisateur);
 		
 		jdb.update(sqlUpdate, map2);
-=======
-	@Override
-	public void crediter(long idUtiisateur) {
-		// TODO Auto-generated method stub
-
->>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
 	}
 
 	@Override

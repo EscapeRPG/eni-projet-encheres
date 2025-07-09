@@ -127,16 +127,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public boolean emailExiste(String email) {	
 		return utilisateurDAO.emailExist(email);
 	}
-
-<<<<<<< HEAD
 	
 	public void achatCredit(long idUtilisateur, int montant) {
 		this.utilisateurDAO.crediter(idUtilisateur, montant);
 	}
 
-
-
-
-=======
->>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
 }

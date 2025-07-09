@@ -19,12 +19,6 @@ import jakarta.validation.Valid;
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
 public class UtilisateurController {
-
-<<<<<<< HEAD
-	private final UtilisateurServiceImpl utilisateurServiceImpl;
-
-=======
->>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
 	private UtilisateurService utilisateurService;
 
 	public UtilisateurController(UtilisateurService utilisateurService) {
