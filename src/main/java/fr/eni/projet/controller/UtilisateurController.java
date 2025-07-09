@@ -1,5 +1,8 @@
 package fr.eni.projet.controller;
 
+import fr.eni.projet.security.MyUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -14,6 +17,8 @@ import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
+
+import java.util.Objects;
 
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
@@ -62,7 +67,7 @@ public class UtilisateurController {
 	        return "inscription";
 	    }
 
-	    utilisateur.setAdministrateur(false); // sécurité
+	    utilisateur.setRoles("ROLE_USER"); // sécurité
 
 	    try {
 	        utilisateurService.creerUtilisateur(utilisateur);
@@ -107,41 +112,31 @@ public class UtilisateurController {
 	@GetMapping("/connexion")
 	public String gotoConnexion(@RequestParam(name="error",required = false) Integer error,Model model) {
 		model.addAttribute("error", error);
+		System.out.println("foutu Spring Security de Merde");
 		return "connexion";
 	}
 
 
-	@PostMapping("/connexion")
-	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
-			@RequestParam(name = "motDePasse") String motDePasse,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, BindingResult bindingResult) {
-		try {
-			Utilisateur utilisateurInBDD = this.utilisateurService.connecterUtilisateur(pseudo, motDePasse);
+	@GetMapping("/succes")
+	public String connecterUtilisateur(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
-			if (utilisateurInBDD != null) {
-				utilisateurEnSession.setIdUtilisateur(utilisateurInBDD.getIdUtilisateur());
-				utilisateurEnSession.setPseudo(utilisateurInBDD.getPseudo());
-				utilisateurEnSession.setNom(utilisateurInBDD.getNom());
-				utilisateurEnSession.setPrenom(utilisateurInBDD.getPrenom());
-				utilisateurEnSession.setEmail(utilisateurInBDD.getEmail());
-				utilisateurEnSession.setTelephone(utilisateurInBDD.getTelephone());
-				utilisateurEnSession.setRue(utilisateurInBDD.getRue());
-				utilisateurEnSession.setCodePostal(utilisateurInBDD.getCodePostal());
-				utilisateurEnSession.setVille(utilisateurInBDD.getVille());
-				utilisateurEnSession.setMotDePasse(utilisateurInBDD.getMotDePasse());
-				utilisateurEnSession.setCredit(utilisateurInBDD.getCredit());
-				utilisateurEnSession.setAdministrateur(utilisateurInBDD.isAdministrateur());
-			}
-			return "redirect:/";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
 
-		} catch (BusinessException e) {
-			e.getExceptionMessages().forEach(m -> {
-				ObjectError error = new ObjectError("errorLogin", m);
-				bindingResult.addError(error);
+		utilisateurEnSession.setIdUtilisateur(userDetails.getUtilisateur().getIdUtilisateur());
+		utilisateurEnSession.setPseudo(userDetails.getUtilisateur().getPseudo());
+		utilisateurEnSession.setNom(userDetails.getUtilisateur().getNom());
+		utilisateurEnSession.setPrenom(userDetails.getUtilisateur().getPrenom());
+		utilisateurEnSession.setEmail(userDetails.getUtilisateur().getEmail());
+		utilisateurEnSession.setTelephone(userDetails.getUtilisateur().getTelephone());
+		utilisateurEnSession.setRue(userDetails.getUtilisateur().getRue());
+		utilisateurEnSession.setCodePostal(userDetails.getUtilisateur().getCodePostal());
+		utilisateurEnSession.setVille(userDetails.getUtilisateur().getVille());
+		utilisateurEnSession.setMotDePasse(userDetails.getUtilisateur().getMotDePasse());
+		utilisateurEnSession.setCredit(userDetails.getUtilisateur().getCredit());
+		utilisateurEnSession.setRoles(userDetails.getUtilisateur().getRoles());
 
-			});
-			return "redirect:/connexion?error=1";
-		}
+		return "redirect:/";
 
 	}
  
@@ -159,7 +154,6 @@ public class UtilisateurController {
 		utilisateurEnSession.setVille(null);
 		utilisateurEnSession.setMotDePasse(null);
 		utilisateurEnSession.setCredit(0);
-		utilisateurEnSession.setAdministrateur(false);
 
 		return "redirect:/";
 
@@ -174,7 +168,7 @@ public class UtilisateurController {
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
-		if(utilisateurEnSession.isAdministrateur())
+		if(Objects.equals(utilisateurEnSession.getRoles(), "ROLE_ADMIN"))
 		{
 			return "redirect:/";
 		}

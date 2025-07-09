@@ -27,8 +27,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void creerCompte(Utilisateur u) {
-        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,administrateur,desactiver) "
-                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :administrateur, :desactiver)";
+        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,roles,desactiver) "
+                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :roles, :desactiver)";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", u.getPseudo());
         mapSqlParameterSource.addValue("nom", u.getNom());
@@ -39,8 +39,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
         mapSqlParameterSource.addValue("ville", u.getVille());
         mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
-        mapSqlParameterSource.addValue("administrateur", u.isAdministrateur());
-        mapSqlParameterSource.addValue("desactiver", u.isDesactiver());
+
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdb.update(sql,mapSqlParameterSource,keyHolder);
@@ -76,12 +75,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     public void supprimerCompte(long idUtilisateur) {
         String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
         String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
-        String sql3  = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
         jdb.update(sql1,mapSqlParameterSource);
         jdb.update(sql2,mapSqlParameterSource);
-        jdb.update(sql3,mapSqlParameterSource);
 
     }
 
@@ -89,10 +86,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     public void desactiverCompte(long idUtilisateur) {
         String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
         String sql2 = "delete from article where idUtilisateur = :idUtilisateur";
+        String sql3  = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
         jdb.update(sql1,mapSqlParameterSource);
         jdb.update(sql2,mapSqlParameterSource);
+        jdb.update(sql3,mapSqlParameterSource);
+
     }
 
     @Override
@@ -125,13 +125,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
-
-
-
-    @Override
-    public void desactiverCompte(long idUtilisateur) {
-    		
-    }
 
  
     @Override

@@ -1,13 +1,23 @@
 package fr.eni.projet.bo;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Retrait {
 
+    @ManyToOne
+    @JoinColumn(name = "article_id_article")
     private Article article;
 
     private String rue;
     private String codePostal;
     private String ville;
-    
+    @Id
+    private Long id;
+
     public Retrait() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,5 +69,13 @@ public class Retrait {
                 ", codePostal='" + codePostal + '\'' +
                 ", ville='" + ville + '\'' +
                 '}';
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
