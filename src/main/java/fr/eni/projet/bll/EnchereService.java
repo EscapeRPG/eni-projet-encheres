@@ -121,5 +121,7 @@ public interface EnchereService {
 	 * @return une Enchere représentant l'enchère maximale, ou null si aucune enchère n'est encore placée.
 	 */
 	Enchere consulterEnchereMax(long idArticle);
+	
+	List<Article> getTopTrendingArticles();
 
 }
