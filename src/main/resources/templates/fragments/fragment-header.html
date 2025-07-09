@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <header th:fragment="header">
 	<h1 id="nav-title">
-		<a th:href="@{/}">ENI-Enchères</a>
+		<a th:href="@{/}"><img src="/images/logo-encheres.png" alt="logo eni enchères"> - Enchères</a>
 	</h1>
 	<nav>
 		<a th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" th:href="@{/encheres}">Enchères</a>
@@ -15,6 +15,7 @@
 		<a th:if="${utilisateurEnSession eq null ||utilisateurEnSession.getIdUtilisateur() == 0}" th:href="@{/connexion}">Se connecter</a>
 
 		<a  th:if="${utilisateurEnSession != null && utilisateurEnSession.getIdUtilisateur() > 0}" th:href="@{/deconnexion}">Déconnexion</a>
-
+		
+		<button id="darkmode">Dark</button>
 	</nav>
 </header>
