@@ -15,10 +15,16 @@ import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
 
+
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
 public class UtilisateurController {
 
+<<<<<<< HEAD
+	private final UtilisateurServiceImpl utilisateurServiceImpl;
+
+=======
+>>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
 	private UtilisateurService utilisateurService;
 
 	public UtilisateurController(UtilisateurService utilisateurService) {
@@ -31,46 +37,43 @@ public class UtilisateurController {
 		model.addAttribute("utilisateur", utilisateur);
 		return "inscription";
 	}
- 
+
 	@PostMapping("/inscription")
-	public String creerUtilisateur(
-	        @Valid @ModelAttribute Utilisateur utilisateur,
-	        BindingResult bindingResult,
-	        @RequestParam("confirmationMotDePasse") String confirmationMotDePasse,
-	        Model model) {
+	public String creerUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
+			@RequestParam("confirmationMotDePasse") String confirmationMotDePasse, Model model) {
 
-	    // Vérifie si les mots de passe correspondent
-	    if (!utilisateur.getMotDePasse().equals(confirmationMotDePasse)) {
-	        bindingResult.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
-	    }
+		// Vérifie si les mots de passe correspondent
+		if (!utilisateur.getMotDePasse().equals(confirmationMotDePasse)) {
+			bindingResult.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
+		}
 
-	    // Vérifie si le pseudo existe déjà en base
-	    if (utilisateurService.pseudoExiste(utilisateur.getPseudo())) {
-	        bindingResult.rejectValue("pseudo", "error.pseudo", "Ce pseudo est déjà utilisé.");
-	    }
-	    
-	    // Vérifie si l'email existe déjà en base
-	    if (utilisateurService.emailExiste(utilisateur.getEmail())) {
-	    	bindingResult.rejectValue("email", "error.email", "Cet email est déjà utilisé.");
-	    }
+		// Vérifie si le pseudo existe déjà en base
+		if (utilisateurService.pseudoExiste(utilisateur.getPseudo())) {
+			bindingResult.rejectValue("pseudo", "error.pseudo", "Ce pseudo est déjà utilisé.");
+		}
 
-	    // En cas d'erreur, on renvoie au formulaire
-	    if (bindingResult.hasErrors()) {
-	        return "inscription";
-	    }
+		// Vérifie si l'email existe déjà en base
+		if (utilisateurService.emailExiste(utilisateur.getEmail())) {
+			bindingResult.rejectValue("email", "error.email", "Cet email est déjà utilisé.");
+		}
 
-	    utilisateur.setAdministrateur(false); // sécurité
+		// En cas d'erreur, on renvoie au formulaire
+		if (bindingResult.hasErrors()) {
+			return "inscription";
+		}
 
-	    try {
-	        utilisateurService.creerUtilisateur(utilisateur);
-	    } catch (BusinessException e) {
-	        e.getExceptionMessages().forEach(message -> {
-	            bindingResult.addError(new ObjectError("globalError", message));
-	        });
-	        return "inscription";
-	    }
+		utilisateur.setAdministrateur(false); // sécurité
 
-	    return "redirect:/connexion";
+		try {
+			utilisateurService.creerUtilisateur(utilisateur);
+		} catch (BusinessException e) {
+			e.getExceptionMessages().forEach(message -> {
+				bindingResult.addError(new ObjectError("globalError", message));
+			});
+			return "inscription";
+		}
+
+		return "redirect:/connexion";
 	}
 
 	@GetMapping("/modifierProfil")
@@ -90,23 +93,23 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/profil")
-	public String changeProfil(@ModelAttribute("newUser") Utilisateur utilisateur,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+	public String changeProfil(@ModelAttribute("newUser") Utilisateur utilisateur,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 		utilisateur.setIdUtilisateur(utilisateurEnSession.getIdUtilisateur());
 		System.out.println(utilisateur);
-        try {
-            utilisateurService.modifierProfil(utilisateur);
-        } catch (BusinessException e) {
-            throw new RuntimeException(e);
-        }
-        return "redirect:/";
+		try {
+			utilisateurService.modifierProfil(utilisateur);
+		} catch (BusinessException e) {
+			throw new RuntimeException(e);
+		}
+		return "redirect:/";
 	}
-	 
+
 	@GetMapping("/connexion")
-	public String gotoConnexion(@RequestParam(name="error",required = false) Integer error,Model model) {
+	public String gotoConnexion(@RequestParam(name = "error", required = false) Integer error, Model model) {
 		model.addAttribute("error", error);
 		return "connexion";
 	}
-
 
 	@PostMapping("/connexion")
 	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
@@ -141,7 +144,7 @@ public class UtilisateurController {
 		}
 
 	}
- 
+
 	@GetMapping("/deconnexion")
 	public String deconnexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
@@ -163,24 +166,23 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/supprimerProfil")
-	public String supprimerProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
-	{
+	public String supprimerProfil(@RequestParam(name = "pseudo") String pseudo,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
-        try {
-            utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
-        } catch (BusinessException e) {
-            throw new RuntimeException(e);
-        }
-		if(utilisateurEnSession.isAdministrateur())
-		{
+		try {
+			utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
+		} catch (BusinessException e) {
+			throw new RuntimeException(e);
+		}
+		if (utilisateurEnSession.isAdministrateur()) {
 			return "redirect:/";
 		}
-        return "redirect:/deconnexion";
+		return "redirect:/deconnexion";
 	}
 
 	@GetMapping("/desactiverProfil")
-	public String desactiverProfil(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
-	{
+	public String desactiverProfil(@RequestParam(name = "pseudo") String pseudo,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
 		try {
 			utilisateurService.desactiverUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
@@ -188,13 +190,26 @@ public class UtilisateurController {
 			throw new RuntimeException(e);
 		}
 
-			return "redirect:/";
+		return "redirect:/";
 
 	}
 
 	@ModelAttribute("utilisateurEnSession")
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();
+	}
+
+	@GetMapping("/achatCredit")
+	public String goToAchatCredit(@RequestParam(name = "pseudo") String pseudo,
+			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+
+		return "achat-credit";
+	}
+	
+	@PostMapping("/crediter")
+	public String crediter(@RequestParam(name = "montant") int montant,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
+		this.utilisateurService.achatCredit(utilisateurEnSession.getIdUtilisateur(), montant);
+		return "redirect:/profil?pseudo=" + utilisateurEnSession.getPseudo();
 	}
 	
 }

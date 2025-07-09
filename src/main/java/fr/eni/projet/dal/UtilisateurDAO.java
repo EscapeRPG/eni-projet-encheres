@@ -51,7 +51,13 @@ public interface UtilisateurDAO {
     
 	boolean isEmailInBDD(String email);
 	
+<<<<<<< HEAD
+	void crediter(long idUtiisateur, int montant); 
+	void crediterVendeur(long idUtilisateur, long idArticle); 
+    void debiter(long idUtilisateur, int montant);
+=======
 	
+>>>>>>> b636c71cde77b4142e20fb2819c628d43523b4a0
 
      
  
