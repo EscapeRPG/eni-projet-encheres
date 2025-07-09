@@ -11,6 +11,8 @@ public interface RetraitDAO {
      */
     void creerRetrait(Retrait retrait);
     
+    
+    
     /**
      * Récupère les informations de retrait associées à un article donné.
      *

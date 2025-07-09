@@ -14,6 +14,8 @@ public interface ArticleDAO {
 	 */
 	long ajouterArticle(Article article);
 	
+	
+	
 	/**
 	 * Met à jour l’état d’un article ("EC", "ET", "RE").
 	 * 
@@ -28,6 +30,8 @@ public interface ArticleDAO {
 	 * @param idArticle l’identifiant de l’article à supprimer.
 	 */
 	void supprimerArticle(long idArticle);
+	
+	
 	
 	/**
 	 * Récupère la liste de tous les articles.
@@ -65,6 +69,8 @@ public interface ArticleDAO {
 	 * @return une liste des articles les plus tendances.
 	 */
 	List<Article> getTopTrendingArticles();
+	
+	
 
 	/**
 	 * Récupère un article à partir de son identifiant.
@@ -73,6 +79,8 @@ public interface ArticleDAO {
 	 * @return l’objet Article correspondant.
 	 */
 	Article afficherArticle(long idArticle);
+	
+	
 
 	/**
 	 * Vérifie si un article existe dans le système.

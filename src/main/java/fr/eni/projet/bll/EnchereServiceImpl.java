@@ -23,6 +23,8 @@ public class EnchereServiceImpl implements EnchereService {
 	private CategorieDAO categorieDAO;
 	private RetraitDAO retraitDAO;
 	private UtilisateurDAO utilisateurDAO;
+	
+	
 
 	public EnchereServiceImpl(ArticleDAO articleDAO, EnchereDAO enchereDAO, CategorieDAO categorieDAO,
 			RetraitDAO retraitDAO, UtilisateurDAO utilisateurDAO) {
@@ -31,8 +33,9 @@ public class EnchereServiceImpl implements EnchereService {
 		this.categorieDAO = categorieDAO;
 		this.retraitDAO = retraitDAO;
 		this.utilisateurDAO = utilisateurDAO;
-
 	}
+	
+	
 
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
@@ -128,8 +131,9 @@ public class EnchereServiceImpl implements EnchereService {
 			be.add("L'article n'existe pas");
 			return false;
 		}
-
 	}
+	
+	
 
 	@Override
 	public List<Article> consulterAllVentes() {
@@ -169,6 +173,8 @@ public class EnchereServiceImpl implements EnchereService {
 	public List<Article> getTopTrendingArticles() {
 		return this.articleDAO.getTopTrendingArticles();
 	}
+	
+	
 
 	@Override
 	public Article detailVente(long idArticle) throws BusinessException {

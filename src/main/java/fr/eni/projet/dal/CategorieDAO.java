@@ -21,12 +21,16 @@ public interface CategorieDAO {
      */
     void SupprimerCategorie(long idCategorie);
     
+    
+    
     /**
      * Récupère la liste de toutes les catégories disponibles.
      *
      * @return une liste d'objets Categorie.
      */
     List<Categorie> listerCategorie();
+    
+    
 
     /**
      * Récupère la catégorie associée à un article spécifique.

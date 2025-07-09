@@ -19,8 +19,8 @@ import java.util.List;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO{
 	
-	private UtilisateurDAO utilisateurDAO;
     private final NamedParameterJdbcTemplate jdb;
+    
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
         this.jdb = jdb;
     }
