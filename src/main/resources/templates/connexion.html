@@ -14,32 +14,18 @@
 	</header>
 	<h2>Connexion</h2>
 
-	<form class="formulaire" th:action="@{/connexion}" method="post">
-		<label for="name">Identifiant :</label>
-		<br />
-		<input type="text" id="name" name="pseudo" placeholder="votre identifiant" minlength="3"/>
-		<div th:if="${error== 1}">
-			<p style="color:red;">Mauvais utilisateur ou mots de passe !</p>
-		</div>
-		<br />
-
-		<label for="password">
-			Mot de passe :
-			<span class="lien-mdp">
-				<a th:href="@{/inscription}">Mot de passe oublié</a>
-			</span>
-		</label>
-		<br />
-		<input type="password" id="password" name="motDePasse" /><br />
-
-		<div class="souvenir">
-			<input type="checkbox" id="checkbox" name="connexion" value="checkbox" />
-			<label for="checkbox">Se souvenir de moi</label>
-					
-		</div>
-
-		<button class="button" type="submit">Connexion</button>
+	<form  th:action="@{/login}" method="post">
+		<input type="text"  name="username" placeholder="votre identifiant" minlength="3" required/>
+		<input type="password"  name="password" required /><br />
+		<button type="submit">Connexion</button>
 	</form>
+
+	<div th:if="${param.error}">
+		<p style="color:red;">Identifiants invalides. Veuillez réessayer.</p>
+	</div>
+
+
+
 
 <div class="downbutton">
 		<form th:action="@{/inscription}" method="get">
