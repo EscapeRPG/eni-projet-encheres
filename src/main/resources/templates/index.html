@@ -8,6 +8,19 @@
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
 	<main>
+		<h2>Les enchères vedettes</h2>
+		
+		<div class="carousel">
+			<div class="carousel-track" id="carouselTrack">
+				<div class="carousel-item" th:each="a : ${trendingArticles}">
+					<a th:href="@{/detail-vente(idArticle=${a.idArticle})}">
+						<img th:src="@{'/images/' + ${a.photoArticle}}" th:alt="${a.nomArticle}">
+						<p th:text="${a.nomArticle}"></p>
+					</a>
+				</div>
+			</div>
+		</div>
+		
 		<h2>Liste des enchères</h2>
 		
 		<form th:action="@{/encheres/rechercher}" method="post" class="barre-filtre-f">
@@ -84,8 +97,20 @@
 				</div>
 			</div>
 		</div>
+		
+		<div th:if="${pagination} eq 'on'" class="pagination">
+			<a th:if="${currentPage > 1}" th:href="@{/index(page=${currentPage - 1})}">« Précédent</a>
+			<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+				<a th:href="@{/index(page=${i})}"
+				       th:text="${i}"
+				       th:classappend="${i == currentPage} ? 'active'">
+				</a>
+			</span>
+			<a th:if="${currentPage < totalPages}" th:href="@{/index(page=${currentPage + 1})}">Suivant »</a>
+		</div>
 	
 	</main>
 	<script th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" src="/scripts/filtres-connecte.js"></script>
+	<script src="/scripts/carrousel.js"></script>
 </body>
 </html>

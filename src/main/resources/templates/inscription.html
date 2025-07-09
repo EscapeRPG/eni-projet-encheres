@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head th:insert="~{fragments/fragment-head :: head}">
 <title>Inscription</title>
 <link rel="stylesheet" th:href="@{/css/inscription.css}" />
 <link rel="stylesheet" th:href="@{/css/error.css}">
@@ -10,8 +8,9 @@
 <body>
 	<header>
 		<h1 id="nav-title">
-			<a th:href="@{/}">ENI-Enchères</a>
+			<a th:href="@{/}"><img src="/images/logo-encheres.png" alt="logo eni enchères"> - Enchères</a>
 		</h1>
+		<button id="darkmode">Dark</button>
 	</header>
 	<main>
 		<h2>Créer un compte</h2>

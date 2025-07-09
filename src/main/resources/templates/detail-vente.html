@@ -4,13 +4,7 @@
 <title>ENI-Enchères</title>
 </head>
 <body>
-
-	<header>
-		<h1 id="nav-title">
-			<a th:href="@{/}">ENI-Enchères</a>
-		</h1>
-	</header>
-
+	<header th:replace="~{fragments/fragment-header :: header}"></header>
 	<h2>Détail vente</h2>
 	<h3 th:if="${today >= article.dateFinEncheres 
 			  and (etatVente == 'ET' or etatVente == 'RE')}" 
