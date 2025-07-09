@@ -19,13 +19,6 @@ public interface UtilisateurService {
 	 * @param utilisateur l'objet Utilisateur à modifier.
 	 */
 	void modifierProfil(Utilisateur utilisateur) throws BusinessException;
-
-	/**
-	 * Supprime un utilisateur du système.
-	 * 
-	 * @param idUtilisateur l'identifiant unique de l'utilisateur à supprimer.
-	 */
-	void supprimerUtilisateur(long idUtilisateur) throws BusinessException;
 	
 	/**
 	 * Désactive temporairement un utilisateur sans le supprimer.
@@ -34,6 +27,13 @@ public interface UtilisateurService {
 	 * @throws BusinessException.
 	 */
 	void desactiverUtilisateur(long idUtilisateur) throws BusinessException;
+
+	/**
+	 * Supprime un utilisateur du système.
+	 * 
+	 * @param idUtilisateur l'identifiant unique de l'utilisateur à supprimer.
+	 */
+	void supprimerUtilisateur(long idUtilisateur) throws BusinessException;
 
 	/**
 	 * Récupère les informations d'un utilisateur à partir de son ID
