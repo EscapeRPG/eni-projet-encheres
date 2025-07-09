@@ -189,7 +189,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 	
 	@Override
 	public void crediterVendeur(long idUtilisateur, long idArticle) {
-		
 		String sql = "SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle";
 		
 		MapSqlParameterSource map = new MapSqlParameterSource();
