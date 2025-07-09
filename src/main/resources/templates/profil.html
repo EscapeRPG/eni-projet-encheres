@@ -8,6 +8,8 @@
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
 	<main>
 		<h2 th:text="${utilisateur.getPseudo()}"></h2>
+				
+		<h3 th:text="'Solde actuel : ' + ${utilisateur.credit} + ' points'" class="credit-actuel"></h3>
 		
 		<form th:if="${utilisateurEnSession.getPseudo()} eq ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
 			<div class="form-profil">

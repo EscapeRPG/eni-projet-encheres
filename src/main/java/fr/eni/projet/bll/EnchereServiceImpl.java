@@ -164,7 +164,7 @@ public class EnchereServiceImpl implements EnchereService {
 		// TODO Auto-generated method stub
 		return this.enchereDAO.afficherEncheres(idArticle);
 	}
-	
+
 	@Override
 	public List<Article> getTopTrendingArticles() {
 		return this.articleDAO.getTopTrendingArticles();
@@ -191,6 +191,14 @@ public class EnchereServiceImpl implements EnchereService {
 	@Override
 	public Enchere consulterEnchereMax(long idArticle) {
 		return this.enchereDAO.enchereMax(idArticle);
+	}
+
+	public List<Article> getArticlesByPage(int page, int pageSize) {
+		return articleDAO.getArticlesByPage(page, pageSize);
+	}
+
+	public int countArticles() {
+		return articleDAO.countArticles();
 	}
 
 }

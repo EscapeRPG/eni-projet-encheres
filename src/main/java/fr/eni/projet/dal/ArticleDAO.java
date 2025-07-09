@@ -20,8 +20,11 @@ public interface ArticleDAO {
 
 	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
-	
+
 	List<Article> getTopTrendingArticles();
 
-} 
- 
+	List<Article> getArticlesByPage(int page, int pageSize);
+
+	int countArticles();
+
+}

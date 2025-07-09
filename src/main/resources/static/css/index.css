@@ -161,6 +161,18 @@ select {
 	}
 }
 
+.pagination {
+	margin: 20px auto;
+	
+	a {
+		color: var(--links);
+		
+		&:hover {
+			color: var(--links-hover);
+		}
+	}
+}
+
 /* Responsive - Tablettes */
 @media ( max-width : 1024px) {
 	.articles .item-container {
