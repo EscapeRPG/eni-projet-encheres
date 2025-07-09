@@ -15,6 +15,20 @@ public class CategorieDAOImpl implements CategorieDAO{
     public CategorieDAOImpl(NamedParameterJdbcTemplate jdb) {
         this.jdb = jdb;
     }
+    
+    @Override
+    public void ajouterCategorie(Categorie categorie) {
+        String sql = "insert into categorie (libelle) values (:libelle)";
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("libelle", categorie.getLibelle());
+        jdb.update(sql, paramSource);
+    }
+    
+    @Override
+    public void SupprimerCategorie(long idCategorie) {
+        String sql = "delete from categorie where idCategorie = :idCategorie";
+        jdb.update(sql, new MapSqlParameterSource("idCategorie", idCategorie));
+    }
 
     @Override
     public List<Categorie> listerCategorie() {
@@ -29,19 +43,5 @@ public class CategorieDAOImpl implements CategorieDAO{
         paramSource.addValue("idArticle", idArticle);
         return jdb.queryForObject(sql, paramSource, new BeanPropertyRowMapper<>(Categorie.class));
     }
-
-    @Override
-    public void ajouterCategorie(Categorie categorie) {
-        String sql = "insert into categorie (libelle) values (:libelle)";
-        MapSqlParameterSource paramSource = new MapSqlParameterSource();
-        paramSource.addValue("libelle", categorie.getLibelle());
-        jdb.update(sql, paramSource);
-    }
-
-    @Override
-    public void SupprimerCategorie(long idCategorie) {
-        String sql = "delete from categorie where idCategorie = :idCategorie";
-        jdb.update(sql, new MapSqlParameterSource("idCategorie", idCategorie));
-
-    }
+    
 }
