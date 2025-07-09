@@ -50,12 +50,8 @@ public interface UtilisateurService {
 	boolean pseudoExiste(String pseudo);
 
 	boolean emailExiste(String email);
-<<<<<<< HEAD
 
 
-    void desactiverUtilisateur(long idUtilisateur) throws BusinessException;
+	void achatCredit(long idUtilisateur, int montant);
 
-	void achatCredit(long idUtilisateur) ;
-=======
->>>>>>> c43ffe495b03ac6af65e3223d384d9a43be39cf7
 }

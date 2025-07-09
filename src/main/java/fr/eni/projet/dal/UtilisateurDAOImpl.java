@@ -125,10 +125,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
-<<<<<<< HEAD
-=======
- 
->>>>>>> c43ffe495b03ac6af65e3223d384d9a43be39cf7
+
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {
         String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
@@ -184,10 +181,14 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		
 	}
 
-	@Override
-	public void crediter(long idUtiisateur) {
-		// TODO Auto-generated method stub
+	@Override 
+	public void crediter(long idUtilisateur, int montant) {
+		String sqlUpdate = "update utilisateur set credit = :montantCredit where idUtilisateur = :idUtilisateur";
+		MapSqlParameterSource map2 = new MapSqlParameterSource();
+		map2.addValue("montantCredit", montant + consulterNbreCredit(idUtilisateur));
+		map2.addValue("idUtilisateur", idUtilisateur);
 		
+		jdb.update(sqlUpdate, map2);
 	}
 	
 	@Override

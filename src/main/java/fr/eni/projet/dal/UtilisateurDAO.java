@@ -28,8 +28,8 @@ public interface UtilisateurDAO {
     boolean emailExist(String email);
 	boolean isEmailInBDD(String email);
 	
-	void crediter(long idUtiisateur);
-	void crediterVendeur(long idUtilisateur, long idArticle);
+	void crediter(long idUtiisateur, int montant); 
+	void crediterVendeur(long idUtilisateur, long idArticle); 
     void debiter(long idUtilisateur, int montant);
 
      

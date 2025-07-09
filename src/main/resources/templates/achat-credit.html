@@ -6,25 +6,31 @@
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
+	
 	<h2>Achat crédit</h2>
 
-	<form action="">
-		<div>
-			<p>Mon solde :</p>
+	<h3 th:text="'Mon solde : ' + ${utilisateurEnSession.credit}"></h3>
 
-			<div class="form-buttons">
-				<button type="submit">100 points</button>
-				<button type="submit">150 points</button>
-				<button type="submit">200 points</button>
-				<button type="submit">250 points</button>
-			</div>
-			<label for="autre">Autre montant :</label> <input type="text"
-				name="autre" id="autre" />
-				
-			<div class="button-crediter">
-				<button type="submit">Créditer</button>
-			</div>	
-		</div>
+	<div class="list-buttons">
+		<form th:action="@{/crediter}" method="post">
+			<button type="submit" name="montant" value="100">100 points</button>
+		
+			<button type="submit" name="montant" value="150">150 points</button>
+		
+			<button type="submit" name="montant" value="200">200 points</button>
+	
+			<button type="submit" name="montant" value="250">250 points</button>
+		</form>
+	</div>
+	
+	
+	<form th:action="@{/crediter}" method="post">
+    	<label for="montant">Autre montant :</label>
+    	<input type="number" id="montant" name="montant" min="1" required />
+    	<div>
+        	<button type="submit">Créditer</button>
+    	</div>
 	</form>
+
 </body>
 </html>

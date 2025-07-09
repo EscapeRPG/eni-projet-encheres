@@ -122,4 +122,6 @@ public interface EnchereService {
 	 */
 	Enchere consulterEnchereMax(long idArticle);
 
+	
+
 }
