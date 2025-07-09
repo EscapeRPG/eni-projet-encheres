@@ -34,6 +34,8 @@ public interface UtilisateurService {
 	 * @param idUtilisateur l'identifiant unique de l'utilisateur à supprimer.
 	 */
 	void supprimerUtilisateur(long idUtilisateur) throws BusinessException;
+	
+	
 
 	/**
 	 * Récupère les informations d'un utilisateur à partir de son ID
@@ -62,6 +64,8 @@ public interface UtilisateurService {
 	 * @throws BusinessException en cas d’identifiants invalides.
 	 */
 	Utilisateur connecterUtilisateur(String pseudo, String motDePasse) throws BusinessException;
+	
+	
 
 	/**
 	 * Vérifie si un pseudo existe déjà.
