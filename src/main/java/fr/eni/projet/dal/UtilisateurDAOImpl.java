@@ -146,24 +146,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return i != 0; 
     }
     
-   
-    
-    @Override
 	public boolean emailExist(String email) {
-    	String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("email", email);
-        int count = jdb.queryForObject(sql, params, Integer.class);
-        return count != 0;
-    }
- 
-    @Override
+		String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("email", email);
+		int count = jdb.queryForObject(sql, params, Integer.class);
+		return count != 0;
+	}
+
+	@Override
 	public boolean isEmailInBDD(String email) {
 		return false;
 	}
 
-
-	@Override 
+	@Override
 	public void updateCompte(Utilisateur u) {
 		String sql = "update utilisateur set pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email,"
 				+ "telephone = :telephone, rue = :rue, codePostal = :codePostal, ville = :ville where idUtilisateur = :idUtilisateur";
@@ -176,52 +172,44 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 		map.addValue("rue", u.getRue());
 		map.addValue("codePostal", u.getCodePostal());
 		map.addValue("ville", u.getVille());
-        map.addValue("idUtilisateur", u.getIdUtilisateur());
-        jdb.update(sql,map);
-		
+		map.addValue("idUtilisateur", u.getIdUtilisateur());
+		jdb.update(sql, map);
+
 	}
 
 	@Override
 	public void crediter(long idUtiisateur) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void crediterVendeur(long idUtilisateur, long idArticle) {
 		String sql = "SELECT MAX(montantEnchere) FROM enchere WHERE idArticle = :idArticle";
-		
+
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idArticle", idArticle);
-		Integer montantCredit = jdb.queryForObject(sql, map,Integer.class);
-	
+		Integer montantCredit = jdb.queryForObject(sql, map, Integer.class);
+
 		String sqlUpdate = "update utilisateur set credit = :montantCredit where idUtilisateur = :idUtilisateur";
 		MapSqlParameterSource map2 = new MapSqlParameterSource();
 		map2.addValue("montantCredit", montantCredit + consulterNbreCredit(idUtilisateur));
 		map2.addValue("idUtilisateur", idUtilisateur);
-		
+
 		jdb.update(sqlUpdate, map2);
 	}
 
 	@Override
 	public void debiter(long idUtilisateur, int montant) {
-		
-		String sql ="update utilisateur set credit = :montant where idUtilisateur = :idUtilisateur";
-		
+
+		String sql = "update utilisateur set credit = :montant where idUtilisateur = :idUtilisateur";
+
 		int montantDebit = (consulterCompte(idUtilisateur).getCredit() - montant);
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idUtilisateur", idUtilisateur);
 		map.addValue("montant", montantDebit);
-		
-		jdb.update(sql,map);
+
+		jdb.update(sql, map);
 	}
 
-	
-
-	
-	
 }
-
-
-
-

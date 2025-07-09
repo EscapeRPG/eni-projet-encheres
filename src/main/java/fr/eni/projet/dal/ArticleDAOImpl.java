@@ -22,22 +22,20 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	public ArticleDAOImpl(NamedParameterJdbcTemplate jdb) {
 		this.jdb = jdb;
-	} 
+	}
 
 	@Override
 	public long ajouterArticle(Article article) {
 //		String sql = "insert into article(nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie) "
 //				+ "values(:nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie)";
-		String sql1 = "merge into article v" +
-				" using (select :idArticle as idArticle, :photoArticle as photoArticle, :nomArticle as nomArticle, :descriptions as descriptions, :dateDebutEncheres as dateDebutEncheres,:dateFinEncheres as dateFinEncheres" +
-				" , :miseAPrix as miseAPrix, :prixVente as prixVente, :idUtilisateur as idUtilisateur, :idCategorie as idCategorie) s" +
-				" on v.idArticle = s.idArticle" +
-				" when matched then" +
-				" update set photoArticle = s.photoArticle, nomArticle = s.nomArticle, descriptions = s.descriptions, dateDebutEncheres = s.dateDebutEncheres, dateFinEncheres = s.dateFinEncheres, miseAPrix = s.miseAPrix, prixVente = s.prixVente," +
-				" idUtilisateur = s.idUtilisateur, idCategorie = s.idCategorie" +
-				" when not matched then" +
-				" insert (photoArticle, nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie)" +
-				" values(:photoArticle, :nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie);";
+		String sql1 = "merge into article v"
+				+ " using (select :idArticle as idArticle, :photoArticle as photoArticle, :nomArticle as nomArticle, :descriptions as descriptions, :dateDebutEncheres as dateDebutEncheres,:dateFinEncheres as dateFinEncheres"
+				+ " , :miseAPrix as miseAPrix, :prixVente as prixVente, :idUtilisateur as idUtilisateur, :idCategorie as idCategorie) s"
+				+ " on v.idArticle = s.idArticle" + " when matched then"
+				+ " update set photoArticle = s.photoArticle, nomArticle = s.nomArticle, descriptions = s.descriptions, dateDebutEncheres = s.dateDebutEncheres, dateFinEncheres = s.dateFinEncheres, miseAPrix = s.miseAPrix, prixVente = s.prixVente,"
+				+ " idUtilisateur = s.idUtilisateur, idCategorie = s.idCategorie" + " when not matched then"
+				+ " insert (photoArticle, nomArticle,descriptions,dateDebutEncheres,dateFinEncheres,miseAPrix,prixVente,idUtilisateur,idCategorie)"
+				+ " values(:photoArticle, :nomArticle, :descriptions, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :prixVente, :idUtilisateur, :idCategorie);";
 
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("photoArticle", article.getPhotoArticle());
@@ -52,9 +50,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idArticle", article.getIdArticle());
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdb.update(sql1,mapSqlParameterSource,keyHolder);
+		jdb.update(sql1, mapSqlParameterSource, keyHolder);
 
-		if(article.getIdArticle()==0) {
+		if (article.getIdArticle() == 0) {
 			article.setIdArticle(keyHolder.getKey().longValue());
 		}
 		return article.getIdArticle();
@@ -69,7 +67,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		jdb.update(sql, mapSqlParameterSource);
 
 	}
- 
+
 	@Override
 	public void supprimerArticle(long idArticle) {
 		String sql = "delete from article where idArticle = :idArticle";
@@ -97,7 +95,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:ventesEnCours = 0 OR a.idUtilisateur = :ventesEnCours AND a.etatVente = 'EC') "
 				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnAttente AND a.etatVente = 'CR') "
 				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesTerminees AND a.etatVente = 'ET') "
-				+ "GROUP BY a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
+				+ "GROUP BY a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville ";
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);
@@ -109,19 +107,28 @@ public class ArticleDAOImpl implements ArticleDAO {
 		map.addValue("ventesTerminees", ventesTerminees);
 		return jdb.query(sql, map, new ArticleMapper());
 	}
-	
+
 	public List<Article> getTopTrendingArticles() {
-	    String sql = "SELECT TOP 5 a.*, r.rue, r.codePostal, r.ville\r\n"
-	    		+ "FROM article a\r\n"
-	    		+ "LEFT JOIN retrait r ON a.idArticle = r.idArticle\r\n"
-	    		+ "JOIN (\r\n"
-	    		+ "    SELECT idArticle, COUNT(*) AS nbEncheres\r\n"
-	    		+ "    FROM enchere\r\n"
-	    		+ "    GROUP BY idArticle\r\n"
-	    		+ ") e ON a.idArticle = e.idArticle\r\n"
-	    		+ "ORDER BY e.nbEncheres DESC;";
-		
-	    return jdb.query(sql, new ArticleMapper());
+		String sql = "SELECT TOP 5 a.*, r.rue, r.codePostal, r.ville FROM article a "
+				+ "LEFT JOIN retrait r ON a.idArticle = r.idArticle JOIN (SELECT idArticle, COUNT(*) AS nbEncheres FROM enchere "
+				+ "GROUP BY idArticle) e ON a.idArticle = e.idArticle ORDER BY e.nbEncheres DESC";
+
+		return jdb.query(sql, new ArticleMapper());
+	}
+
+	public List<Article> getArticlesByPage(int page, int pageSize) {
+		int offset = (page - 1) * pageSize;
+		String sql = "select * from article inner join retrait on article.idArticle = retrait.idArticle ORDER BY article.dateFinEncheres DESC OFFSET :offset ROWS FETCH NEXT 6 ROWS ONLY";
+
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("offset", offset);
+
+		return jdb.query(sql, map, new ArticleMapper());
+	}
+
+	public int countArticles() {
+		String sql = "SELECT COUNT(*) FROM article";
+		return jdb.queryForObject(sql, new MapSqlParameterSource(), Integer.class);
 	}
 
 	@Override

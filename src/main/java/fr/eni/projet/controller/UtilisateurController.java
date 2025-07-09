@@ -19,13 +19,10 @@ import jakarta.validation.Valid;
 @Controller
 public class UtilisateurController {
 
-    private final UtilisateurServiceImpl utilisateurServiceImpl;
-
 	private UtilisateurService utilisateurService;
 
-	public UtilisateurController(UtilisateurService utilisateurService, UtilisateurServiceImpl utilisateurServiceImpl) {
+	public UtilisateurController(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
-		this.utilisateurServiceImpl = utilisateurServiceImpl;
 	}
 
 	@GetMapping("/inscription")
