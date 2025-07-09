@@ -175,12 +175,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
         String sql = "select motDePasse from utilisateur where email = :email";
 
-
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("email", email);
 
-        return jdb.queryForObject(sql,mapSqlParameterSource,String.class);
-        }
-
+        return jdb.queryForObject(sql, mapSqlParameterSource, String.class);
+    }
 
 
     @Override
