@@ -28,6 +28,7 @@ public class EnchereDAOImpl implements EnchereDAO{
 
     @Override
     public void creerEnchere(Enchere enchere) {
+    	
         String sql = "insert into enchere(dateEnchere, montantEnchere, idArticle, idUtilisateur) "
                 + " values(:dateEnchere, :montantEnchere,:idArticle, :idUtilisateur)";
 
@@ -44,7 +45,9 @@ public class EnchereDAOImpl implements EnchereDAO{
 
     @Override
     public List<Enchere> afficherEncheres(long idArticle) {
+    	
         String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur where idArticle = :idArticle";
+        
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idArticle", idArticle);
 
@@ -67,7 +70,10 @@ public class EnchereDAOImpl implements EnchereDAO{
         
         try {
             return jdb.queryForObject(sql, mapSqlParameterSource, new EnchereMapper());
-        } catch (EmptyResultDataAccessException e) {
+            
+        } 
+        catch (EmptyResultDataAccessException e) {
+        	
             return null; 
         }
     }

@@ -19,10 +19,14 @@ import java.util.List;
 public class ArticleDAOImpl implements ArticleDAO {
 
 	private final NamedParameterJdbcTemplate jdb;
+	
+	
 
 	public ArticleDAOImpl(NamedParameterJdbcTemplate jdb) {
 		this.jdb = jdb;
 	} 
+	
+	
 
 	@Override
 	public long ajouterArticle(Article article) {
@@ -52,41 +56,52 @@ public class ArticleDAOImpl implements ArticleDAO {
 		mapSqlParameterSource.addValue("idArticle", article.getIdArticle());
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
 		jdb.update(sql1,mapSqlParameterSource,keyHolder);
 
 		if(article.getIdArticle()==0) {
 			article.setIdArticle(keyHolder.getKey().longValue());
 		}
+		
 		return article.getIdArticle();
 	}
 	
 	@Override
 	public void updateEtatArticle(long idArticle, String etat) {
+		
 		String sql = "UPDATE article SET etatVente = :etatVente WHERE idArticle = :idArticle";
+		
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("etatVente", etat);
 		mapSqlParameterSource.addValue("idArticle", idArticle);
+		
 		jdb.update(sql, mapSqlParameterSource);
 
 	}
  
 	@Override
 	public void supprimerArticle(long idArticle) {
+		
 		String sql = "delete from article where idArticle = :idArticle";
+		
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("idArticle", idArticle);
+		
 		jdb.update(sql, mapSqlParameterSource);
 	}
 
 	@Override
 	public List<Article> afficherArticles() {
+		
 		String sql = "select * from article inner join retrait on article.idArticle = retrait.idArticle";
+		
 		return jdb.query(sql, new ArticleMapper());
 	}
 	
 	@Override
 	public List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
+		
 		String sql = "SELECT a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville "
 				+ "FROM article a LEFT JOIN retrait r ON a.idArticle = r.idArticle LEFT JOIN enchere e ON a.idArticle = e.idArticle WHERE "
 				+ "(:filtreNomArticle IS NULL OR a.nomArticle LIKE CONCAT('%', :filtreNomArticle, '%')) "
@@ -98,6 +113,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 				+ "AND (:ventesEnAttente = 0 OR a.idUtilisateur = :ventesEnAttente AND a.etatVente = 'CR') "
 				+ "AND (:ventesTerminees = 0 OR a.idUtilisateur = :ventesTerminees AND a.etatVente = 'ET') "
 				+ "GROUP BY a.idArticle, a.photoArticle, a.nomArticle, a.descriptions, a.dateDebutEncheres, a.dateFinEncheres, a.miseAPrix, a.prixVente, a.idUtilisateur, a.idCategorie, a.etatVente, r.rue, r.codePostal, r.ville";
+		
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("filtreNomArticle", filtreNomArticle);
 		map.addValue("categorieFiltree", categorieFiltree);
@@ -107,10 +123,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 		map.addValue("ventesEnCours", ventesEnCours);
 		map.addValue("ventesEnAttente", ventesEnAttente);
 		map.addValue("ventesTerminees", ventesTerminees);
+		
 		return jdb.query(sql, map, new ArticleMapper());
 	}
 	
 	public List<Article> getTopTrendingArticles() {
+		
 	    String sql = "SELECT TOP 5 a.*, r.rue, r.codePostal, r.ville\r\n"
 	    		+ "FROM article a\r\n"
 	    		+ "LEFT JOIN retrait r ON a.idArticle = r.idArticle\r\n"
@@ -126,7 +144,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	@Override
 	public Article afficherArticle(long idArticle) {
+		
 		String sql = "select * from article inner join retrait on article.idArticle = retrait.idArticle where article.idArticle = :idArticle";
+		
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("idArticle", idArticle);
 
@@ -135,7 +155,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	@Override
 	public boolean hasArticle(long idArticle) {
+		
 		String sql = "select count(*) FROM article WHERE idArticle = :idArticle";
+		
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("idArticle", idArticle);
 
@@ -150,6 +172,7 @@ class ArticleMapper implements RowMapper<Article> {
 
 	@Override
 	public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+		
 		Article article = new Article();
 		article.setIdArticle(rs.getLong("idArticle"));
 		article.setPhotoArticle(rs.getString("photoArticle"));

@@ -13,6 +13,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
+		
 		this.utilisateurDAO = utilisateurDAO;
 	}
 	
@@ -20,6 +21,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public void creerUtilisateur(Utilisateur utilisateur) {
+		
 		this.utilisateurDAO.creerCompte(utilisateur);
 	}
 	
@@ -27,9 +29,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
 
 		BusinessException be = new BusinessException();
-
 		utilisateurDAO.updateCompte(utilisateur);
-
 	}
 	
 	@Override
@@ -39,8 +39,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		if (existUser) {
 			utilisateurDAO.desactiverCompte(idUtilisateur);
-
-		} else {
+		} 
+		else {
 			System.out.println("Erreur de désactivation de l'utilisateur avec l'identifiant : Identifiant introuvable");
 			throw be;
 		}
@@ -54,8 +54,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		if (existUser) {
 			utilisateurDAO.supprimerCompte(idUtilisateur);
-
-		} else {
+		} 
+		else {
 			System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
 			throw be;
 		}
@@ -66,11 +66,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	public Utilisateur afficherProfil(long idUtilisateur) {
+		
 		return this.utilisateurDAO.consulterCompte(idUtilisateur);
 	}
 
 	@Override
 	public Utilisateur afficherProfil(String pseudo) {
+		
 		return this.utilisateurDAO.consulterCompte(pseudo);
 	}
 
@@ -81,35 +83,42 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		boolean existUser = isExistUtilisateur(pseudo, be);
 
 		if (existUser) {
+			
 			if (this.utilisateurDAO.connecterCompte(pseudo, motDePasse) != null) {
 				return this.utilisateurDAO.connecterCompte(pseudo, motDePasse);
-			} else {
+			} 
+			else {
 				be.add("Le mot de passe ou user ne correspond pas");
 				throw be;
 			}
-		} else {
+		} 
+		else {
 			be.add("l'utilisateur n'existe pas");
 			throw be;
 		}
-
 	}
 	
 	private boolean isExistUtilisateur(long idUtilisateur, BusinessException be) {
+		
 		boolean i = utilisateurDAO.isUtilisateurInBDD(idUtilisateur);
+		
 		if (i) {
 			return true;
-		} else {
+		}
+		else {
 			be.add("L'utilisateur n'existe pas");
 			return false;
 		}
-
 	}
 
 	private boolean isExistUtilisateur(String pseudo, BusinessException be) {
+		
 		boolean i = utilisateurDAO.isUtilisateurInBDD(pseudo);
+		
 		if (i) {
 			return true;
-		} else {
+		} 
+		else {
 			be.add("L'utilisateur n'existe pas");
 			return false;
 		}
@@ -118,12 +127,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 
 	@Override
-	public boolean pseudoExiste(String pseudo) {	
+	public boolean pseudoExiste(String pseudo) {
+		
 		return utilisateurDAO.isUtilisateurInBDD(pseudo);
 	}
 
 	@Override
 	public boolean emailExiste(String email) {	
+		
 		return utilisateurDAO.emailExist(email);
 	}
 
