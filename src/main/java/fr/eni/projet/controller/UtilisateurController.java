@@ -199,5 +199,13 @@ public class UtilisateurController {
 	public Utilisateur addUtilisateurEnSession() {
 		return new Utilisateur();
 	}
+	 
 	
+	 @GetMapping("/achatCredit")
+	 public String achatCredit(@RequestParam(name ="pseudo") String pseudo,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession)
+		{
+		 return "achat-credit";
+	
+		}
+	 
 }

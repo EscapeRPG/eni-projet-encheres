@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head th:insert="~{fragments/fragment-head :: head}">
+<link rel="stylesheet" th:href="@{/css/connexion.css}" />
+<title>ENI Connexion</title>
+</head>
+<body>
+	<header th:replace="~{fragments/fragment-header :: header}"></header>
+	<h2>Achat crédit</h2>
+
+	<form action="">
+		<div>
+			<p>Mon solde :</p>
+
+			<div class="form-buttons">
+				<button type="submit">100 points</button>
+				<button type="submit">150 points</button>
+				<button type="submit">200 points</button>
+				<button type="submit">250 points</button>
+			</div>
+			<label for="autre">Autre montant :</label> <input type="text"
+				name="autre" id="autre" />
+				
+			<div class="button-crediter">
+				<button type="submit">Créditer</button>
+			</div>	
+		</div>
+	</form>
+</body>
+</html>

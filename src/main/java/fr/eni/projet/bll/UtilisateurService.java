@@ -46,4 +46,6 @@ public interface UtilisateurService {
 
 
     void desactiverUtilisateur(long idUtilisateur) throws BusinessException;
+
+	void achatCredit(long idUtilisateur) ;
 }

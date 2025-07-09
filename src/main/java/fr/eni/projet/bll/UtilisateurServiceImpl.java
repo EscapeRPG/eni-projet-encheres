@@ -119,6 +119,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return utilisateurDAO.emailExist(email);
 	}
 
+	@Override
+	public void achatCredit(long idUtilisateur) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

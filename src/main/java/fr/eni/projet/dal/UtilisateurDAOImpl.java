@@ -125,15 +125,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
-
-
-
-    @Override
-    public void desactiverCompte(long idUtilisateur) {
-    		
-    }
-
- 
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {
         String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
