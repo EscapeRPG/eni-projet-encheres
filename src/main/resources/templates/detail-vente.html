@@ -17,12 +17,27 @@
 		
 		<div th:if="${etatVente == 'CR' or etatVente == 'EC'}">
 			<div>
-				<p th:text="${article.descriptions != null} ? |Description : ${article.descriptions}| : 'Aucune description'"></p>
-				<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'"></p>
+				<p th:text="${article.descriptions != null} ? |Description : ${article.descriptions}| : 'Aucune description'">Description</p>
+				<p th:text="${article.categorie.libelle != null} ? 'Catégorie : ' + ${article.categorie.libelle} : 'Categorie non renseignée'">Catégories</p>
 			</div>
 		</div>
 
-		<p th:text="${enchere != 0} ? | Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'"></p>
+		<p th:text="${enchere != 0} ? | Meilleure offre : ${enchere} (pts) par ${pseudoAcheteur}| : 'Aucune offre'">Meilleur offre</p>
+		
+		<select 
+				th:if="${utilisateurEnSession != null 
+					  and article.utilisateur.idUtilisateur == utilisateurEnSession.idUtilisateur}"
+				name ="listeEncheres">
+				
+		<option disabled selected> ** Consulter les enchères ** </option>
+		<option 
+				th:each="ench : ${listeEncheres}"
+				th:value="${#temporals.format(ench.dateEnchere, 'yyyyMMddHHmmss')}"
+				th:text="|${ench.utilisateur.pseudo} - ${ench.montantEnchere}(pts) - le :  ${#temporals.format(ench.dateEnchere, 'dd/MM/yyyy HH:mm')}|">
+		</option>				
+		</select>
+		
+		
 		<p th:text="|Mise à prix : ${article.miseAPrix} points|">Mise à prix (points) :</p><br>
 		
 		
