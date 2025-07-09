@@ -36,7 +36,14 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 	
 	
-
+	
+	@Override
+	public int countArticles() {
+		return articleDAO.countArticles();
+	}
+	
+	
+	
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
 		
@@ -179,15 +186,20 @@ public class EnchereServiceImpl implements EnchereService {
 		
 		return this.enchereDAO.afficherEncheres(idArticle);
 	}
-	
+
 	@Override
 	public List<Article> getTopTrendingArticles() {
 		
 		return this.articleDAO.getTopTrendingArticles();
 	}
 	
+	@Override
+	public List<Article> getArticlesByPage(int page, int pageSize) {
+		return articleDAO.getArticlesByPage(page, pageSize);
+	}
 	
 
+	
 	@Override
 	public Article detailVente(long idArticle) throws BusinessException {
 
@@ -212,5 +224,4 @@ public class EnchereServiceImpl implements EnchereService {
 		
 		return this.enchereDAO.enchereMax(idArticle);
 	}
-
 }

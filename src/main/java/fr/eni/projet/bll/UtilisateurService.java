@@ -82,4 +82,8 @@ public interface UtilisateurService {
 	 * @return true si l’email existe, false sinon.
 	 */
 	boolean emailExiste(String email);
+
+
+	void achatCredit(long idUtilisateur, int montant);
+
 }

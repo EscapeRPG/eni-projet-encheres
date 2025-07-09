@@ -1,5 +1,6 @@
 package fr.eni.projet.bll;
 
+import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.exception.BusinessException;
@@ -136,6 +137,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public boolean emailExiste(String email) {	
 		
 		return utilisateurDAO.emailExist(email);
+	}
+	
+	public void achatCredit(long idUtilisateur, int montant) {
+		this.utilisateurDAO.crediter(idUtilisateur, montant);
 	}
 
 }

@@ -62,7 +62,7 @@ public interface ArticleDAO {
 	 */
 	List<Article> afficherArticlesFiltres(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees);
-	
+
 	/**
 	 * Récupère les 5 articles où il y a le plus d'enchère.
 	 * 
@@ -70,6 +70,11 @@ public interface ArticleDAO {
 	 */
 	List<Article> getTopTrendingArticles();
 	
+	
+
+	List<Article> getArticlesByPage(int page, int pageSize);
+
+	int countArticles();
 	
 
 	/**
@@ -92,5 +97,4 @@ public interface ArticleDAO {
 
 	
 
-} 
- 
+}

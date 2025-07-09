@@ -97,6 +97,17 @@
 				</div>
 			</div>
 		</div>
+		
+		<div th:if="${pagination} eq 'on'" class="pagination">
+			<a th:if="${currentPage > 1}" th:href="@{/index(page=${currentPage - 1})}">« Précédent</a>
+			<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+				<a th:href="@{/index(page=${i})}"
+				       th:text="${i}"
+				       th:classappend="${i == currentPage} ? 'active'">
+				</a>
+			</span>
+			<a th:if="${currentPage < totalPages}" th:href="@{/index(page=${currentPage + 1})}">Suivant »</a>
+		</div>
 	
 	</main>
 	<script th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" src="/scripts/filtres-connecte.js"></script>

@@ -14,7 +14,7 @@ public interface UtilisateurDAO {
      * @return le montant total de crédits de l'utilisateur.
      */
 	int consulterNbreCredit(long idUtilisateur);
-	
+
 	
 	
 	/**
@@ -45,7 +45,7 @@ public interface UtilisateurDAO {
      */
     void supprimerCompte(long idUtilisateur);
    
-    void crediter(long idUtiisateur);
+    void crediter(long idUtiisateur, int montant);
     
     /**
      * Créditer le vendeur/utilisateurBattu de l’article après/pendant la fin de l’enchère.
@@ -134,10 +134,4 @@ public interface UtilisateurDAO {
      */
     boolean emailExist(String email);
     
-	
-	
-
-     
- 
-
 }

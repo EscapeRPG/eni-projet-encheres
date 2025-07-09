@@ -41,13 +41,17 @@ public class EncheresController {
 	}
 
 	@GetMapping({ "/", "/index", "/encheres" })
-	public String goToIndex(Model model) {
+	public String goToIndex(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
 		LocalDateTime today = LocalDateTime.now();
-		List<Article> listeArticles = enchereService.consulterAllVentes();
+	    
+		int pageSize = 6;
+	    List<Article> articles = enchereService.getArticlesByPage(page, pageSize);
+	    int totalArticles = enchereService.countArticles();
+	    int totalPages = (int) Math.ceil((double) totalArticles / pageSize);
 
 		Map<Long, String> couleurParArticle = new HashMap<>();
 
-		for (Article a : listeArticles) {
+		for (Article a : articles) {
 			long joursRestants = ChronoUnit.DAYS.between(today, a.getDateFinEncheres());
 			String couleur;
 			if (joursRestants < 2) {
@@ -60,11 +64,14 @@ public class EncheresController {
 			couleurParArticle.put(a.getIdArticle(), couleur);
 		}
 
-		model.addAttribute("articles", listeArticles);
+	    model.addAttribute("articles", articles);
 		model.addAttribute("couleurs", couleurParArticle);
 
 		List<Article> trendingArticles = enchereService.getTopTrendingArticles();
 		model.addAttribute("trendingArticles", trendingArticles);
+		model.addAttribute("pagination", "on");
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
 
 		return "index";
 	}
@@ -79,9 +86,30 @@ public class EncheresController {
 			@RequestParam(name = "ventesEnAttente", required = false, defaultValue = "0") int ventesEnAttente,
 			@RequestParam(name = "ventesTerminees", required = false, defaultValue = "0") int ventesTerminees,
 			Model model) {
+		LocalDateTime today = LocalDateTime.now();
+
 		List<Article> listeFiltree = this.enchereService.filtrerRecherche(filtreNomArticle, categorieFiltree,
 				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
+		
+		Map<Long, String> couleurParArticle = new HashMap<>();
+
+		for (Article a : listeFiltree) {
+			long joursRestants = ChronoUnit.DAYS.between(today, a.getDateFinEncheres());
+			String couleur;
+			if (joursRestants < 2) {
+				couleur = "red";
+			} else if (joursRestants < 7) {
+				couleur = "orange";
+			} else {
+				couleur = "";
+			}
+			couleurParArticle.put(a.getIdArticle(), couleur);
+		}
+
 		model.addAttribute("articles", listeFiltree);
+		model.addAttribute("couleurs", couleurParArticle);
+		model.addAttribute("pagination", "off");
+		
 		return "index";
 	}
 
