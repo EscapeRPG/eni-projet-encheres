@@ -63,5 +63,7 @@ public interface EnchereService {
 	Article detailVente(long idArticle) throws BusinessException;
 
 	Enchere consulterEnchereMax(long idArticle);
+	
+	List<Article> getTopTrendingArticles();
 
 }

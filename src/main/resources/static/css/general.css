@@ -3,26 +3,55 @@
 /*Page d'index*/
 
 :root {
-	--theme-principal: rgb(70, 180, 230);
+	--banniere: rgb(70, 180, 230);
+	--fond: #f8f9fa;
+	--text: black;
+	--links: goldenrod;
+	--links-hover: darkgoldenrod;
+	--items-background: white;
+	--items-border: black;
+	--items-shadow: rgba(0, 0, 0, 0.4);
+	--button: lightskyblue;
+	--button-hover: orange;
+	--darkmode-button: black;
+	--darkmode-button-text: white;
+	--search-button: rgb(70, 180, 230);
 }
 
 .darkmode {
-	--theme-principal: rgb(30,30,30);
+	--banniere: rgb(30,30,30);
+	--fond: rgb(70,70,70);
+	--text: white;
+	--links-hover: gold;
+	--items-background: rgb(30, 30, 30);
+	--items-border: darkgoldenrod;
+	--items-shadow: rgba(184, 134, 11, 0.4);
+	--darkmode-button: rgb(170, 170, 170);
+	--darkmode-button-text: black;
+	--search-button: white;
 }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  background-color: #f8f9fa;
+  background-color: var(--fond);
+  color: var(--text);
   text-align: center;
 }
 
+a {
+	color: var(--links);
+	
+	&:hover{
+		color: var(--links-hover);
+	}
+}
 
 header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: var(--theme-principal);		
+	background-color: var(--banniere);		
 	padding: 20px 50px;			
 }
 
@@ -93,10 +122,24 @@ form {
 	margin: 20px;
 }
 
-.button{
-	padding: 30px;
-	height: 70px;
-	background-color: var(--theme-principal);
+button{
+	padding: 5px 10px;
+	background-color: var(--button);
+	border: none;
+	border-radius: 10px;
+	
+	&:hover {
+		background-color: var(--button-hover);
+	}
+}
+
+#darkmode {
+	background-color: var(--darkmode-button);
+	color: var(--darkmode-button-text);
+	
+	&:hover {
+		background-color: var(--button-hover);
+	}
 }
 
 .form-buttons{

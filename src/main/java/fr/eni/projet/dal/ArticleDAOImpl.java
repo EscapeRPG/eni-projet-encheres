@@ -129,6 +129,20 @@ public class ArticleDAOImpl implements ArticleDAO {
 		map.addValue("ventesTerminees", ventesTerminees);
 		return jdb.query(sql, map, new ArticleMapper());
 	}
+	
+	public List<Article> getTopTrendingArticles() {
+	    String sql = "SELECT TOP 5 a.*, r.rue, r.codePostal, r.ville\r\n"
+	    		+ "FROM article a\r\n"
+	    		+ "LEFT JOIN retrait r ON a.idArticle = r.idArticle\r\n"
+	    		+ "JOIN (\r\n"
+	    		+ "    SELECT idArticle, COUNT(*) AS nbEncheres\r\n"
+	    		+ "    FROM enchere\r\n"
+	    		+ "    GROUP BY idArticle\r\n"
+	    		+ ") e ON a.idArticle = e.idArticle\r\n"
+	    		+ "ORDER BY e.nbEncheres DESC;";
+		
+	    return jdb.query(sql, new ArticleMapper());
+	}
 
 }
 

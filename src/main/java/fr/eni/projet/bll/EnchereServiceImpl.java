@@ -190,5 +190,10 @@ public class EnchereServiceImpl implements EnchereService {
 		// TODO Auto-generated method stub
 		return this.enchereDAO.afficherEncheres(idArticle);
 	}
+	
+	@Override
+	public List<Article> getTopTrendingArticles() {
+		return this.articleDAO.getTopTrendingArticles();
+	}
 
 }
