@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/fragment-head :: head}">
-<title>Inscription</title>
-<link rel="stylesheet" th:href="@{/css/inscription.css}" />
-<link rel="stylesheet" th:href="@{/css/error.css}">
+<head>
+	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+	<title>Inscription</title>
+	<link rel="stylesheet" th:href="@{/css/inscription.css}" />
+	<link rel="stylesheet" th:href="@{/css/error.css}">
 </head>
 <body>
 	<header>

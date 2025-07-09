@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
-
-
 .form-profil {	
+	width: 60%;
 	display: flex;
     align-items: center; /* aligne verticalement au milieu */
     gap: 10px; /* espace entre le label et le champ */
@@ -12,12 +11,32 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	text-align: center;
-	padding: 30px;
-	margin: auto;
+	padding: 5px;
+	margin: 0 auto;
 	
 	label {
 		text-align: left;
 	}
-}
 	
+	button {
+		width: 150px;
+		padding: 10px;
+		
+		&.achat {
+			background-color: orange;
+			
+			&:hover {
+				background-color: white;
+			}
+		}
+
+		&.alert-button {
+			background-color: red;
+			
+			&:hover {
+				background-color: orange;
+			}
+		}
+	}
+}
 	

@@ -95,6 +95,22 @@ form {
 	}
 }
 
+input[type=text], input[type=email] {
+	padding: 5px 10px;
+	border-radius: 10px;
+	min-width: 200px;
+}
+
+select {
+	padding: 5px 10px;
+	border-radius: 10px;
+	
+	&:focus {
+		border-radius: 10px 10px 0 0;
+	}
+
+}
+
 .middlebutton {
 	display: flex;
 	flex-direction: row;

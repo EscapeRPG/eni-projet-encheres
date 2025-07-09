@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head> 
-<div th:insert="~{fragments/fragment-head :: head}"></div>
-<link rel="stylesheet" th:href="@{/css/acquisition.css}" />
-<title>Acquisition</title>
+<head>
+	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/acquisition.css}" />
+	<title>Acquisition</title>
 </head>
 <body>
 	<header>
