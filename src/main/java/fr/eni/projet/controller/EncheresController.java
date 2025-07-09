@@ -118,10 +118,15 @@ public class EncheresController {
 			}
 
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
-
+			
 			model.addAttribute("today", today);
 			model.addAttribute("article", article);
 			model.addAttribute("etatVente", article.getEtatVente());
+			
+			List<Enchere> encheresEnCours = enchereService.consulterEncheres(idArticle);
+			
+			model.addAttribute("listeEncheres",encheresEnCours);
+			
 
 			if (enchereEnCours != null) {
 				model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
