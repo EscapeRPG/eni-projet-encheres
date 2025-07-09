@@ -3,14 +3,29 @@ package fr.eni.projet.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+
+@Entity
 public class Utilisateur {
 
+	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Enchere> encheres;
+
+	@OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Article> articles;
+
+
+
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@jakarta.persistence.Id
+	@Column(name = "idUtilisateur")
 	private long idUtilisateur;
 
 	@NotBlank(message = "Le pseudo est obligatoire.")
@@ -26,22 +41,23 @@ public class Utilisateur {
 	@Pattern(regexp = "^[a-zA-Z0-9À-ÿ'\\-,. ]+$", message = "Adresse invalide")
 	private String rue;
 	@Pattern(regexp = "^\\d{5}$", message = "Le code postal doit contenir 5 chiffres")
+	@Column(name = "codePostal")
 	private String codePostal;
 	@Pattern(regexp = "^[a-zA-ZÀ-ÿ'\\- ]+$", message = "Ville invalide")
 	private String ville;
 
 	@NotBlank(message = "Le mot de passe est obligatoire.")
+	@Column(name = "motDePasse")
 	private String motDePasse;
 
 	private int credit;
-	private boolean administrateur;
-	private boolean desactiver;
+	private String roles;
 
 	public Utilisateur() {
 	}
 
 	public Utilisateur(long idUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur, boolean desactiver) {
+			String rue, String codePostal, String ville, String motDePasse, int credit) {
 		this.encheres = new ArrayList<>();
 		this.articles = new ArrayList<>();
 		this.idUtilisateur = idUtilisateur;
@@ -55,8 +71,6 @@ public class Utilisateur {
 		this.ville = ville;
 		this.motDePasse = motDePasse;
 		this.credit = credit;
-		this.administrateur = administrateur;
-		this.desactiver = desactiver;
 	}
 
 
@@ -164,28 +178,33 @@ public class Utilisateur {
 		this.credit = credit;
 	}
 
-	public boolean isAdministrateur() {
-		return administrateur;
+
+
+	public String getRoles() {
+		return roles;
 	}
 
-	public void setAdministrateur(boolean administrateur) {
-		this.administrateur = administrateur;
-	}
-
-	public boolean isDesactiver() {
-		return desactiver;
-	}
-
-	public void setDesactiver(boolean desactiver) {
-		this.desactiver = desactiver;
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 
 	@Override
 	public String toString() {
-		return "Utilisateur{" + "encheres=" + encheres + ", articles=" + articles + ", idUtilisateur=" + idUtilisateur
-				+ ", pseudo='" + pseudo + '\'' + ", nom='" + nom + '\'' + ", prenom='" + prenom + '\'' + ", email='"
-				+ email + '\'' + ", telephone='" + telephone + '\'' + ", rue='" + rue + '\'' + ", codePostal='"
-				+ codePostal + '\'' + ", ville='" + ville + '\'' + ", credit=" + credit + ", administrateur="
-				+ administrateur + '}';
+		return "Utilisateur{" +
+				"encheres=" + encheres +
+				", articles=" + articles +
+				", idUtilisateur=" + idUtilisateur +
+				", pseudo='" + pseudo + '\'' +
+				", nom='" + nom + '\'' +
+				", prenom='" + prenom + '\'' +
+				", email='" + email + '\'' +
+				", telephone='" + telephone + '\'' +
+				", rue='" + rue + '\'' +
+				", codePostal='" + codePostal + '\'' +
+				", ville='" + ville + '\'' +
+				", motDePasse='" + motDePasse + '\'' +
+				", credit=" + credit +
+				", roles='" + roles + '\'' +
+				'}';
 	}
 }
