@@ -1,30 +1,6 @@
 @charset "UTF-8";
 
-/*Page d'index*/
 
-:root {
-	--theme-principal: rgb(70, 180, 230);
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  background-color: #f8f9fa;
-  text-align: center;
-}
-
-
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: var(--theme-principal);		
-	padding: 20px 50px;				
-}
-
-h2 {	
-	text-align: center;
-}
 
 .form-profil {	
 	display: flex;
@@ -38,11 +14,10 @@ h2 {
 	text-align: center;
 	padding: 30px;
 	margin: auto;
+	
 	label {
 		text-align: left;
 	}
-	
-	
 }
 	
 	
