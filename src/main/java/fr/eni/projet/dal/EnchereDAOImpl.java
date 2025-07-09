@@ -40,6 +40,19 @@ public class EnchereDAOImpl implements EnchereDAO{
         jdb.update(sql, mapSqlParameterSource);
     }
 
+   
+
+    @Override
+    public List<Enchere> afficherEncheres(long idArticle) {
+        String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur where idArticle = :idArticle";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idArticle", idArticle);
+
+        return jdb.query(sql,mapSqlParameterSource,new EnchereMapper());
+    }
+    
+    
+    
     @Override
     public Enchere enchereMax(long idArticle) {
        
@@ -57,22 +70,6 @@ public class EnchereDAOImpl implements EnchereDAO{
         } catch (EmptyResultDataAccessException e) {
             return null; 
         }
-    }
-
-
-    @Override
-    public List<Enchere> consulterEnchere() {
-        String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur ";
-        return jdb.query(sql,new EnchereMapper());
-    }
-
-    @Override
-    public List<Enchere> afficherEncheres(long idArticle) {
-        String sql = "select * from enchere e INNER JOIN Utilisateur u ON e.idUtilisateur = u.idUtilisateur where idArticle = :idArticle";
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("idArticle", idArticle);
-
-        return jdb.query(sql,mapSqlParameterSource,new EnchereMapper());
     }
 }
 

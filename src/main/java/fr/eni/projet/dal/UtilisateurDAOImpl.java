@@ -17,137 +17,135 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class UtilisateurDAOImpl implements UtilisateurDAO {
+public class UtilisateurDAOImpl implements UtilisateurDAO{
+	
+    private final NamedParameterJdbcTemplate jdb;
+    
+    public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
+        this.jdb = jdb;
+    }
 
-	private UtilisateurDAO utilisateurDAO;
-	private final NamedParameterJdbcTemplate jdb;
+    @Override
+    public void creerCompte(Utilisateur u) {
+        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,administrateur,desactiver) "
+                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :administrateur, :desactiver)";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", u.getPseudo());
+        mapSqlParameterSource.addValue("nom", u.getNom());
+        mapSqlParameterSource.addValue("prenom", u.getPrenom());
+        mapSqlParameterSource.addValue("email", u.getEmail());
+        mapSqlParameterSource.addValue("telephone", u.getTelephone());
+        mapSqlParameterSource.addValue("rue", u.getRue());
+        mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
+        mapSqlParameterSource.addValue("ville", u.getVille());
+        mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
+        mapSqlParameterSource.addValue("administrateur", u.isAdministrateur());
+        mapSqlParameterSource.addValue("desactiver", u.isDesactiver());
 
-	public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
-		this.jdb = jdb;
-	}
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdb.update(sql,mapSqlParameterSource,keyHolder);
 
-	@Override
-	public void creerCompte(Utilisateur u) {
-		String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,administrateur,desactiver) "
-				+ "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :administrateur, :desactiver)";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("pseudo", u.getPseudo());
-		mapSqlParameterSource.addValue("nom", u.getNom());
-		mapSqlParameterSource.addValue("prenom", u.getPrenom());
-		mapSqlParameterSource.addValue("email", u.getEmail());
-		mapSqlParameterSource.addValue("telephone", u.getTelephone());
-		mapSqlParameterSource.addValue("rue", u.getRue());
-		mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
-		mapSqlParameterSource.addValue("ville", u.getVille());
-		mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
-		mapSqlParameterSource.addValue("administrateur", u.isAdministrateur());
-		mapSqlParameterSource.addValue("desactiver", u.isDesactiver());
+        if(keyHolder.getKey()!=null) {
+            u.setIdUtilisateur(keyHolder.getKey().longValue());
+        }
+    }
 
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdb.update(sql, mapSqlParameterSource, keyHolder);
+    @Override
+    public Utilisateur connecterCompte(String pseudo, String motDePasse) {
+        String sql = "select * from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        Utilisateur utilisateurBDD = jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+        
+        if(utilisateurBDD.getMotDePasse().equals(motDePasse)) {
+        	return utilisateurBDD;
+        }
+        
+        return null;
+    }
 
-		if (keyHolder.getKey() != null) {
-			u.setIdUtilisateur(keyHolder.getKey().longValue());
-		}
-	}
+    @Override
+    public String  motDePasseOublie(String email) {
+        String sql = "select motDePasse from utilisateur where email = :email";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("email", email);
+        return jdb.queryForObject(sql,mapSqlParameterSource,String.class);
+    }
 
-	@Override
-	public Utilisateur connecterCompte(String pseudo, String motDePasse) {
-		String sql = "select * from utilisateur where pseudo = :pseudo";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("pseudo", pseudo);
-		Utilisateur utilisateurBDD = jdb.queryForObject(sql, mapSqlParameterSource,
-				new BeanPropertyRowMapper<>(Utilisateur.class));
+    @Override
+    public void supprimerCompte(long idUtilisateur) {
+        String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
+        String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
+        String sql3  = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        jdb.update(sql1,mapSqlParameterSource);
+        jdb.update(sql2,mapSqlParameterSource);
+        jdb.update(sql3,mapSqlParameterSource);
 
-		if (utilisateurBDD.getMotDePasse().equals(motDePasse)) {
-			return utilisateurBDD;
-		}
+    }
 
-		return null;
-	}
+    @Override
+    public void desactiverCompte(long idUtilisateur) {
+        String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
+        String sql2 = "delete from article where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        jdb.update(sql1,mapSqlParameterSource);
+        jdb.update(sql2,mapSqlParameterSource);
+    }
 
-	@Override
-	public String motDePasseOublie(String email) {
-		String sql = "select motDePasse from utilisateur where email = :email";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("email", email);
-		return jdb.queryForObject(sql, mapSqlParameterSource, String.class);
-	}
+    @Override
+    public int consulterNbreCredit(long idUtilisateur) {
+        String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        return jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+    }
 
-	@Override
-	public void supprimerCompte(long idUtilisateur) {
-		String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
-		String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
-		String sql3 = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		jdb.update(sql1, mapSqlParameterSource);
-		jdb.update(sql2, mapSqlParameterSource);
-		jdb.update(sql3, mapSqlParameterSource);
+    @Override
+    public Utilisateur consulterCompte(long idUtilisateur) {
+        String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+    }
 
-	}
+    @Override
+    public Utilisateur consulterCompte(String pseudo) {
+        String sql = "select * from utilisateur where pseudo = :pseudo";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        return jdb.queryForObject(sql,mapSqlParameterSource,new BeanPropertyRowMapper<>(Utilisateur.class));
+    }
 
-	@Override
-	public void desactiverCompte(long idUtilisateur) {
-		String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
-		String sql2 = "delete from article where idUtilisateur = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		jdb.update(sql1, mapSqlParameterSource);
-		jdb.update(sql2, mapSqlParameterSource);
-	}
+    @Override
+    public List<Utilisateur> afficherComptes() {
+        String sql = "select * from utilisateur";
+        return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
+    }
 
-	@Override
-	public int consulterNbreCredit(long idUtilisateur) {
-		String sql = "select credit from utilisateur where idUtilisateur  = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		return jdb.queryForObject(sql, mapSqlParameterSource, Integer.class);
-	}
-
-	@Override
-	public Utilisateur consulterCompte(long idUtilisateur) {
-		String sql = "select * from utilisateur where idUtilisateur = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		return jdb.queryForObject(sql, mapSqlParameterSource, new BeanPropertyRowMapper<>(Utilisateur.class));
-	}
-
-	@Override
-	public Utilisateur consulterCompte(String pseudo) {
-		String sql = "select * from utilisateur where pseudo = :pseudo";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("pseudo", pseudo);
-		return jdb.queryForObject(sql, mapSqlParameterSource, new BeanPropertyRowMapper<>(Utilisateur.class));
-	}
-
-	@Override
-	public List<Utilisateur> afficherComptes() {
-		String sql = "select * from utilisateur";
-		return jdb.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
-	}
-
-	@Override
-	public boolean isUtilisateurInBDD(long idUtilisateur) {
-		String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
-		int i = jdb.queryForObject(sql, mapSqlParameterSource, Integer.class);
-
-		return i != 0;
-	}
-
-	@Override
-	public boolean isUtilisateurInBDD(String pseudo) {
-		String sql = "select count(*) from utilisateur where pseudo = :pseudo";
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("pseudo", pseudo);
-		int i = jdb.queryForObject(sql, mapSqlParameterSource, Integer.class);
-
-		return i != 0;
-	}
-
-	@Override
+ 
+    @Override
+    public boolean isUtilisateurInBDD(long idUtilisateur) {
+        String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        
+        return i != 0;
+    }
+    
+    @Override
+    public boolean isUtilisateurInBDD(String pseudo) {
+        String sql = "select count(*) from utilisateur where pseudo = :pseudo";       
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("pseudo", pseudo);
+        int i = jdb.queryForObject(sql,mapSqlParameterSource,Integer.class);
+        
+        return i != 0; 
+    }
+    
 	public boolean emailExist(String email) {
 		String sql = "SELECT COUNT(*) FROM utilisateur WHERE email = :email";
 		MapSqlParameterSource params = new MapSqlParameterSource();

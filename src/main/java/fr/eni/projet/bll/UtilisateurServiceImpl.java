@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 public class UtilisateurServiceImpl implements UtilisateurService {
 
 	private UtilisateurDAO utilisateurDAO;
+	
+	
 
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 	}
+	
+	
 
 	@Override
 	public void creerUtilisateur(Utilisateur utilisateur) {
@@ -58,6 +62,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	}
 	
+	
+	
 	@Override
 	public Utilisateur afficherProfil(long idUtilisateur) {
 		return this.utilisateurDAO.consulterCompte(idUtilisateur);
@@ -87,7 +93,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-
+	
 	private boolean isExistUtilisateur(long idUtilisateur, BusinessException be) {
 		boolean i = utilisateurDAO.isUtilisateurInBDD(idUtilisateur);
 		if (i) {
@@ -108,6 +114,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			return false;
 		}
 	}
+	
+	
 
 	@Override
 	public boolean pseudoExiste(String pseudo) {	
