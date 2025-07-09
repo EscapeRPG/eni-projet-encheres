@@ -24,21 +24,27 @@ public class RetraitDAOImpl implements RetraitDAO {
 
 	@Override
 	public void creerRetrait(Retrait retrait) {
+		
 		String sql = "insert into retrait(rue,codePostal,ville,idArticle) "
 				+ "values (:rue,:codePostal,:ville,:idArticle)";
+		
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("rue", retrait.getRue());
 		paramSource.addValue("codePostal", retrait.getCodePostal());
 		paramSource.addValue("ville", retrait.getVille());
 		paramSource.addValue("idArticle", retrait.getArticle().getIdArticle());
+		
 		jdb.update(sql, paramSource);
 	}
 
 	@Override
 	public Retrait afficherRetrait(long idArticle) {
+		
 		String sql = "SELECT * FROM retrait WHERE idArticle = :idArticle";
+		
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("idArticle", idArticle);
+		
 		return jdb.queryForObject(sql, paramSource, new RetraitMapper());
 	}
 

@@ -36,9 +36,17 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 	
 	
-
+	
+	@Override
+	public int countArticles() {
+		return articleDAO.countArticles();
+	}
+	
+	
+	
 	@Override
 	public void CreationArticle(Article article) throws BusinessException {
+		
 		if (article.getIdArticle() == 0) {
 			long id = articleDAO.ajouterArticle(article);
 			article.setIdArticle(id);
@@ -49,14 +57,15 @@ public class EnchereServiceImpl implements EnchereService {
 			retrait.setCodePostal(article.getRetrait().getCodePostal());
 			retrait.setArticle(article);
 			retraitDAO.creerRetrait(retrait);
-		} else {
+		} 
+		else {
 			articleDAO.ajouterArticle(article);
 		}
-
 	}
 
 	@Override
 	public void debuterVente(long idArticle) throws BusinessException {
+		
 		Article article = articleDAO.afficherArticle(idArticle);
 		article.setEtatVente("EC");
 		articleDAO.updateEtatArticle(idArticle, "EC");
@@ -64,7 +73,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void supprimerVente(long idArticle) {
-		// TODO Auto-generated method stub
+		
 		this.articleDAO.supprimerArticle(idArticle);
 	}
 
@@ -90,12 +99,13 @@ public class EnchereServiceImpl implements EnchereService {
 				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 				this.enchereDAO.creerEnchere(newEnchere);
 				this.utilisateurDAO.debiter(idUtilisateur, montant);
-			} else {
+			} 
+			else {
 				be.add("Crédits insuffisant");
 				throw be;
 			}
-
-		} else {
+		} 
+		else {
 			be.add("Saisir une enchère plus élevée");
 			throw be;
 		}
@@ -112,22 +122,26 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public void clotureArticle(long idArticle) throws BusinessException {
+		
 		BusinessException be = new BusinessException();
 		boolean existArticle = isExistArticle(idArticle, be);
 
 		if (existArticle) {
 			articleDAO.updateEtatArticle(idArticle, "RE");
-
-		} else {
+		} 
+		else {
 			throw be;
 		}
 	}
 
 	private boolean isExistArticle(long idArticle, BusinessException be) {
+		
 		boolean i = articleDAO.hasArticle(idArticle);
+		
 		if (i) {
 			return true;
-		} else {
+		} 
+		else {
 			be.add("L'article n'existe pas");
 			return false;
 		}
@@ -137,6 +151,7 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public List<Article> consulterAllVentes() {
+		
 		List<Article> articles = this.articleDAO.afficherArticles();
 
 		for (Article article : articles) {
@@ -148,34 +163,43 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public List<Categorie> consulterAllCategories() {
+		
 		return this.categorieDAO.listerCategorie();
 	}
 
 	@Override
 	public List<Article> filtrerRecherche(String filtreNomArticle, int categorieFiltree, String encheresEnCours,
 			int mesEncheres, int encheresRemportees, int ventesEnCours, int ventesEnAttente, int ventesTerminees) {
+		
 		List<Article> articles = this.articleDAO.afficherArticlesFiltres(filtreNomArticle, categorieFiltree,
 				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
 
 		for (Article article : articles) {
 			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
 		}
+		
 		return articles;
 	}
 
 	@Override
 	public List<Enchere> consulterEncheres(long idArticle) {
-		// TODO Auto-generated method stub
+		
 		return this.enchereDAO.afficherEncheres(idArticle);
 	}
 
 	@Override
 	public List<Article> getTopTrendingArticles() {
+		
 		return this.articleDAO.getTopTrendingArticles();
 	}
 	
+	@Override
+	public List<Article> getArticlesByPage(int page, int pageSize) {
+		return articleDAO.getArticlesByPage(page, pageSize);
+	}
 	
 
+	
 	@Override
 	public Article detailVente(long idArticle) throws BusinessException {
 
@@ -189,22 +213,15 @@ public class EnchereServiceImpl implements EnchereService {
 			article.setRetrait(retraitDAO.afficherRetrait(idArticle));
 
 			return article;
-		} else {
+		} 
+		else {
 			throw be;
 		}
 	}
 
 	@Override
 	public Enchere consulterEnchereMax(long idArticle) {
+		
 		return this.enchereDAO.enchereMax(idArticle);
 	}
-
-	public List<Article> getArticlesByPage(int page, int pageSize) {
-		return articleDAO.getArticlesByPage(page, pageSize);
-	}
-
-	public int countArticles() {
-		return articleDAO.countArticles();
-	}
-
 }
