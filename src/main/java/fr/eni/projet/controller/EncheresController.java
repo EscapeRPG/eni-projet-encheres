@@ -114,6 +114,7 @@ public class EncheresController {
 
 			if (today.isAfter(article.getDateFinEncheres()) && !article.getEtatVente().equals("RE")) {
 				this.enchereService.remporterVente(idArticle);
+
 			}
 
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
