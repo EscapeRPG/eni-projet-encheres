@@ -35,18 +35,37 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public List<Article> consulterAllVentes() {
-		List<Article> articles = this.articleDAO.afficherArticles();
+	public void CreationArticle(Article article) throws BusinessException {
+		if (article.getIdArticle() == 0) {
+			long id = articleDAO.ajouterArticle(article);
+			article.setIdArticle(id);
 
-		for (Article article : articles) {
-			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+			Retrait retrait = new Retrait();
+			retrait.setVille(article.getRetrait().getVille());
+			retrait.setRue(article.getRetrait().getRue());
+			retrait.setCodePostal(article.getRetrait().getCodePostal());
+			retrait.setArticle(article);
+			retraitDAO.creerRetrait(retrait);
+		} else {
+			articleDAO.ajouterArticle(article);
 		}
 
-		return articles;
 	}
 
 	@Override
+	public void debuterVente(long idArticle) throws BusinessException {
+		Article article = articleDAO.afficherArticle(idArticle);
+		article.setEtatVente("EC");
+		articleDAO.updateEtatArticle(idArticle, "EC");
+	}
 
+	@Override
+	public void supprimerVente(long idArticle) {
+		// TODO Auto-generated method stub
+		this.articleDAO.supprimerArticle(idArticle);
+	}
+
+	@Override
 	public void encherir(long idArticle, long idUtilisateur, int montant) throws BusinessException {
 
 		BusinessException be = new BusinessException();
@@ -64,7 +83,7 @@ public class EnchereServiceImpl implements EnchereService {
 			if (utilisateur.getCredit() >= montant) {
 				Article article = this.articleDAO.afficherArticle(idArticle);
 				Utilisateur lastUser = enchereActuelle.getUtilisateur();
-				this.utilisateurDAO.crediterVendeur(lastUser.getIdUtilisateur(), idArticle);   
+				this.utilisateurDAO.crediterVendeur(lastUser.getIdUtilisateur(), idArticle);
 				Enchere newEnchere = new Enchere(utilisateur, article, LocalDateTime.now(), montant);
 				this.enchereDAO.creerEnchere(newEnchere);
 				this.utilisateurDAO.debiter(idUtilisateur, montant);
@@ -72,43 +91,16 @@ public class EnchereServiceImpl implements EnchereService {
 				be.add("Crédits insuffisant");
 				throw be;
 			}
+
 		} else {
 			be.add("Saisir une enchère plus élevée");
 			throw be;
-
 		}
-
-	}
-
-	@Override
-	public Article detailVente(long idArticle) throws BusinessException {
-
-		BusinessException be = new BusinessException();
-		boolean existArticle = isExistArticle(idArticle, be);
-
-		if (existArticle) {
-			Article article = this.articleDAO.afficherArticle(idArticle);
-			article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
-			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
-			article.setRetrait(retraitDAO.afficherRetrait(idArticle));
-
-			return article;
-		} else {
-			throw be;
-		}
-
-	}
-
-	@Override
-	public void debuterVente(long idArticle) throws BusinessException {
-		Article article = articleDAO.afficherArticle(idArticle);
-		article.setEtatVente("EC");
-		articleDAO.updateEtatArticle(idArticle, "EC");
 	}
 
 	@Override
 	public void remporterVente(long idArticle) {
-	
+
 		Article article = articleDAO.afficherArticle(idArticle);
 		article.setEtatVente("ET");
 		articleDAO.updateEtatArticle(idArticle, "ET");
@@ -128,12 +120,6 @@ public class EnchereServiceImpl implements EnchereService {
 		}
 	}
 
-	@Override
-	public void supprimerVente(long idArticle) {
-		// TODO Auto-generated method stub
-		this.articleDAO.supprimerArticle(idArticle);
-	}
-
 	private boolean isExistArticle(long idArticle, BusinessException be) {
 		boolean i = articleDAO.hasArticle(idArticle);
 		if (i) {
@@ -143,6 +129,17 @@ public class EnchereServiceImpl implements EnchereService {
 			return false;
 		}
 
+	}
+
+	@Override
+	public List<Article> consulterAllVentes() {
+		List<Article> articles = this.articleDAO.afficherArticles();
+
+		for (Article article : articles) {
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+		}
+
+		return articles;
 	}
 
 	@Override
@@ -163,32 +160,32 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public Enchere consulterEnchereMax(long idArticle) {
-		return this.enchereDAO.enchereMax(idArticle);
-	}
-
-	@Override
-	public void CreationArticle(Article article) throws BusinessException {
-		if (article.getIdArticle() == 0) {
-			long id = articleDAO.ajouterArticle(article);
-			article.setIdArticle(id);
-
-			Retrait retrait = new Retrait();
-			retrait.setVille(article.getRetrait().getVille());
-			retrait.setRue(article.getRetrait().getRue());
-			retrait.setCodePostal(article.getRetrait().getCodePostal());
-			retrait.setArticle(article);
-			retraitDAO.creerRetrait(retrait);
-		} else {
-			articleDAO.ajouterArticle(article);
-		}
-
-	}
-
-	@Override
 	public List<Enchere> consulterEncheres(long idArticle) {
 		// TODO Auto-generated method stub
 		return this.enchereDAO.afficherEncheres(idArticle);
+	}
+
+	@Override
+	public Article detailVente(long idArticle) throws BusinessException {
+
+		BusinessException be = new BusinessException();
+		boolean existArticle = isExistArticle(idArticle, be);
+
+		if (existArticle) {
+			Article article = this.articleDAO.afficherArticle(idArticle);
+			article.setCategorie(categorieDAO.afficherCategorieArticle(idArticle));
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+			article.setRetrait(retraitDAO.afficherRetrait(idArticle));
+
+			return article;
+		} else {
+			throw be;
+		}
+	}
+
+	@Override
+	public Enchere consulterEnchereMax(long idArticle) {
+		return this.enchereDAO.enchereMax(idArticle);
 	}
 
 }
