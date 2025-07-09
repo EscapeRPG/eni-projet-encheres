@@ -143,17 +143,13 @@ public interface EnchereService {
 	 */
 	Enchere consulterEnchereMax(long idArticle);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-=======
-	List<Article> getTopTrendingArticles();
 
-=======
->>>>>>> b636c71cde77b4142e20fb2819c628d43523b4a0
+	
+
+
 	List<Article> getArticlesByPage(int page, int pageSize);
 
 	int countArticles();
->>>>>>> 0ae6d0024c42c2463b05b9f1fae8996242aaa8cc
+
 
 }
