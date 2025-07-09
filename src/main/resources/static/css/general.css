@@ -6,6 +6,10 @@
 	--theme-principal: rgb(70, 180, 230);
 }
 
+.darkmode {
+	--theme-principal: rgb(30,30,30);
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -31,7 +35,11 @@ header a {
 
 #nav-title {
 	margin-right: auto;
-	font-size: 1.1em;	
+	font-size: 1.1em;
+	
+	img {
+		width: 50px;
+	}	
 }
 
 

@@ -125,6 +125,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> c43ffe495b03ac6af65e3223d384d9a43be39cf7
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {
         String sql = "select count(*) from utilisateur where idUtilisateur = :idUtilisateur";

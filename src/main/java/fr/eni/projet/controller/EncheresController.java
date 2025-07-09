@@ -107,12 +107,14 @@ public class EncheresController {
 		try {
 			Article article = this.enchereService.detailVente(idArticle);
 
-			if (today.isAfter(article.getDateDebutEncheres()) && today.isBefore(article.getDateFinEncheres())) {
+			if (today.isAfter(article.getDateDebutEncheres()) && today.isBefore(article.getDateFinEncheres()) && article.getEtatVente().equals("CR")) {
 				this.enchereService.debuterVente(idArticle);
+				return "redirect:/detail-vente?idArticle=" + idArticle;
 			}
 
 			if (today.isAfter(article.getDateFinEncheres()) && !article.getEtatVente().equals("RE")) {
 				this.enchereService.remporterVente(idArticle);
+
 			}
 
 			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
