@@ -9,7 +9,7 @@ public interface EnchereDAO {
 	/**
      * Crée une nouvelle enchère en base de données.
      * *
-     * @param enchere l'objet Enchère à enregistrer
+     * @param enchere : l'objet Enchère à enregistrer
      */
     void creerEnchere(Enchere enchere);
     
@@ -18,7 +18,7 @@ public interface EnchereDAO {
     /**
      * Récupère toutes les enchères pour un article donné.
      * *
-     * @param idArticle identifiant de l'article.
+     * @param idArticle : identifiant de l'article.
      * @return liste des enchères sur l'article.
      */
     List<Enchere> afficherEncheres(long idArticle);
@@ -28,7 +28,7 @@ public interface EnchereDAO {
     /**
      * Récupère l'enchère la plus élevée pour un article donné.
      * *
-     * @param idArticle identifiant de l'article.
+     * @param idArticle : identifiant de l'article.
      * @return l'enchère maximale ou null s'il n'y en a aucune
      */
     Enchere enchereMax(long idArticle);

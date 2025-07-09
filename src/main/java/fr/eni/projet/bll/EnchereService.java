@@ -9,6 +9,11 @@ import java.util.List;
 
 public interface EnchereService {
 
+	
+	int countArticles();
+	
+	
+	
 	/**
 	 * Crée un nouvel article à mettre en vente. Etat de la vente par défaut à 'CR'
 	 * (CRée)
@@ -122,6 +127,8 @@ public interface EnchereService {
 	
 	List<Article> getTopTrendingArticles();
 	
+	List<Article> getArticlesByPage(int page, int pageSize);
+	
 	
 
 	/**
@@ -141,15 +148,10 @@ public interface EnchereService {
 	 * @return une Enchere représentant l'enchère maximale, ou null si aucune
 	 *         enchère n'est encore placée.
 	 */
+
 	Enchere consulterEnchereMax(long idArticle);
 
 
 	
-
-
-	List<Article> getArticlesByPage(int page, int pageSize);
-
-	int countArticles();
-
 
 }
