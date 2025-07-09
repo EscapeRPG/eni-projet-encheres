@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<div th:insert="~{fragments/fragment-head :: head}"></div>
-<link rel="stylesheet" th:href="@{/css/index.css}" />
-<title>ENI Enchères</title>
+	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/index.css}" />
+	<title>ENI Enchères</title>
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>

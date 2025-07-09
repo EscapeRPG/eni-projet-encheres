@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head th:insert="~{fragments/fragment-head :: head}">
-<link rel="stylesheet" th:href="@{/css/profil.css}" />
-<title>ENI Enchères</title>
+<head>
+	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/profil.css}" />
+	<title>ENI Enchères</title>
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
@@ -11,90 +12,53 @@
 				
 		<h3 th:text="'Solde actuel : ' + ${utilisateur.credit} + ' points'" class="credit-actuel"></h3>
 		
-		<form th:if="${utilisateurEnSession.getPseudo()} eq ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
-			<div class="form-profil">
+		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get" class="form-profil">
+			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+			<button type="submit" class="achat">Achat crédit</button>
+		</form>
+		
+		<th:block th:with="readonly=${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}">
+			<form th:action="@{/profil}" method="post" class="form-profil">
 				<label for="pseudo">Pseudo :</label>
-				<input type="text" name="pseudo" id="pseudo" th:value="${utilisateur.getPseudo()}" />
+				<input type="text" name="pseudo" id="pseudo" th:value="${utilisateur.getPseudo()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="nom">Nom :</label>
-				<input type="text" name="nom" id="nom" th:value="${utilisateur.getNom()}" />
+				<input type="text" name="nom" id="nom" th:value="${utilisateur.getNom()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="prenom">Prénom :</label>
-				<input type="text" name="prenom" id="prenom" th:value="${utilisateur.getPrenom()}" />
+				<input type="text" name="prenom" id="prenom" th:value="${utilisateur.getPrenom()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="email">Email :</label>
-				<input type="email" name="email" id="email" th:value="${utilisateur.getEmail()}" />
+				<input type="email" name="email" id="email" th:value="${utilisateur.getEmail()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				<div></div>
 				<label for="telephone">Téléphone :</label>
-				<input type="text" name="telephone" id="telephone" th:value="${utilisateur.getTelephone()}" />
+				<input type="text" name="telephone" id="telephone" th:value="${utilisateur.getTelephone()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="rue">Rue :</label>
-				<input type="text" name="rue" id="rue" th:value="${utilisateur.getRue()}" />
+				<input type="text" name="rue" id="rue" th:value="${utilisateur.getRue()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="codePostal">Code postal :</label>
-				<input type="text" name="codePostal" id="codePostal" th:value="${utilisateur.getCodePostal()}" />
+				<input type="text" name="codePostal" id="codePostal" th:value="${utilisateur.getCodePostal()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
 				
 				<label for="ville">Ville :</label>
-				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" />
-
-			</div>
-			<div class="form-buttons">
-				<button type="submit">Modifier</button>
-			</div>
-		</form>
-		
-		
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get">
+				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
+	
+				<button th:if="${!readonly}" type="submit">Modifier</button>
+			</form>
+		</th:block>
+		<br>
+		<br>
+		<br>
+		<br>
+		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
-			<button type="submit"   >Achat crédit</button>
+			<button type="submit" class="alert-button">Supprimer le compte</button>
 		</form>
-		
-		
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get">
-			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
-			<button type="submit"   >Supprimer</button>
-		</form>
-		
-		
-		
-		
-		
-
 		<form th:if="${utilisateurEnSession.administrateur} eq true" th:action="@{desactiverProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
-			<button type="submit"   >Desactiver</button>
+			<button type="submit" class="alert-button">Desactiver</button>
 		</form>
 
-		<form th:if="${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}" th:action="@{/profil}"  method="post" >
-			<div class="form-profil">
-				<label for="pseudo">Pseudo :</label>
-				<input type="text" name="pseudo" id="pseudo" th:value="${utilisateur.getPseudo()}" readonly/>
-
-				<label for="nom">Nom :</label>
-				<input type="text" name="nom" id="nom" th:value="${utilisateur.getNom()}" readonly/>
-
-				<label for="prenom">Prénom :</label>
-				<input type="text" name="prenom" id="prenom" th:value="${utilisateur.getPrenom()}" readonly/>
-
-				<label for="email">Email :</label>
-				<input type="email" name="email" id="email" th:value="${utilisateur.getEmail()}" readonly/>
-				<div></div>
-				<label for="telephone">Téléphone :</label>
-				<input type="text" name="telephone" id="telephone" th:value="${utilisateur.getTelephone()}" readonly/>
-
-				<label for="rue">Rue :</label>
-				<input type="text" name="rue" id="rue" th:value="${utilisateur.getRue()}" readonly/>
-
-				<label for="codePostal">Code postal :</label>
-				<input type="text" name="codePostal" id="codePostal" th:value="${utilisateur.getCodePostal()}" readonly/>
-
-				<label for="ville">Ville :</label>
-				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" readonly/>
-
-			</div>
-
-
-		</form>
 	</main>
 </body>
 
