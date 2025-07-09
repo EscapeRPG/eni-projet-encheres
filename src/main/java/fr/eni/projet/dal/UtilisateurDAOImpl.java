@@ -125,9 +125,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         return jdb.query(sql,new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
-
-
-
  
     @Override
     public boolean isUtilisateurInBDD(long idUtilisateur) {

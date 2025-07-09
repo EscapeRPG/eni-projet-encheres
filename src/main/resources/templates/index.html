@@ -77,13 +77,15 @@
 				<div class="description-article">
 					<a th:href="@{/detail-vente(idArticle=${a.idArticle})}" th:text="${a.nomArticle}"></a>
 					<p th:text="'Prix : ' + ${a.miseAPrix} + ' points'"></p>
-					<p th:text="'Fin de l\'enchère : ' + ${#temporals.format(a.dateFinEncheres, 'dd/MM/yyyy')}"></p>
+					<p th:class="${couleurs[a.idArticle]}"
+					   th:text="'Fin de l\'enchère : ' + ${#temporals.format(a.dateFinEncheres, 'dd/MM/yyyy')}">
+					</p>
 					<p>Vendeur : <a th:href="@{/profil(pseudo=${a.utilisateur.pseudo})}" th:text="${a.utilisateur.pseudo}"></a></p>
 				</div>
 			</div>
 		</div>
 	
 	</main>
-	<script src="/scripts/filtres-connecte.js"></script>
+	<script th:if="${utilisateurEnSession != null && utilisateurEnSession.idUtilisateur > 0}" src="/scripts/filtres-connecte.js"></script>
 </body>
 </html>

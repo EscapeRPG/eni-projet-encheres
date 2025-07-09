@@ -61,7 +61,7 @@
 		
 		<div th:if="${utilisateurEnSession != null 
 					and article.utilisateur.idUtilisateur == utilisateurEnSession.idUtilisateur 
-					and article.dateDebutEncheres >= today && article.dateFinEncheres < today}">
+					and article.dateDebutEncheres >= today}">
 					
 			<form th:action="@{/annulerVente}" method="post">
 			<input type="hidden" name ="idArticle" th:value="${article.idArticle}">

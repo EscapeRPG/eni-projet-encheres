@@ -185,4 +185,10 @@ public class EnchereServiceImpl implements EnchereService {
 
 	}
 
+	@Override
+	public List<Enchere> consulterEncheres(long idArticle) {
+		// TODO Auto-generated method stub
+		return this.enchereDAO.afficherEncheres(idArticle);
+	}
+
 }
