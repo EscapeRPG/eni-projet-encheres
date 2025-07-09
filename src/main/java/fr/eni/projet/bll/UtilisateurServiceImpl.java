@@ -18,7 +18,46 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		this.utilisateurDAO.creerCompte(utilisateur);
 	}
+	
+	@Override
+	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
 
+		BusinessException be = new BusinessException();
+
+		utilisateurDAO.updateCompte(utilisateur);
+
+	}
+	
+	@Override
+	public void desactiverUtilisateur(long idUtilisateur) throws BusinessException {
+		BusinessException be = new BusinessException();
+		boolean existUser = isExistUtilisateur(idUtilisateur, be);
+
+		if (existUser) {
+			utilisateurDAO.desactiverCompte(idUtilisateur);
+
+		} else {
+			System.out.println("Erreur de désactivation de l'utilisateur avec l'identifiant : Identifiant introuvable");
+			throw be;
+		}
+	}
+	
+	@Override
+	public void supprimerUtilisateur(long idUtilisateur) throws BusinessException {
+
+		BusinessException be = new BusinessException();
+		boolean existUser = isExistUtilisateur(idUtilisateur, be);
+
+		if (existUser) {
+			utilisateurDAO.supprimerCompte(idUtilisateur);
+
+		} else {
+			System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
+			throw be;
+		}
+
+	}
+	
 	@Override
 	public Utilisateur afficherProfil(long idUtilisateur) {
 		return this.utilisateurDAO.consulterCompte(idUtilisateur);
@@ -47,45 +86,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			throw be;
 		}
 
-	}
-
-	@Override
-	public void modifierProfil(Utilisateur utilisateur) throws BusinessException {
-
-		BusinessException be = new BusinessException();
-
-		utilisateurDAO.updateCompte(utilisateur);
-
-	}
-
-	@Override
-	public void supprimerUtilisateur(long idUtilisateur) throws BusinessException {
-
-		BusinessException be = new BusinessException();
-		boolean existUser = isExistUtilisateur(idUtilisateur, be);
-
-		if (existUser) {
-			utilisateurDAO.supprimerCompte(idUtilisateur);
-
-		} else {
-			System.out.println("Erreur de suppression de l'utilisateur avec l'identifiant : Identifiant introuvable");
-			throw be;
-		}
-
-	}
-
-	@Override
-	public void desactiverUtilisateur(long idUtilisateur) throws BusinessException {
-		BusinessException be = new BusinessException();
-		boolean existUser = isExistUtilisateur(idUtilisateur, be);
-
-		if (existUser) {
-			utilisateurDAO.desactiverCompte(idUtilisateur);
-
-		} else {
-			System.out.println("Erreur de désactivation de l'utilisateur avec l'identifiant : Identifiant introuvable");
-			throw be;
-		}
 	}
 
 	private boolean isExistUtilisateur(long idUtilisateur, BusinessException be) {
@@ -118,8 +118,5 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public boolean emailExiste(String email) {	
 		return utilisateurDAO.emailExist(email);
 	}
-
-
-
 
 }
