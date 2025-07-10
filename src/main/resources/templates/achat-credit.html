@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
-<head th:insert="~{fragments/fragment-head :: head}">
-<link rel="stylesheet" th:href="@{/css/connexion.css}" />
-<title>ENI Connexion</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
+	<title>ENI Achat de crédits</title>
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>

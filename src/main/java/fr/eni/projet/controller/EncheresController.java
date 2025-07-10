@@ -239,15 +239,6 @@ public class EncheresController {
 			}
 		}
 
-		if (!file.isEmpty()) {
-			String uploadDirectory = "src/main/resources/static/images";
-			try {
-				imageNom = imageService.saveImageToStorage(uploadDirectory, file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
 		article.setPhotoArticle(imageNom);
 
 		enchereService.creationArticle(article);
