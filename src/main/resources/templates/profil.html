@@ -12,7 +12,7 @@
 
 		<h3 th:text="'Solde actuel : ' + ${utilisateur.credit} + ' points'" class="credit-actuel"></h3>
 
-		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get" class="form-profil">
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{/achatCredit}" method="get" class="form-profil">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="achat">Achat crédit</button>
 		</form>

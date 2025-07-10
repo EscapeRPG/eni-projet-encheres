@@ -111,6 +111,12 @@ public class UtilisateurController {
 	}
 
 
+	/**
+	 * Méthode utilisée par Spring Security après une connexion réussie,
+	 * elle transfère les données de l'utilisateur connecté de la DB à la Session
+	 * @param utilisateurEnSession
+	 * @return redirige à l'index
+	 */
 	@GetMapping("/succes")
 	public String connecterUtilisateur(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
