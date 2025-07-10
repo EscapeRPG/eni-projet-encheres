@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
-	<link rel="stylesheet" th:href="@{/css/profil.css}" />
 	<title>ENI Enchères</title>
 </head>
 <body>
@@ -51,26 +50,14 @@
 		<br>
 		<br>
 		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
-				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" />
-
-			</div>
-			<div class="form-buttons">
-				<button type="submit">Modifier</button>
-			</div>
-
-
-		</form>
-		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Supprimer le compte</button>
 		</form>
-		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN'" th:action="@{desactiverProfil}" method="get">
 
 		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN'" th:action="@{desactiverProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Desactiver</button>
 		</form>
-
 	</main>
 </body>
 
