@@ -195,7 +195,14 @@ public class EnchereServiceImpl implements EnchereService {
 	
 	@Override
 	public List<Article> getArticlesByPage(int page, int pageSize) {
-		return articleDAO.getArticlesByPage(page, pageSize);
+		
+		List<Article> articles = this.articleDAO.getArticlesByPage(page, pageSize);
+
+		for (Article article : articles) {
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+		}
+		
+		return articles;
 	}
 	
 
