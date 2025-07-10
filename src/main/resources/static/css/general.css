@@ -25,7 +25,7 @@
 	--links-hover: gold;
 	--items-background: rgb(30, 30, 30);
 	--items-border: darkgoldenrod;
-	--darkmode-button: rgb(170, 170, 170);
+	--darkmode-button: rgb(220, 220, 220);
 	--darkmode-button-text: black;
 	--search-button: white;
 	--alt-buttons: white;
@@ -99,6 +99,9 @@ button{
 #darkmode {
 	background-color: var(--darkmode-button);
 	color: var(--darkmode-button-text);
+	font-size: 2em;
+	width: 50px;
+	text-align: center;
 	
 	&:hover {
 		background-color: var(--button-hover);

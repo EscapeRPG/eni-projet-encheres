@@ -13,11 +13,11 @@ function darkMode() {
 	if (body.className == "darkmode") {
 		body.classList.remove("darkmode");
 		localStorage.setItem("darkmode", "off");
-		darkButton.innerText = "Dark";
+		darkButton.innerText = "\u263d";
 	} else {
 		body.classList.toggle("darkmode");
 		localStorage.setItem("darkmode", "on");
-		darkButton.innerText = "Light";
+		darkButton.innerText = "☼";
 	}
 }
 
@@ -26,7 +26,7 @@ window.addEventListener("load", checkPreference);
 function checkPreference() {
 	if (localStorage.getItem("darkmode") == "on") {
 		body.classList.toggle("darkmode");
-		darkButton.innerText = "Light";
+		darkButton.innerText = "☼";
 	}
 
 	void body.offsetWidth;
