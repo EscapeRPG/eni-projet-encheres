@@ -160,11 +160,11 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/supprimerProfil")
-	public String supprimerProfil(@RequestParam(name = "pseudo") String pseudo,
+	public String supprimerProfil(@RequestParam(name = "pseudoSup") String pseudoSup,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
         try {
-            utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
+            utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudoSup).getIdUtilisateur());
         } catch (BusinessException e) {
             throw new RuntimeException(e);
         }
