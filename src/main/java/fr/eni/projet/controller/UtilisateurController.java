@@ -1,5 +1,8 @@
 package fr.eni.projet.controller;
 
+import fr.eni.projet.security.MyUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -15,6 +18,8 @@ import fr.eni.projet.dal.UtilisateurDAOImpl;
 import fr.eni.projet.exception.BusinessException;
 import jakarta.validation.Valid;
 
+
+import java.util.Objects;
 
 @SessionAttributes({ "utilisateurEnSession" })
 @Controller
@@ -56,7 +61,7 @@ public class UtilisateurController {
 			return "inscription";
 		}
 
-		utilisateur.setAdministrateur(false); // sécurité
+	    utilisateur.setRoles("ROLE_USER"); // sécurité
 
 		try {
 			utilisateurService.creerUtilisateur(utilisateur);
@@ -105,37 +110,34 @@ public class UtilisateurController {
 		return "connexion";
 	}
 
-	@PostMapping("/connexion")
-	public String connecterUtilisateur(@RequestParam(name = "pseudo") String pseudo,
-			@RequestParam(name = "motDePasse") String motDePasse,
-			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, BindingResult bindingResult) {
-		try {
-			Utilisateur utilisateurInBDD = this.utilisateurService.connecterUtilisateur(pseudo, motDePasse);
 
-			if (utilisateurInBDD != null) {
-				utilisateurEnSession.setIdUtilisateur(utilisateurInBDD.getIdUtilisateur());
-				utilisateurEnSession.setPseudo(utilisateurInBDD.getPseudo());
-				utilisateurEnSession.setNom(utilisateurInBDD.getNom());
-				utilisateurEnSession.setPrenom(utilisateurInBDD.getPrenom());
-				utilisateurEnSession.setEmail(utilisateurInBDD.getEmail());
-				utilisateurEnSession.setTelephone(utilisateurInBDD.getTelephone());
-				utilisateurEnSession.setRue(utilisateurInBDD.getRue());
-				utilisateurEnSession.setCodePostal(utilisateurInBDD.getCodePostal());
-				utilisateurEnSession.setVille(utilisateurInBDD.getVille());
-				utilisateurEnSession.setMotDePasse(utilisateurInBDD.getMotDePasse());
-				utilisateurEnSession.setCredit(utilisateurInBDD.getCredit());
-				utilisateurEnSession.setAdministrateur(utilisateurInBDD.isAdministrateur());
-			}
-			return "redirect:/";
+	/**
+	 * Méthode utilisée par Spring Security après une connexion réussie,
+	 * elle transfère les données de l'utilisateur connecté de la DB à la Session
+	 * @param utilisateurEnSession
+	 * @return redirige à l'index
+	 */
+	@GetMapping("/succes")
+	public String connecterUtilisateur(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
-		} catch (BusinessException e) {
-			e.getMessages().forEach(m -> {
-				ObjectError error = new ObjectError("errorLogin", m);
-				bindingResult.addError(error);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
 
-			});
-			return "redirect:/connexion?error=1";
-		}
+
+		utilisateurEnSession.setIdUtilisateur(userDetails.getUtilisateur().getIdUtilisateur());
+		utilisateurEnSession.setPseudo(userDetails.getUtilisateur().getPseudo());
+		utilisateurEnSession.setNom(userDetails.getUtilisateur().getNom());
+		utilisateurEnSession.setPrenom(userDetails.getUtilisateur().getPrenom());
+		utilisateurEnSession.setEmail(userDetails.getUtilisateur().getEmail());
+		utilisateurEnSession.setTelephone(userDetails.getUtilisateur().getTelephone());
+		utilisateurEnSession.setRue(userDetails.getUtilisateur().getRue());
+		utilisateurEnSession.setCodePostal(userDetails.getUtilisateur().getCodePostal());
+		utilisateurEnSession.setVille(userDetails.getUtilisateur().getVille());
+		utilisateurEnSession.setMotDePasse(userDetails.getUtilisateur().getMotDePasse());
+		utilisateurEnSession.setCredit(userDetails.getUtilisateur().getCredit());
+		utilisateurEnSession.setRoles(userDetails.getUtilisateur().getRoles());
+
+		return "redirect:/";
 
 	}
 
@@ -153,22 +155,22 @@ public class UtilisateurController {
 		utilisateurEnSession.setVille(null);
 		utilisateurEnSession.setMotDePasse(null);
 		utilisateurEnSession.setCredit(0);
-		utilisateurEnSession.setAdministrateur(false);
 
 		return "redirect:/";
 
 	}
 
 	@GetMapping("/supprimerProfil")
-	public String supprimerProfil(@RequestParam(name = "pseudo") String pseudo,
+	public String supprimerProfil(@RequestParam(name = "pseudoSup") String pseudoSup,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
-		try {
-			utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudo).getIdUtilisateur());
-		} catch (BusinessException e) {
-			throw new RuntimeException(e);
-		}
-		if (utilisateurEnSession.isAdministrateur()) {
+        try {
+            utilisateurService.supprimerUtilisateur(utilisateurService.afficherProfil(pseudoSup).getIdUtilisateur());
+        } catch (BusinessException e) {
+            throw new RuntimeException(e);
+        }
+		if(Objects.equals(utilisateurEnSession.getRoles(), "ROLE_ADMIN"))
+		{
 			return "redirect:/";
 		}
 		return "redirect:/deconnexion";
@@ -199,11 +201,11 @@ public class UtilisateurController {
 
 		return "achat-credit";
 	}
-	
+
 	@PostMapping("/crediter")
 	public String crediter(@RequestParam(name = "montant") int montant,@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 		this.utilisateurService.achatCredit(utilisateurEnSession.getIdUtilisateur(), montant);
 		return "redirect:/profil?pseudo=" + utilisateurEnSession.getPseudo();
 	}
-	
+
 }

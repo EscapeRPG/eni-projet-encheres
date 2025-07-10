@@ -45,7 +45,9 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void CreationArticle(Article article) throws BusinessException {
+
+	public void creationArticle(Article article) throws BusinessException {
+		
 
 		if (article.getIdArticle() == 0) {
 			long id = articleDAO.ajouterArticle(article);
@@ -222,7 +224,15 @@ public class EnchereServiceImpl implements EnchereService {
 	@Override
 	public List<Article> getArticlesByPage(int page, int pageSize) {
 
-		return articleDAO.getArticlesByPage(page, pageSize);
+		
+		List<Article> articles = this.articleDAO.getArticlesByPage(page, pageSize);
+
+		for (Article article : articles) {
+			article.setUtilisateur(utilisateurDAO.consulterCompte(article.getUtilisateur().getIdUtilisateur()));
+		}
+		
+		return articles;
+
 	}
 
 	@Override

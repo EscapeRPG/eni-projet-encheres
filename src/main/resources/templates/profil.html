@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<th:block th:replace="~{fragments/fragment-head :: head}"></th:block>
-	<link rel="stylesheet" th:href="@{/css/profil.css}" />
 	<title>ENI Enchères</title>
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
 	<main>
 		<h2 th:text="${utilisateur.getPseudo()}"></h2>
-				
+
 		<h3 th:text="'Solde actuel : ' + ${utilisateur.credit} + ' points'" class="credit-actuel"></h3>
-		
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get" class="form-profil">
+
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{/achatCredit}" method="get" class="form-profil">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="achat">Achat crédit</button>
 		</form>
-		
+
 		<th:block th:with="readonly=${utilisateurEnSession.getPseudo()} != ${utilisateur.getPseudo()}">
 			<form th:action="@{/profil}" method="post" class="form-profil">
 				<label for="pseudo">Pseudo :</label>
@@ -42,7 +41,7 @@
 				
 				<label for="ville">Ville :</label>
 				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" th:attr="readonly=${readonly} ? 'readonly' : null" />
-	
+
 				<button th:if="${!readonly}" type="submit">Modifier</button>
 			</form>
 		</th:block>
@@ -50,15 +49,15 @@
 		<br>
 		<br>
 		<br>
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
-			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{/supprimerProfil}" method="get" class="form-profil">
+			<input type="hidden" name="pseudoSup" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Supprimer le compte</button>
 		</form>
-		<form th:if="${utilisateurEnSession.administrateur} eq true" th:action="@{desactiverProfil}" method="get">
+
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN'" th:action="@{desactiverProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Desactiver</button>
 		</form>
-
 	</main>
 </body>
 

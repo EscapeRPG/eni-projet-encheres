@@ -1,16 +1,30 @@
 package fr.eni.projet.bo;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
 public class Article {
 
+    @OneToMany(mappedBy = "enchereArticle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enchere> encheres;
+
+    @ManyToOne
+    @JoinColumn(name = "utilisateur_id_utilisateur")
     private Utilisateur utilisateur;
+    @ManyToOne
+    @JoinColumn(name = "categorie_id_categorie")
     private Categorie categorie;
+
+    @ManyToOne
+    @JoinColumn(name = "retrait_id")
     private Retrait retrait;
 
+    @jakarta.persistence.Id
     private long idArticle = 0;
+
     private String photoArticle;
     private String nomArticle;
     private String descriptions;

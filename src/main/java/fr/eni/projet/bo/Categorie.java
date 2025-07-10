@@ -1,13 +1,21 @@
 package fr.eni.projet.bo;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Categorie {
 
+    @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Article> articles;
 
+    @jakarta.persistence.Id
     private long idCategorie;
+
     private String libelle;
     
     public Categorie() {

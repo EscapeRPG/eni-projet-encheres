@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-/*Page d'index*/
-
 :root {
 	--banniere: rgb(70, 180, 230);
 	--fond: #f8f9fa;
@@ -16,6 +14,8 @@
 	--darkmode-button: black;
 	--darkmode-button-text: white;
 	--search-button: rgb(70, 180, 230);
+	--alt-buttons: orange;
+	--alt-buttons-hover: black;
 }
 
 .darkmode {
@@ -25,10 +25,11 @@
 	--links-hover: gold;
 	--items-background: rgb(30, 30, 30);
 	--items-border: darkgoldenrod;
-	--items-shadow: rgba(184, 134, 11, 0.4);
 	--darkmode-button: rgb(170, 170, 170);
 	--darkmode-button-text: black;
 	--search-button: white;
+	--alt-buttons: white;
+	--alt-buttons-hover: orange;
 }
 
 body {
@@ -37,6 +38,11 @@ body {
   background-color: var(--fond);
   color: var(--text);
   text-align: center;
+  transition: background-color 0.5s ease-out, color 0.5s ease-out;
+}
+
+.no-transition {
+  transition: none !important;
 }
 
 a {
@@ -52,14 +58,13 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	background-color: var(--banniere);		
-	padding: 20px 50px;			
-}
-
-header a {
-	color: white;
-	text-decoration: none;
-	margin: 10px;
+	padding: 20px 50px;
 	
+	a {
+		color: white;
+		text-decoration: none;
+		margin: 10px;
+	}	
 }
 
 #nav-title {
@@ -71,71 +76,8 @@ header a {
 	}	
 }
 
-
-
 h2 {	
 	text-align: center;
-}
-
-
-/* ------ page de connexion -------*/
-
-form {
-	display: flex ;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: center;
-	text-align: center;
-	padding: 30px;
-	width: 60%;
-	margin: auto;
-	label {
-		text-align: left;
-	
-	}
-}
-
-input[type=text], input[type=email] {
-	padding: 5px 10px;
-	border-radius: 10px;
-	min-width: 200px;
-}
-
-select {
-	padding: 5px 10px;
-	border-radius: 10px;
-	
-	&:focus {
-		border-radius: 10px 10px 0 0;
-	}
-
-}
-
-.middlebutton {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	height: 75px;	
-	}
-	
-.souvenir{
-	display: flex;
-	justify-content: center;
-}	
-
-.lien-mdp {
-	float: right;	
-}
-
-.downbutton {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	border-bottom-width: 100px;
-	padding:20px;
-	margin: 20px;
 }
 
 button{
@@ -158,19 +100,24 @@ button{
 	}
 }
 
-.form-buttons{
-	display: flex;
-	justify-content:space-around;
-	padding: 20px;
-	margin: 50px;
-	height:70;
+#img-preview {
+	display: none;
+	max-width: 40%;
+	
+	img {
+		width: 100%;
+	}
 }
 
-.credit {
-	text-align: center;
-	margin-right: 150px;
+.image-article {
+	max-width: 40%;
+	display: block;
+	margin: auto;
+	
+	img {
+		max-width: 100%;
+		max-height: 400px;
+	}
 }
-
-
 
 	
