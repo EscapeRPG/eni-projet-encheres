@@ -66,7 +66,7 @@ public class UtilisateurController {
 		try {
 			utilisateurService.creerUtilisateur(utilisateur);
 		} catch (BusinessException e) {
-			e.getExceptionMessages().forEach(message -> {
+			e.getMessages().forEach(message -> {
 				bindingResult.addError(new ObjectError("globalError", message));
 			});
 			return "inscription";
@@ -122,6 +122,7 @@ public class UtilisateurController {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		MyUserDetails userDetails = (MyUserDetails) auth.getPrincipal();
+
 
 		utilisateurEnSession.setIdUtilisateur(userDetails.getUtilisateur().getIdUtilisateur());
 		utilisateurEnSession.setPseudo(userDetails.getUtilisateur().getPseudo());

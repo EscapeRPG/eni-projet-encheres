@@ -6,6 +6,15 @@
 </head>
 <body>
 	<header th:replace="~{fragments/fragment-header :: header}"></header>
+	
+	<main>
+	
+		<div th:if="${global}" class="alert alert-danger">
+    		<ul>
+        		<li th:each="error : ${global}" th:text="${error}"></li>
+    		</ul>
+   		</div>
+   		
 	<h2>Détail vente</h2>
 	<h3 th:if="${today >= article.dateFinEncheres 
 			  and (etatVente == 'ET' or etatVente == 'RE')}" 
@@ -100,6 +109,6 @@
 	
 	<a  th:if="${utilisateurEnSession.getIdUtilisateur()} == ${article.getUtilisateur().getIdUtilisateur()}
 				and ${article.etatVente == 'CR'}" th:href="@{/modifierVente(arti=${article.getIdArticle()})}">Modifier</a>
-
+</main>
 </body>
 </html>

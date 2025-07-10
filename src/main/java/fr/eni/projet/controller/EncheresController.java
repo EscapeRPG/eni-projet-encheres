@@ -12,6 +12,8 @@ import fr.eni.projet.bo.Retrait;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,8 @@ import fr.eni.projet.bo.Categorie;
 import fr.eni.projet.bo.Enchere;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
+import jakarta.validation.Valid;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @SessionAttributes({ "utilisateurEnSession", "categoriesEnSession" })
@@ -43,11 +47,11 @@ public class EncheresController {
 	@GetMapping({ "/", "/index", "/encheres" })
 	public String goToIndex(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
 		LocalDateTime today = LocalDateTime.now();
-	    
+
 		int pageSize = 6;
-	    List<Article> articles = enchereService.getArticlesByPage(page, pageSize);
-	    int totalArticles = enchereService.countArticles();
-	    int totalPages = (int) Math.ceil((double) totalArticles / pageSize);
+		List<Article> articles = enchereService.getArticlesByPage(page, pageSize);
+		int totalArticles = enchereService.countArticles();
+		int totalPages = (int) Math.ceil((double) totalArticles / pageSize);
 
 		Map<Long, String> couleurParArticle = new HashMap<>();
 
@@ -64,14 +68,14 @@ public class EncheresController {
 			couleurParArticle.put(a.getIdArticle(), couleur);
 		}
 
-	    model.addAttribute("articles", articles);
+		model.addAttribute("articles", articles);
 		model.addAttribute("couleurs", couleurParArticle);
 
 		List<Article> trendingArticles = enchereService.getTopTrendingArticles();
 		model.addAttribute("trendingArticles", trendingArticles);
 		model.addAttribute("pagination", "on");
-	    model.addAttribute("currentPage", page);
-	    model.addAttribute("totalPages", totalPages);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", totalPages);
 
 		return "index";
 	}
@@ -90,7 +94,7 @@ public class EncheresController {
 
 		List<Article> listeFiltree = this.enchereService.filtrerRecherche(filtreNomArticle, categorieFiltree,
 				encheresEnCours, mesEncheres, encheresRemportees, ventesEnCours, ventesEnAttente, ventesTerminees);
-		
+
 		Map<Long, String> couleurParArticle = new HashMap<>();
 
 		for (Article a : listeFiltree) {
@@ -109,7 +113,7 @@ public class EncheresController {
 		model.addAttribute("articles", listeFiltree);
 		model.addAttribute("couleurs", couleurParArticle);
 		model.addAttribute("pagination", "off");
-		
+
 		return "index";
 	}
 
@@ -122,15 +126,14 @@ public class EncheresController {
 			return "acquisition";
 
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
+			model.addAttribute("global", e.getMessages());
 			return "redirect:/";
 		}
 
 	}
 
 	@GetMapping("/detail-vente")
-	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle, Model model,
+	public String goToDetailVente(@RequestParam(name = "idArticle") long idArticle,Model model,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) throws BusinessException {
 		LocalDateTime today = LocalDateTime.now();
 
@@ -147,61 +150,92 @@ public class EncheresController {
 				this.enchereService.remporterVente(idArticle);
 
 			}
+			
+			List<Enchere> encheresEnCours = enchereService.consulterEncheres(idArticle);
+			model.addAttribute("listeEncheres", encheresEnCours);
 
-			Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+			try {
+				Enchere enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+
+				if (enchereEnCours != null) {
+					model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
+					model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
+				} else {
+					model.addAttribute("enchere", 0);
+				}
+			} catch (BusinessException e) {
+			
+				model.addAttribute("enchere", 0);
+			}
 			
 			model.addAttribute("today", today);
 			model.addAttribute("article", article);
 			model.addAttribute("etatVente", article.getEtatVente());
-			
-			List<Enchere> encheresEnCours = enchereService.consulterEncheres(idArticle);
-			
-			model.addAttribute("listeEncheres",encheresEnCours);
-			
 
-			if (enchereEnCours != null) {
-				model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
-				model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
-
-			} else {
-				model.addAttribute("enchere", 0);
-			}
 			return "detail-vente";
 
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-//			e.printStackTrace();
+			model.addAttribute("global", e.getMessages());
 			return "redirect:/";
 		}
 	}
 
 	@PostMapping("/retraitEffectue")
-	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle) {
+	public String retraitEffectue(@RequestParam(name = "idArticle") long idArticle, Model model) {
 
 		try {
 
 			this.enchereService.clotureArticle(idArticle);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
+			model.addAttribute("global", e.getMessages());
 		}
 
 		return "redirect:/";
 	}
 
 	@PostMapping("/encherir")
-	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle,
+	public String goToEncherir(@RequestParam(name = "idArticle") long idArticle, Model model,
 			@RequestParam(name = "montant") int montant,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession) {
 
 		try {
 			enchereService.encherir(idArticle, utilisateurEnSession.getIdUtilisateur(), montant);
+			return "redirect:/detail-vente?idArticle=" + idArticle;
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			
+			try {
+				Article article = enchereService.detailVente(idArticle);
+				model.addAttribute("article", article);
+				
+				 List<Enchere> encheresEnCours = enchereService.consulterEncheres(idArticle);
+		         model.addAttribute("listeEncheres", encheresEnCours);
 
-		return "redirect:/detail-vente?idArticle=" + idArticle;
+		         Enchere enchereEnCours = null;
+		         
+		         try {
+		                enchereEnCours = enchereService.consulterEnchereMax(idArticle);
+		            } catch (BusinessException ex) {
+		                
+		            }
+		            if (enchereEnCours != null) {
+		                model.addAttribute("enchere", enchereEnCours.getMontantEnchere());
+		                model.addAttribute("pseudoAcheteur", enchereEnCours.getUtilisateur().getPseudo());
+		            } else {
+		                model.addAttribute("enchere", 0);
+		            }
+
+		            model.addAttribute("etatVente", article.getEtatVente());
+		            model.addAttribute("today", LocalDateTime.now());
+
+		        } catch (BusinessException ex) {
+		            
+		            return "redirect:/";
+		        }
+
+		        model.addAttribute("global", e.getMessages()); 
+		        return "detail-vente";
+		    }
+				
 	}
 
 	@GetMapping("/vendre-article")
@@ -250,7 +284,11 @@ public class EncheresController {
 	public String goToAnnulerArticle(@RequestParam(name = "idArticle") long idArticle,
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurEnSession, Model model) {
 
-		this.enchereService.supprimerVente(idArticle);
+		try {
+			this.enchereService.supprimerVente(idArticle);
+		} catch (BusinessException e) {
+			model.addAttribute("global", e.getMessages());
+		}
 
 		List<Article> listeArticles = enchereService.consulterAllVentes();
 		List<Categorie> listeCategories = enchereService.consulterAllCategories();
