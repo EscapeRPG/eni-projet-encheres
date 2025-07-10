@@ -38,28 +38,31 @@ public class SecurityConfiguration {
      * form login gère la page de login custom "connexion" en cas de succès, il renvoie vers la fonction succes qui set l'utilisateur en Session
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,AuthenticationProvider authentication) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authentication) throws Exception {
         return http
-                .authorizeHttpRequests(
-                        authorize -> {
-                            // Permit access to static resources and login, home, and error pages
-                            authorize
-                                    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                                    .requestMatchers("/**", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
-                                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                                    .requestMatchers("/user/**","/acquisition","/achatCredit","/profil").hasRole("USER")
-                                    .anyRequest().authenticated();
-                        }
-                ).formLogin(form -> form
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**", "/acquisition", "/achatCredit", "/profil").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
                         .loginPage("/connexion")
-                        .loginProcessingUrl("/login")// Custom login page
-                        .defaultSuccessUrl("/succes", true)  // Redirect to home after successful login
-                        .permitAll())
-                .logout(logout -> logout.logoutUrl("/logout")
-                        .logoutSuccessUrl("/connexion?logout")  // Redirect to login page after logout
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/succes", true)
                         .permitAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF for simplicity (not recommended for production)
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/deconnexion")
+                        .maximumSessions(1)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/connexion?logout")
+                        .permitAll()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 

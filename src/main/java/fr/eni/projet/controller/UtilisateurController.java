@@ -155,7 +155,7 @@ public class UtilisateurController {
 		utilisateurEnSession.setMotDePasse(null);
 		utilisateurEnSession.setCredit(0);
 
-		return "redirect:/";
+		return "connexion";
 
 	}
 
