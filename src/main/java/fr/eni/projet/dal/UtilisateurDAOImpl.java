@@ -4,6 +4,7 @@ import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.exception.BusinessException;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,8 +12,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,11 +25,12 @@ import java.util.List;
 public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     private final NamedParameterJdbcTemplate jdb;
+    private final JdbcTemplate jdbcTemplate;
 
 
-
-    public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb) {
+    public UtilisateurDAOImpl(NamedParameterJdbcTemplate jdb, JdbcTemplate jdbcTemplate) {
         this.jdb = jdb;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -96,25 +101,32 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
     public void desactiverCompte(long idUtilisateur) {
         String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
         String sql2 = "delete from article where idUtilisateur = :idUtilisateur";
-        String sql3  = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
+
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
+
         jdb.update(sql1,mapSqlParameterSource);
         jdb.update(sql2,mapSqlParameterSource);
-        jdb.update(sql3,mapSqlParameterSource);
 
     }
 
+    @Transactional
     @Override
     public void supprimerCompte(long idUtilisateur) {
 
         String sql1 = "delete from enchere where idUtilisateur = :idUtilisateur;";
         String sql2 = "delete from utilisateur where idUtilisateur = :idUtilisateur";
-        String sql3  = "update utilisateur set desactiver = 1 where idUtilisateur = :idUtilisateur";
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("idUtilisateur", idUtilisateur);
 
+        jdbcTemplate.execute((Connection connection) -> {
+            try (CallableStatement callableStatement = connection.prepareCall("{call sp_delete_user_with_refund(?)}")) {
+                callableStatement.setLong(1, idUtilisateur);
+                callableStatement.execute();
+            }
+            return null;
+        });
         jdb.update(sql1,mapSqlParameterSource);
         jdb.update(sql2,mapSqlParameterSource);
 
