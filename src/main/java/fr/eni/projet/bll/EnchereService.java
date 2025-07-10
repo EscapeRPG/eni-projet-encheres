@@ -22,7 +22,7 @@ public interface EnchereService {
 	 * @throws BusinessException si une erreur survient lors de la création de
 	 *                           l'article.
 	 */
-	void CreationArticle(Article article) throws BusinessException;
+	void creationArticle(Article article) throws BusinessException;
 
 	/**
 	 * Démarre la vente d'un article, rendant l'enchère possible pour les
