@@ -40,8 +40,9 @@ public interface EnchereService {
 	 * (En Cours).
 	 * 
 	 * @param idArticle l'identifiant de l'article à supprimer.
+	 * @throws BusinessException 
 	 */
-	void supprimerVente(long idArticle);
+	void supprimerVente(long idArticle) throws BusinessException;
 
 	/**
 	 * Permet à un utilisateur de placer une enchère sur un article spécifique.
@@ -147,11 +148,9 @@ public interface EnchereService {
 	 * @param idArticle l'identifiant de l'article concerné.
 	 * @return une Enchere représentant l'enchère maximale, ou null si aucune
 	 *         enchère n'est encore placée.
+	 * @throws BusinessException 
 	 */
 
-	Enchere consulterEnchereMax(long idArticle);
-
-
-	
+	Enchere consulterEnchereMax(long idArticle) throws BusinessException;	
 
 }

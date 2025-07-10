@@ -4,6 +4,8 @@ import fr.eni.projet.bo.Article;
 import fr.eni.projet.bo.Utilisateur;
 import fr.eni.projet.dal.UtilisateurDAO;
 import fr.eni.projet.exception.BusinessException;
+import fr.eni.projet.exception.CodeErreur;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -89,12 +91,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 				return this.utilisateurDAO.connecterCompte(pseudo, motDePasse);
 			} 
 			else {
-				be.add("Le mot de passe ou user ne correspond pas");
+				be.add(CodeErreur.MDP_INCORRECT);
 				throw be;
 			}
 		} 
 		else {
-			be.add("l'utilisateur n'existe pas");
+			be.add(CodeErreur.UTILISATEUR_INEXISTANT);
 			throw be;
 		}
 	}
@@ -107,7 +109,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			return true;
 		}
 		else {
-			be.add("L'utilisateur n'existe pas");
+			be.add(CodeErreur.UTILISATEUR_INEXISTANT);
 			return false;
 		}
 	}
@@ -120,7 +122,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			return true;
 		} 
 		else {
-			be.add("L'utilisateur n'existe pas");
+			be.add(CodeErreur.UTILISATEUR_INEXISTANT);
 			return false;
 		}
 	}
