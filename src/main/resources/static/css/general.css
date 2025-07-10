@@ -38,7 +38,11 @@ body {
   background-color: var(--fond);
   color: var(--text);
   text-align: center;
-  transition: all 0.5s ease-out;
+  transition: background-color 0.5s ease-out, color 0.5s ease-out;
+}
+
+.no-transition {
+  transition: none !important;
 }
 
 a {
