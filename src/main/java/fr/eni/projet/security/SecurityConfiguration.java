@@ -18,7 +18,9 @@ public class SecurityConfiguration {
     private final MyUserDetailsService userDetailsService;
 
 
-
+    /**
+     * Création d'un encodeur de mots de passe Bcrypt
+     */
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public SecurityConfiguration(MyUserDetailsService userDetailsService) {
@@ -27,11 +29,13 @@ public class SecurityConfiguration {
 
 
     /**
-     * Configures the security filter chain.
+     * Configuration de l'accès des pages aux utilisateurs anonymes et avec un rôle.
      *
      * @param http the HttpSecurity object to configure
      * @return the configured SecurityFilterChain
      * @throws Exception in case of any configuration error
+     *
+     * form login gère la page de login custom "connexion" en cas de succès, il renvoie vers la fonction succes qui set l'utilisateur en Session
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,AuthenticationProvider authentication) throws Exception {
@@ -43,7 +47,7 @@ public class SecurityConfiguration {
                                     .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                                     .requestMatchers("/", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                                    .requestMatchers("/user/**","/acquisition","/achatCredit").hasRole("USER")
+                                    .requestMatchers("/user/**","/acquisition","/achatCredit","/profil").hasRole("USER")
                                     .anyRequest().authenticated();
                         }
                 ).formLogin(form -> form
