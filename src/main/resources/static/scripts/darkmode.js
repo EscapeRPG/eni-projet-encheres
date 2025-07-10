@@ -10,7 +10,7 @@ returnIndex.addEventListener("mouseover", logoHover);
 returnIndex.addEventListener("mouseout", logoOut);
 
 function darkMode() {
-	if (document.documentElement.className == "darkmode") {
+	if (body.className == "darkmode") {
 		body.classList.remove("darkmode");
 		localStorage.setItem("darkmode", "off");
 		darkButton.innerText = "Dark";
