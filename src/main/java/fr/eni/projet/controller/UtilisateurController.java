@@ -61,7 +61,7 @@ public class UtilisateurController {
 		try {
 			utilisateurService.creerUtilisateur(utilisateur);
 		} catch (BusinessException e) {
-			e.getExceptionMessages().forEach(message -> {
+			e.getMessages().forEach(message -> {
 				bindingResult.addError(new ObjectError("globalError", message));
 			});
 			return "inscription";
@@ -129,7 +129,7 @@ public class UtilisateurController {
 			return "redirect:/";
 
 		} catch (BusinessException e) {
-			e.getExceptionMessages().forEach(m -> {
+			e.getMessages().forEach(m -> {
 				ObjectError error = new ObjectError("errorLogin", m);
 				bindingResult.addError(error);
 

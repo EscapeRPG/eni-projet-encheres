@@ -135,13 +135,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	public List<Article> getArticlesByPage(int page, int pageSize) {
-		int offset = (page - 1) * pageSize;
+		
 		String sql = "select * from article inner join retrait on article.idArticle = retrait.idArticle ORDER BY article.dateFinEncheres DESC OFFSET :offset ROWS FETCH NEXT 6 ROWS ONLY";
 
+		int offset = (page - 1) * pageSize;
+		
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("offset", offset);
 
 		return jdb.query(sql, map, new ArticleMapper());
+		
 	}
 
 	public int countArticles() {
