@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                                     .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                                     .requestMatchers("/", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
-                                    .requestMatchers("/user/**").hasRole("USER")
+                                    .requestMatchers("/user/**","/acquisition","/achatCredit").hasRole("USER")
                                     .anyRequest().authenticated();
                         }
                 ).formLogin(form -> form

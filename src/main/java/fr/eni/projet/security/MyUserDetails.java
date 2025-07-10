@@ -32,6 +32,7 @@ public class MyUserDetails implements UserDetails {
         return utilisateur.getPseudo();
     }
 
+    public long getUtilisateurId() {return utilisateur.getIdUtilisateur();}
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
