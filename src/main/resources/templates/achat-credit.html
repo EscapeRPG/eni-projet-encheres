@@ -9,8 +9,6 @@
 	
 	<h2>Achat crédit</h2>
 
-	<h3 th:text="'Mon solde : ' + ${utilisateurEnSession.credit}"></h3>
-
 	<div class="list-buttons">
 		<form th:action="@{/crediter}" method="post">
 			<button type="submit" name="montant" value="100">100 points</button>
