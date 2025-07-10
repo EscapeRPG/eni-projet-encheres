@@ -45,7 +45,7 @@ public class EnchereServiceImpl implements EnchereService {
 	
 	
 	@Override
-	public void CreationArticle(Article article) throws BusinessException {
+	public void creationArticle(Article article) throws BusinessException {
 		
 		if (article.getIdArticle() == 0) {
 			long id = articleDAO.ajouterArticle(article);

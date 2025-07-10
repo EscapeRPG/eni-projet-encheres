@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                             // Permit access to static resources and login, home, and error pages
                             authorize
                                     .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                                    .requestMatchers("/", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
+                                    .requestMatchers("/**", "/home", "/connexion", "/login", "/inscription", "/succes", "/profil", "/detail-vente").permitAll()
                                     .requestMatchers("/admin/**").hasRole("ADMIN")
                                     .requestMatchers("/user/**","/acquisition","/achatCredit","/profil").hasRole("USER")
                                     .anyRequest().authenticated();
@@ -74,14 +74,10 @@ public class SecurityConfiguration {
 //   }
 
     /**
-     * Configures the password encoder.
-     *
-     * @return the configured BCryptPasswordEncoder
+     * Configure l'objet Utilisateur à prendre en User
+     * ainsi que l'encodeur de mots de passe
+     * @return renvoie les info de l'utilisateur en DB
      */
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

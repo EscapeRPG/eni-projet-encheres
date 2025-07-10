@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.security.Key;
@@ -44,8 +45,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
 
     @Override
     public void creerCompte(Utilisateur u) {
-        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,roles,desactiver) "
-                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :roles, :desactiver)";
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+        String sql = "INSERT INTO utilisateur (pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,roles) "
+                + "values (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse, :roles)";
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue("pseudo", u.getPseudo());
         mapSqlParameterSource.addValue("nom", u.getNom());
@@ -55,7 +60,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO{
         mapSqlParameterSource.addValue("rue", u.getRue());
         mapSqlParameterSource.addValue("codePostal", u.getCodePostal());
         mapSqlParameterSource.addValue("ville", u.getVille());
-        mapSqlParameterSource.addValue("motDePasse", u.getMotDePasse());
+        mapSqlParameterSource.addValue("motDePasse", passwordEncoder.encode(u.getMotDePasse()));
+        mapSqlParameterSource.addValue("roles", u.getRoles());
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();

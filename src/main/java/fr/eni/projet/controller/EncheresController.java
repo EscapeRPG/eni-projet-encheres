@@ -241,7 +241,7 @@ public class EncheresController {
 
 		article.setPhotoArticle(imageNom);
 
-		enchereService.CreationArticle(article);
+		enchereService.creationArticle(article);
 
 		return "redirect:/index";
 	}
