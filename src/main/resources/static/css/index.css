@@ -74,6 +74,10 @@
 		background-color: var(--items-background);
 		box-shadow: 5px 5px 2px var(--items-shadow);
 		
+		&:hover {
+			transform: scale(1.05);
+		}
+		
 		h3 {
 			text-decoration :
 			underline;
