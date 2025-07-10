@@ -49,8 +49,8 @@
 		<br>
 		<br>
 		<br>
-		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
-			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{/supprimerProfil}" method="get" class="form-profil">
+			<input type="hidden" name="pseudoSup" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Supprimer le compte</button>
 		</form>
 
