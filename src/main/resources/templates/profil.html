@@ -12,7 +12,7 @@
 
 		<h3 th:text="'Solde actuel : ' + ${utilisateur.credit} + ' points'" class="credit-actuel"></h3>
 
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get" class="form-profil">
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{achatCredit}" method="get" class="form-profil">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="achat">Achat crédit</button>
 		</form>
@@ -50,7 +50,7 @@
 		<br>
 		<br>
 		<br>
-		<form th:if="${utilisateurEnSession.administrateur} eq true or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN' or ${utilisateurEnSession.getIdUtilisateur()} eq ${utilisateur.getIdUtilisateur()}" th:action="@{supprimerProfil}" method="get" class="form-profil">
 				<input type="text" name="ville" id="ville" th:value="${utilisateur.getVille()}" />
 
 			</div>
@@ -64,7 +64,7 @@
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
 			<button type="submit" class="alert-button">Supprimer le compte</button>
 		</form>
-		<form th:if="${utilisateurEnSession.administrateur} eq true" th:action="@{desactiverProfil}" method="get">
+		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN'" th:action="@{desactiverProfil}" method="get">
 
 		<form th:if="${utilisateurEnSession.roles} eq 'ROLE_ADMIN'" th:action="@{desactiverProfil}" method="get">
 			<input type="hidden" name="pseudo" th:value="${utilisateur.getPseudo()}" />
